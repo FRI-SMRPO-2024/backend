@@ -23,18 +23,21 @@ export class UserService {
     }
     return data[0];
   }
-  public static async updateUser(id: string, email: string): Promise<UserModel | null>{
+  public static async updateUser(id: string, username: string, first_name: string, last_name:string): Promise<UserModel | null>{
     const { data, error } = await supabase
       .from("users_data")
-      .update({ email })
+      .update({ username, first_name, last_name })
       .eq("id", id);
     if (error) {
       throw new Error(error.message);
     }
     return data;
   }
-  public static async deleteUser(id: string): Promise<UserModel | null>{
-    const { data, error } = await supabase.from("users_data").delete().eq("id", id);
+  public static async updateLastLogin (id: string): Promise<UserModel | null>{
+    const { data, error } = await supabase
+      .from("users_data")
+      .update({ last_login: new Date() })
+      .eq("id", id);
     if (error) {
       throw new Error(error.message);
     }

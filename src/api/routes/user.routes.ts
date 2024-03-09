@@ -6,7 +6,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/user/getAll:
+ * /api/user/get-all:
  *   get:
  *     summary: Get all users
  *     tags: [User]
@@ -20,7 +20,7 @@ const router = express.Router();
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-router.get("/getAll", UserController.getUsers);
+router.get("/get-all", UserController.getUsers);
 
 
 /**
@@ -81,7 +81,7 @@ router.put("/update/:id", UserController.updateUser);
 
 /**
  * @swagger
- * /api/user/delete/{id}:
+ * /api/user/update-last-login/{id}:
  *   delete:
  *     summary: Delete a user by ID
  *     tags: [User]
@@ -98,7 +98,7 @@ router.put("/update/:id", UserController.updateUser);
  *       404:
  *         description: The user was not found
  */
-router.delete("/delete/:id", UserController.deleteUser);
+router.delete("/update-last-login/:id", UserController.updateLastLogin);
 
 export default router;
 
