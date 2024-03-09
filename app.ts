@@ -1,11 +1,16 @@
 import express from 'express';
 import http from 'http';
 import logger from './src/utils/winston-logger'
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerDefinition from './swagger';
+import router from './src/api/routes';
 
 const cors = require('cors');
 const schedule = require('node-schedule');
 const app = express();
 const errorHandler = require('errorhandler')
+const swaggerSpec = swaggerJSDoc(swaggerDefinition);
 
 require('dotenv').config()
 
@@ -15,7 +20,9 @@ const FRONTEND_CORS_URL = process.env.FRONTEND_CORS_URL || '';
 app.use(errorHandler({ dumpExceptions: true, showStack: true })); 
 app.use(cors({origin: FRONTEND_CORS_URL, credentials: true}))
 app.use(express.json());
-// app.use('/api', );
+
+app.use('/api', router);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 http.createServer(app).listen(APP_HTTP_PORT, function() {
     console.log(`App is listening on port ${APP_HTTP_PORT} (http)`)
