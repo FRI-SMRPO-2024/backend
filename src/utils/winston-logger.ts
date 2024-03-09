@@ -3,7 +3,7 @@ require('winston-daily-rotate-file');
 
 require('dotenv').config()
 
-const LOGGING_PATH = process.env['LOGGING_PATH'];
+const LOGGING_PATH = process.env.LOGGING_PATH || 'logs/';
 
 const transport = new winston.transports.DailyRotateFile({
   filename: `${LOGGING_PATH}combined-%DATE%.log`,

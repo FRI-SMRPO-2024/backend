@@ -16,7 +16,7 @@ const swaggerDefinition: Options = {
     ],
   },
   // Paths to files where you've defined your routes
-  apis: ['./src/routes/*.ts'],
+  apis: ['./src/api/routes/*.ts'],
 };
 
 export default swaggerDefinition;

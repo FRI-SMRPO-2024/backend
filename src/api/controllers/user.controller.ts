@@ -4,14 +4,14 @@ import { UserService } from '../services/user.service';
 
 
 export class UserController {
-    public static async addUser(req: Request, res: Response) {
+    public static async getUsers(req: Request, res: Response) {
         try {
-            const { user } = req.body;
-            const response = await UserService.addUser(user);
+            const response = await UserService.getUsers();
+            logger.log('info', 'api-UserController-getUsers() | SUCCESS')
             res.status(200).send(response);
         } catch (e: unknown) {
             const typedE = e as Error
-            logger.log('error', 'api-UserController-addUser() | Error | ' + String(typedE.message))
+            logger.log('error', 'api-UserController-getUsers() | Error | ' + String(typedE.message))
             res.status(401).send({error: typedE});
         }
     }
@@ -19,6 +19,7 @@ export class UserController {
         try {
             const { id } = req.params;
             const response = await UserService.getUser(id);
+            logger.log('info', 'api-UserController-getUser() | SUCCESS')
             res.status(200).send(response);
         } catch (e: unknown) {
             const typedE = e as Error
@@ -31,6 +32,7 @@ export class UserController {
             const { id } = req.params;
             const { email } = req.body;
             const response = await UserService.updateUser(id, email);
+            logger.log('info', 'api-UserController-updateUser() | SUCCESS')
             res.status(200).send(response);
         } catch (e: unknown) {
             const typedE = e as Error
@@ -42,6 +44,7 @@ export class UserController {
         try {
             const { id } = req.params;
             const response = await UserService.deleteUser(id);
+            logger.log('info', 'api-UserController-deleteUser() | SUCCESS')
             res.status(200).send(response);
         } catch (e: unknown) {
             const typedE = e as Error
