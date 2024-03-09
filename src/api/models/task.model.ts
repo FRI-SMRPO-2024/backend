@@ -6,7 +6,7 @@ export interface TaskModel {
     description: string;
     time_estimation: number;
     time_needed: number;
-    updated_at: string;
+    created_at: Date;
 }
 
 export enum TaskStatus {

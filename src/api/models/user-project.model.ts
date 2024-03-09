@@ -3,7 +3,7 @@ export interface UserProjectModel{
     project_id: number;
     user_id: string;
     role: ProjectRole;
-    updated_at: string;
+    created_at: Date;
 }
 
 export enum ProjectRole {

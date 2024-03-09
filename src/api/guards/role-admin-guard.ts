@@ -16,11 +16,11 @@ export const roleAdminGuard: RequestHandler = async (req: Request, res: Response
         if (e instanceof Error) {
             const errorMsg = String(e.message)
             logger.log('error', 'dashboardApi-roleAdminGuard | Error | ' + errorMsg)
-            return res.status(401).send({error: errorMsg})
+            return res.status(500).send({error: errorMsg})
         } else {   
             const errorMsg = String(e)
             logger.log('error', 'dashboardApi-roleAdminGuard | Error | ' + errorMsg)
-            return res.status(401).send({error: errorMsg})
+            return res.status(500).send({error: errorMsg})
         }
     }
 }

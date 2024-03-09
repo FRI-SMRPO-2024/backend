@@ -1,5 +1,6 @@
 import logger from "../../utils/winston-logger";
-import supabase from "../../utils/supabase";
+import { supabase } from "../../utils/supabase";
+import { supabaseAdmin } from "../../utils/supabase";
 import { User } from "@supabase/supabase-js";
 import { UserModel } from "../models/user.model";
 
@@ -32,6 +33,13 @@ export class UserService {
       throw new Error(error.message);
     }
     return data;
+  }
+  public static async deleteUser(id:string): Promise<User>{
+    const { data, error } = await supabaseAdmin.auth.admin.deleteUser(id)
+    if (error) {
+        throw new Error(error.message);
+    }
+    return data.user;
   }
   public static async updateLastLogin(id: string): Promise<null>{
     const { data, error } = await supabase

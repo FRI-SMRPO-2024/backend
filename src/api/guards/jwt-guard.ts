@@ -8,7 +8,7 @@ import type { Request, Response, NextFunction, RequestHandler } from "express";
 //         if (!token) {
 //             const errorMsg = 'no authorization token'
 //             logger.log('error', 'dashboardApi-jwtGuard | Error | ' + errorMsg)
-//             return res.status(401).send({error: errorMsg});
+//             return res.status(500).send({error: errorMsg});
 //         }
 //         const acessToken = token.split(" ")[1] || '';
 //         const verifiedDashboardUser: DashboardUser | null = await AuthService.verifyJwtAccessToken(acessToken);
@@ -19,17 +19,17 @@ import type { Request, Response, NextFunction, RequestHandler } from "express";
 //         } else {
 //             const errorMsg = 'verifyData is null'
 //             logger.log('error', 'dashboardApi-jwtGuard | Error | ' + errorMsg)
-//             return res.status(401).send({error: errorMsg})
+//             return res.status(500).send({error: errorMsg})
 //         }
 //     } catch (e) {
 //         if (e instanceof Error) {
 //             const errorMsg = String(e.message)
 //             logger.log('error', 'dashboardApi-jwtGuard | Error | ' + errorMsg)
-//             return res.status(401).send({error: errorMsg})
+//             return res.status(500).send({error: errorMsg})
 //         } else {   
 //             const errorMsg = String(e)
 //             logger.log('error', 'dashboardApi-jwtGuard | Error | ' + errorMsg)
-//             return res.status(401).send({error: errorMsg})
+//             return res.status(500).send({error: errorMsg})
 //         }
 //     }
 // }

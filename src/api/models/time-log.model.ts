@@ -5,5 +5,5 @@ export interface TimeLogModel {
     date: Date;
     time_from: Date;
     time_to: Date;
-    updated_at: string;
+    created_at: Date;
 }

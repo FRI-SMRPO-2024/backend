@@ -5,6 +5,6 @@ export interface UserModel {
   first_name: string;
   last_name: string;
   is_admin: boolean;
-  created_at: string;
-  updated_at: string;
+  created_at: Date;
+  last_login: Date;
 }

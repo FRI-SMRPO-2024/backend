@@ -1,6 +1,6 @@
 import logger from "../../utils/winston-logger";
-import supabase from "../../utils/supabase";
-import supabaseAdmin from "../../utils/supabase-admin";
+import { supabase } from "../../utils/supabase";
+import { supabaseAdmin } from "../../utils/supabase";
 import { Session } from "@supabase/supabase-js";
 import { UserModel } from "../models/user.model";
 
@@ -27,24 +27,18 @@ export class AuthService {
     }
     return data;
   }
-    public static async logout(): Promise<void>{
-        const { error } = await supabase.auth.signOut();
-        if (error) {
+  public static async logout(): Promise<void>{
+      const { error } = await supabase.auth.signOut();
+      if (error) {
         throw new Error(error.message);
-        }
-    }
-    public static async changePassword(newPassword: string): Promise<void>{
-        const { error } = await supabase.auth.updateUser({
-            password: newPassword,
-        });
-        if (error) {
-            throw new Error(error.message);
-        }
-    }
-    public static async deleteUser(id:string): Promise<void>{
-        const { error } = await supabaseAdmin.auth.admin.deleteUser(id)
-        if (error) {
-            throw new Error(error.message);
-        }
-    }
+      }
+  }
+  public static async changePassword(newPassword: string): Promise<void>{
+      const { error } = await supabase.auth.updateUser({
+          password: newPassword,
+      });
+      if (error) {
+          throw new Error(error.message);
+      }
+  }
 }

@@ -10,7 +10,7 @@ export interface StoryModel {
     status: StoryStatus;
     acceptance_criteria: string;
     rejected_comment: string;
-    updated_at: string;
+    created_at: Date;
 }
 
 export enum StoryStatus {

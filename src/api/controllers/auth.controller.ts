@@ -1,8 +1,8 @@
 import logger from '../../utils/winston-logger';
 import e, { Request, Response } from 'express'
 import { AuthService } from '../services/auth.service';
-import supabase from '../../utils/supabase';
-import supabaseAdmin from '../../utils/supabase-admin';
+import { supabase } from '../../utils/supabase';
+import { supabaseAdmin } from '../../utils/supabase';
 import { AuthResponse } from '@supabase/supabase-js';
 import { UserLoginResponse, UserSignupResponse } from '../models/auth.model';
 import { UserService } from '../services/user.service';
@@ -140,28 +140,6 @@ export class AuthController {
             } else {   
                 const errorMsg = String(e)
                 logger.log('error', 'api-AuthController-logout() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            }
-        }
-    }
-
-    public static async deleteUser(req: Request, res: Response) {
-        try {
-            const { id } = req.params;
-            const { error } = await supabaseAdmin.auth.admin.deleteUser(id)
-            if (error) {
-                throw new Error(error.message);
-            }
-            logger.log('info', 'api-AuthController-deleteUser() | SUCCESS')
-            res.status(200).send()
-        } catch (e: unknown) {
-            if (e instanceof Error) {
-                const errorMsg = String(e.message)
-                logger.log('error', 'api-AuthController-deleteUser() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            } else {   
-                const errorMsg = String(e)
-                logger.log('error', 'api-AuthController-deleteUser() | ERROR | ' + errorMsg)
                 res.status(500).send({error: errorMsg})
             }
         }

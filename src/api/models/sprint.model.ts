@@ -4,5 +4,5 @@ export interface SprintModel {
     velocity: number;
     start_date: string;
     end_date: string;
-    updated_at: string;
+    created_at: Date;
 }

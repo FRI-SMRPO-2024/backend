@@ -3,5 +3,5 @@ export interface PostModel {
     project_id: number;
     user_id: string;
     content: string;
-    updated_at: string;
+    created_at: Date;
 }

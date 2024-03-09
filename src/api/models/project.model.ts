@@ -3,5 +3,6 @@ export interface ProjectModel{
     name: string;
     description: string;
     documentation: string;
-    updated_at: string;
+    owner_id: string;
+    created_at: Date;
 }

@@ -76,7 +76,7 @@ router.post('/signup', AuthController.signup);
 /**
  * @swagger
  * /api/auth/change-password/{id}:
- *   post:
+ *   put:
  *     summary: Change a user's password
  *     tags: [Auth]
  *     parameters:
@@ -102,7 +102,7 @@ router.post('/signup', AuthController.signup);
  *       404:
  *         description: User not found
  */
-router.post('/change-password/:id', AuthController.changePassword);
+router.put('/change-password/:id', AuthController.changePassword);
 
 /**
  * @swagger
@@ -128,26 +128,6 @@ router.post('/change-password/:id', AuthController.changePassword);
  *         description: Error logging out
  */
 router.post('/logout', AuthController.logout);
-
-/**
- * @swagger
- * /api/auth/delete-user/{id}:
- *   post:
- *     summary: Delete a user account
- *     tags: [Auth]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: User account deleted successfully
- *       404:
- *         description: User not found
- */
-router.post('/delete-user/:id', AuthController.deleteUser);
 
 export default router;
 

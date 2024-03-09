@@ -12,7 +12,7 @@ export class UserController {
         } catch (e: unknown) {
             const typedE = e as Error
             logger.log('error', 'api-UserController-getUsers() | Error | ' + String(typedE.message))
-            res.status(401).send({error: typedE});
+            res.status(500).send({error: typedE.message});
         }
     }
     public static async getUser(req: Request, res: Response) {
@@ -24,7 +24,7 @@ export class UserController {
         } catch (e: unknown) {
             const typedE = e as Error
             logger.log('error', 'api-UserController-getUser() | Error | ' + String(typedE.message))
-            res.status(401).send({error: typedE});
+            res.status(500).send({error: typedE.message});
         }
     }
     public static async updateUser(req: Request, res: Response) {
@@ -42,7 +42,25 @@ export class UserController {
         } catch (e: unknown) {
             const typedE = e as Error
             logger.log('error', 'api-UserController-updateUser() | Error | ' + String(typedE.message))
-            res.status(401).send({error: typedE});
+            res.status(500).send({error: typedE.message});
+        }
+    }
+    public static async deleteUser(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+            const response = await UserService.deleteUser(id)
+            logger.log('info', 'api-UserController-deleteUser() | SUCCESS')
+            res.status(200).send(response)
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                const errorMsg = String(e.message)
+                logger.log('error', 'api-UserController-deleteUser() | ERROR | ' + errorMsg)
+                res.status(500).send({error: errorMsg})
+            } else {   
+                const errorMsg = String(e)
+                logger.log('error', 'api-UserController-deleteUser() | ERROR | ' + errorMsg)
+                res.status(500).send({error: errorMsg})
+            }
         }
     }
     public static async updateLastLogin(req: Request, res: Response) {
@@ -59,7 +77,7 @@ export class UserController {
         } catch (e: unknown) {
             const typedE = e as Error
             logger.log('error', 'api-UserController-updateLastLogin() | Error | ' + String(typedE.message))
-            res.status(401).send({error: typedE});
+            res.status(500).send({error: typedE.message});
         }
     }
     public static async setRole(req: Request, res: Response) {
@@ -77,7 +95,7 @@ export class UserController {
         } catch (e: unknown) {
             const typedE = e as Error
             logger.log('error', 'api-UserController-setRole() | Error | ' + String(typedE.message))
-            res.status(401).send({error: typedE});
+            res.status(500).send({error: typedE.message});
         }
     }
 }
