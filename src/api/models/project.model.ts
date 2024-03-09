@@ -1,6 +1,4 @@
-
-export interface ProjectModel
-{
+export interface ProjectModel{
     id: number;
     name: string;
     description: string;

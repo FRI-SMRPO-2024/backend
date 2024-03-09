@@ -1,4 +1,3 @@
-
 export interface UserLoginResponse {
     email: string | null;
     access_token: string | null;
