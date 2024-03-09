@@ -83,7 +83,7 @@ router.put("/update/:id", UserController.updateUser);
  * @swagger
  * /api/user/update-last-login/{id}:
  *   delete:
- *     summary: Delete a user by ID
+ *     summary: Update a user's last login
  *     tags: [User]
  *     parameters:
  *       - in: path
@@ -94,7 +94,7 @@ router.put("/update/:id", UserController.updateUser);
  *         description: The user ID
  *     responses:
  *       200:
- *         description: The user was deleted successfully
+ *         description: The user's last login was updated successfully
  *       404:
  *         description: The user was not found
  */
