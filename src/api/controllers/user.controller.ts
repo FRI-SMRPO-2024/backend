@@ -4,20 +4,9 @@ import { UserService } from '../services/user.service';
 
 
 export class UserController {
-    public static async addUser(req: Request, res: Response) {
-        try {
-            const { user } = req.body;
-            const response = await UserService.addUser(user);
-            res.status(200).send(response);
-        } catch (e: unknown) {
-            const typedE = e as Error
-            logger.log('error', 'api-UserController-addUser() | Error | ' + String(typedE.message))
-            res.status(401).send({error: typedE});
-        }
-    }
     public static async getUser(req: Request, res: Response) {
         try {
-            const { id } = req.params;
+            const { id } = req.body;
             const response = await UserService.getUser(id);
             res.status(200).send(response);
         } catch (e: unknown) {
@@ -28,9 +17,8 @@ export class UserController {
     }
     public static async updateUser(req: Request, res: Response) {
         try {
-            const { id } = req.params;
-            const { email } = req.body;
-            const response = await UserService.updateUser(id, email);
+            const { id, username, first_name, last_name } = req.body;
+            const response = await UserService.updateUser(id, username, first_name, last_name);
             res.status(200).send(response);
         } catch (e: unknown) {
             const typedE = e as Error
@@ -38,14 +26,14 @@ export class UserController {
             res.status(401).send({error: typedE});
         }
     }
-    public static async deleteUser(req: Request, res: Response) {
+    public static async updateLastLogin(req: Request, res: Response) {
         try {
-            const { id } = req.params;
-            const response = await UserService.deleteUser(id);
+            const { id } = req.body;
+            const response = await UserService.updateLastLogin(id);
             res.status(200).send(response);
         } catch (e: unknown) {
             const typedE = e as Error
-            logger.log('error', 'api-UserController-deleteUser() | Error | ' + String(typedE.message))
+            logger.log('error', 'api-UserController-updateLastLogin() | Error | ' + String(typedE.message))
             res.status(401).send({error: typedE});
         }
     }
