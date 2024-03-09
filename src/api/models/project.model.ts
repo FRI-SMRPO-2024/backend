@@ -1,5 +1,3 @@
-import supabase from '../../utils/supabase';
-
 
 export interface ProjectModel
 {

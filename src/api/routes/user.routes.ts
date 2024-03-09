@@ -19,6 +19,10 @@ const router = express.Router();
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/User'
+ *       404:
+ *         description: No users found
+ *       401:
+ *         description: Unauthorized
  */
 router.get("/get-all", UserController.getUsers);
 
@@ -45,6 +49,8 @@ router.get("/get-all", UserController.getUsers);
  *               $ref: '#/components/schemas/User'
  *       404:
  *         description: The user was not found
+ *       401:
+ *         description: Unauthorized
  */
 router.get("/get/:id", UserController.getUser);
 
@@ -66,7 +72,17 @@ router.get("/get/:id", UserController.getUser);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: The username of the user
+ *               first_name:
+ *                 type: string
+ *                 description: The first name of the user
+ *               last_name:
+ *                 type: string
+ *                 description: The last name of the user
  *     responses:
  *       200:
  *         description: The user was updated successfully
@@ -76,13 +92,15 @@ router.get("/get/:id", UserController.getUser);
  *               $ref: '#/components/schemas/User'
  *       404:
  *         description: The user was not found
+ *       401:
+ *         description: Unauthorized
  */
 router.put("/update/:id", UserController.updateUser);
 
 /**
  * @swagger
  * /api/user/update-last-login/{id}:
- *   delete:
+ *   put:
  *     summary: Update a user's last login
  *     tags: [User]
  *     parameters:
@@ -97,12 +115,46 @@ router.put("/update/:id", UserController.updateUser);
  *         description: The user's last login was updated successfully
  *       404:
  *         description: The user was not found
+ *       401:
+ *         description: Unauthorized
  */
-router.delete("/update-last-login/:id", UserController.updateLastLogin);
+router.put("/update-last-login/:id", UserController.updateLastLogin);
+
+
+/**
+ * @swagger
+ * /api/user/set-role/{id}:
+ *   put:
+ *     summary: Update a user's role
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               is_admin:
+ *                 type: boolean
+ *                 description: The role of the user
+ *     responses:
+ *       200:
+ *         description: The user's role was updated successfully
+ *       404:
+ *         description: The user was not found
+ *       401:
+ *         description: Unauthorized
+ */
+router.put("/set-role/:id", UserController.setRole);
 
 export default router;
-
-
 
 /**
  * @swagger

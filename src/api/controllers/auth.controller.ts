@@ -3,13 +3,14 @@ import e, { Request, Response } from 'express'
 import { AuthService } from '../services/auth.service';
 import supabase from '../../utils/supabase';
 import supabaseAdmin from '../../utils/supabase-admin';
+import { AuthResponse } from '@supabase/supabase-js';
+import { UserLoginResponse, UserSignupResponse } from '../models/auth.model';
+import { UserService } from '../services/user.service';
 
 export class AuthController {
     public static async login(req: Request, res: Response) {
         try {
-
-            const email: string = req.body.email;
-            const password: string = req.body.password;
+            const { email, password } = req.body;
 
             const { data, error } = await supabase.auth.signInWithPassword({
                 email: email,
@@ -17,11 +18,21 @@ export class AuthController {
               });
 
             if (error) {
-                throw new Error(error.message);
-            }
+                logger.log('error', 'api-AuthController-login() | ERROR | ' + error.message)
+                error.status 
+                    ? res.status(error.status).send(error.message)
+                    : res.status(500).send(error.message)
+            } else {
+                const userLoginResponse: UserLoginResponse = {
+                    email: data?.user?.email || null,
+                    access_token: data?.session?.access_token || null,
+                    refresh_token: data?.session?.refresh_token || null,
+                }
 
-            logger.log('info', 'api-AuthController-login() | SUCCESS')
-            res.status(200).send(data)     
+                logger.log('info', 'api-AuthController-login() | SUCCESS')
+                res.status(200).send(userLoginResponse)   
+            }
+  
         } catch (e: unknown) {
             if (e instanceof Error) {
                 const errorMsg = String(e.message)
@@ -36,8 +47,7 @@ export class AuthController {
     }
     public static async signup(req: Request, res: Response) {
         try {
-            const email: string = req.body.email;
-            const password: string = req.body.password;
+            const { email, password } = req.body;
 
             const { data, error } = await supabase.auth.signUp({
                 email: email,
@@ -45,11 +55,21 @@ export class AuthController {
               });
 
             if (error) {
-                throw new Error(error.message);
+                logger.log('error', 'api-AuthController-signup() | ERROR | ' + error.message)
+                error.status 
+                    ? res.status(error.status).send(error.message)
+                    : res.status(500).send(error.message)
+            } else {
+                const userSignupResponse: UserSignupResponse = {
+                    email: data?.user?.email || null,
+                    access_token: data?.session?.access_token || null,
+                    refresh_token: data?.session?.refresh_token || null,
+                }
+    
+                logger.log('info', 'api-AuthController-signup() | SUCCESS')
+                res.status(200).send(userSignupResponse)
             }
 
-            logger.log('info', 'api-AuthController-signup() | SUCCESS')
-            res.status(200).send(data)
         } catch (e: unknown) {
             if (e instanceof Error) {
                 const errorMsg = String(e.message)
@@ -64,17 +84,26 @@ export class AuthController {
     }
     public static async changePassword(req: Request, res: Response) {
         try {
-            const password: string = req.body.password;
-            const { data, error } = await supabase.auth.updateUser({
-                password: password,
-            });
+            const { id } = req.params;
+            const { password } = req.body;
+            const user = await UserService.getUser(id);
 
-            if (error) {
-                throw new Error(error.message);
+            if (user) {
+                const { data, error } = await supabase.auth.updateUser({
+                    password: password,
+                });                
+                if (error) {
+                    logger.log('error', 'api-AuthController-changePassword() | ERROR | ' + error.message)
+                    error.status 
+                        ? res.status(error.status).send(error.message)
+                        : res.status(500).send(error.message)
+                } else {
+                    logger.log('info', 'api-AuthController-changePassword() | SUCCESS')
+                    res.status(200).send()
+                }
+            } else {
+                res.status(404).send({error: 'User not found'});
             }
-
-            logger.log('info', 'api-AuthController-changePassword() | SUCCESS')
-            res.status(200).send()
 
         } catch (e: unknown) {
             if (e instanceof Error) {
@@ -91,12 +120,18 @@ export class AuthController {
 
     public static async logout(req: Request, res: Response) {
         try {
-            const { error } = await supabase.auth.signOut();
+            const { access_token } = req.body;
+            const { error } = await supabase.auth.signOut(access_token);
             if (error) {
-                throw new Error(error.message);
+                logger.log('error', 'api-AuthController-logout() | ERROR | ' + error.message)
+                error.status 
+                    ? res.status(error.status).send(error.message)
+                    : res.status(500).send(error.message)
+            } else {
+                logger.log('info', 'api-AuthController-logout() | SUCCESS')
+                res.status(200).send()
             }
-            logger.log('info', 'api-AuthController-logout() | SUCCESS')
-            res.status(200).send()
+
         } catch (e: unknown) {
             if (e instanceof Error) {
                 const errorMsg = String(e.message)
@@ -112,7 +147,7 @@ export class AuthController {
 
     public static async deleteUser(req: Request, res: Response) {
         try {
-            const id: string = req.body.id;
+            const { id } = req.params;
             const { error } = await supabaseAdmin.auth.admin.deleteUser(id)
             if (error) {
                 throw new Error(error.message);
