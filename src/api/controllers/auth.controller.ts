@@ -1,8 +1,8 @@
 import logger from '../../utils/winston-logger';
 import e, { Request, Response } from 'express'
 import { AuthService } from '../services/auth.service';
-import { supabase } from '../../utils/supabase';
-import { supabaseAdmin } from '../../utils/supabase';
+import { supabase } from '../../supabase';
+import { supabaseAdmin } from '../../supabase';
 import { AuthResponse } from '@supabase/supabase-js';
 import { UserLoginResponse, UserSignupResponse } from '../models/auth.model';
 import { UserService } from '../services/user.service';

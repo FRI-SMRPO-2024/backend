@@ -1,5 +1,5 @@
 import logger from "../../utils/winston-logger";
-import { supabase } from "../../utils/supabase";
+import { supabase } from "../../supabase";
 import { User } from "@supabase/supabase-js";
 import { UserModel } from "../models/user.model";
 import { ProjectModel } from "../models/project.model";

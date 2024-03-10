@@ -1,6 +1,6 @@
 import logger from "../../utils/winston-logger";
-import { supabase } from "../../utils/supabase";
-import { supabaseAdmin } from "../../utils/supabase";
+import { supabase } from "../../supabase";
+import { supabaseAdmin } from "../../supabase";
 import { Session } from "@supabase/supabase-js";
 import { UserModel } from "../models/user.model";
 

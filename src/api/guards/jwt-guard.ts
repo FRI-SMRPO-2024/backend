@@ -1,8 +1,8 @@
 import { AuthService } from '../services/auth.service';
 import logger from '../../utils/winston-logger';
 import type { Request, Response, NextFunction, RequestHandler } from "express";
-import { supabase } from '../../utils/supabase';
-import { supabaseAdmin } from '../../utils/supabase';
+import { supabase } from '../../supabase';
+import { supabaseAdmin } from '../../supabase';
 import { AuthResponse } from '@supabase/supabase-js';
 
 export const jwtGuard: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
