@@ -107,6 +107,29 @@ router.post('/signup', AuthController.signup);
  */
 router.post('/change-password/:id', AuthController.changePassword);
 
+
+/**
+ * @swagger
+ * /api/auth/delete-user/{id}:
+ *   post:
+ *     summary: Delete a user
+ *     tags: [Auth]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/delete-user/:id', AuthController.deleteUser);
+
 /**
  * @swagger
  * /api/auth/logout:
