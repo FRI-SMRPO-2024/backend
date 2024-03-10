@@ -98,6 +98,8 @@ const router = express.Router();
  * @swagger
  * /api/project/get-all:
  *   get:
+ *     security:
+ *       - Authorization: []
  *     summary: Get all projects
  *     tags: [Project]
  *     responses:
@@ -121,6 +123,8 @@ router.get("/get-all", jwtGuard, ProjectController.getProjects);
  * @swagger
  * /api/project/get/{id}:
  *   get:
+ *     security:
+ *       - Authorization: []
  *     summary: Get a project by ID
  *     tags: [Project]
  *     parameters:
@@ -149,6 +153,8 @@ router.get("/get/:id", jwtGuard, ProjectController.getProject);
  * @swagger
  * /api/project/create:
  *   post:
+ *     security:
+ *       - Authorization: []
  *     summary: Create a new project
  *     tags: [Project]
  *     requestBody:
@@ -175,6 +181,8 @@ router.post("/create", jwtGuard, ProjectController.createProject);
  * @swagger
  * /api/project/update/{id}:
  *   put:
+ *     security:
+ *       - Authorization: []
  *     summary: Update a project
  *     tags: [Project]
  *     parameters:
@@ -209,6 +217,8 @@ router.put("/update/:id", jwtGuard, ProjectController.updateProject);
  * @swagger
  * /api/project/delete/{id}:
  *   delete:
+ *     security:
+ *       - Authorization: []
  *     summary: Delete a project
  *     tags: [Project]
  *     parameters:

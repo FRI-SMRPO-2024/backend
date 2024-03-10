@@ -35,6 +35,8 @@ const router = express.Router();
  * @swagger
  * /api/auth/login:
  *   post:
+ *     security:
+ *       - Authorization: []
  *     summary: Log in a user
  *     tags: [Auth]
  *     requestBody:
@@ -67,6 +69,8 @@ router.post('/login', jwtGuard, AuthController.login);
  * @swagger
  * /api/auth/signup:
  *   post:
+ *     security:
+ *       - Authorization: []
  *     summary: Sign up a new user
  *     tags: [Auth]
  *     requestBody:
@@ -115,6 +119,8 @@ router.post('/signup', jwtGuard, AuthController.signup);
  * @swagger
  * /api/auth/change-password/{id}:
  *   post:
+ *     security:
+ *       - Authorization: []
  *     summary: Change a user's password
  *     tags: [Auth]
  *     parameters:
@@ -145,11 +151,47 @@ router.post('/signup', jwtGuard, AuthController.signup);
  */
 router.post('/change-password/:id', [jwtGuard, roleAdminGuard], AuthController.changePasswordAdmin);
 
+/**
+ * @swagger
+ * /api/auth/change-password:
+ *   post:
+ *     security:
+ *       - Authorization: []
+ *     summary: Change user's own password
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - password
+ *               - confirmPassword
+ *             properties:
+ *               password:
+ *                 type: string
+ *               confirmPassword:
+ *                type: string
+ *     responses:
+ *       200:
+ *         description: Password changed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ */
+router.post('/change-password', jwtGuard, AuthController.changePassword);
+
 
 /**
  * @swagger
  * /api/auth/delete-user/{id}:
- *   post:
+ *   delete:
+ *     security:
+ *       - Authorization: []
  *     summary: Delete a user's account
  *     tags: [Auth]
  *     parameters:
@@ -166,12 +208,36 @@ router.post('/change-password/:id', [jwtGuard, roleAdminGuard], AuthController.c
  *       500:
  *         description: Internal server error
  */
-router.post('/delete-user/:id', [jwtGuard, roleAdminGuard], AuthController.deleteUserAdmin);
+router.delete('/delete-user/:id', [jwtGuard, roleAdminGuard], AuthController.deleteUserAdmin);
+
+/**
+ * @swagger
+ * /api/auth/delete-user:
+ *   delete:
+ *     security:
+ *       - Authorization: []
+ *     summary: Delete user's own account
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+router.delete('/delete-user', jwtGuard, AuthController.deleteUser);
 
 /**
  * @swagger
  * /api/auth/logout:
  *   post:
+ *     security:
+ *       - Authorization: []
  *     summary: Log out a user
  *     tags: [Auth]
  *     requestBody:

@@ -5,9 +5,18 @@ import { supabaseAdmin } from '../../supabase';
 import { UserController } from "../controllers/user.controller";
 import { UserService } from "../services/user.service";
 
+const SUPABASE_ANON_PUBLIC = process.env.SUPABASE_ANON_PUBLIC || ''
+const SUPABASE_SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE || ''
+const NODE_ENV = process.env.NODE_ENV || 'development'
 
 export const roleAdminGuard: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        if (NODE_ENV === 'development') {
+            logger.log('info', 'dashboardApi-jwtGuard() | SUCCESS')
+            req.headers.authorization = 'Bearer ' + SUPABASE_SERVICE_ROLE
+            next()
+            return req
+        }
         let auth: string = req.headers.authorization || '';
         if (auth) {
             const jwt = auth.split(' ')[1];

@@ -11,7 +11,10 @@ const schedule = require('node-schedule');
 const app = express();
 const errorHandler = require('errorhandler')
 const swaggerSpec = swaggerJSDoc(swaggerDefinition);
-
+const swaggerUiOptions = {
+    explorer: true
+  };
+  
 require('dotenv').config()
 
 const APP_HTTP_PORT = process.env.APP_HTTP_PORT || '3000';
@@ -22,7 +25,7 @@ app.use(cors({origin: FRONTEND_CORS_URL, credentials: true}))
 app.use(express.json());
 
 app.use('/api', router);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerUiOptions));
 
 http.createServer(app).listen(APP_HTTP_PORT, function() {
     console.log(`App is listening on port ${APP_HTTP_PORT} (http)`)

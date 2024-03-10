@@ -1,7 +1,7 @@
 import logger from "../../utils/winston-logger";
 import { supabase } from "../../supabase";
 import { supabaseAdmin } from "../../supabase";
-import { Session } from "@supabase/supabase-js";
+import { Session, User } from "@supabase/supabase-js";
 import { UserModel } from "../models/user.model";
 
 
@@ -40,5 +40,12 @@ export class AuthService {
       if (error) {
           throw new Error(error.message);
       }
+  }
+  public static async authenticateUser(jwt: string): Promise<User | null>{
+    const { data, error } = await supabase.auth.getUser(jwt);
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data.user;
   }
 }

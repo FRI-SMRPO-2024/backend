@@ -83,6 +83,8 @@ const router = express.Router();
  * @swagger
  * /api/user/get-all:
  *   get:
+ *     security:
+ *       - Authorization: []
  *     summary: Get all users
  *     tags: [User]
  *     responses:
@@ -106,6 +108,8 @@ router.get("/get-all", jwtGuard, UserController.getUsers);
  * @swagger
  * /api/user/get/{id}:
  *   get:
+ *     security:
+ *       - Authorization: []
  *     summary: Get a user by ID
  *     tags: [User]
  *     parameters:
@@ -133,6 +137,8 @@ router.get("/get/:id", jwtGuard, UserController.getUserById);
  * @swagger
  * /api/user/get:
  *   post:
+ *     security:
+ *       - Authorization: []
  *     summary: Get a user by Email
  *     tags: [User]
  *     requestBody:
@@ -163,6 +169,8 @@ router.post("/get", jwtGuard, UserController.getUserByEmail);
  * @swagger
  * /api/user/update/{id}:
  *   put:
+ *     security:
+ *       - Authorization: []
  *     summary: Update a user's information
  *     tags: [User]
  *     parameters:
@@ -196,6 +204,8 @@ router.put("/update/:id", jwtGuard, UserController.updateUser);
  * @swagger
  * /api/user/delete/{id}:
  *   delete:
+ *     security:
+ *       - Authorization: []
  *     summary: Delete a user account
  *     tags: [User]
  *     parameters:
@@ -216,6 +226,8 @@ router.delete('/delete/:id', jwtGuard, UserController.deleteUser);
  * @swagger
  * /api/user/update-last-login/{id}:
  *   post:
+ *     security:
+ *       - Authorization: []
  *     summary: Update a user's last login
  *     tags: [User]
  *     parameters:
@@ -240,6 +252,8 @@ router.post("/update-last-login/:id", jwtGuard, UserController.updateLastLogin);
  * @swagger
  * /api/user/set-role/{id}:
  *   put:
+ *     security:
+ *       - Authorization: []
  *     summary: Update a user's role
  *     tags: [User]
  *     parameters:

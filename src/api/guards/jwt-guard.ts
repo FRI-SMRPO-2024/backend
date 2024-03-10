@@ -5,6 +5,8 @@ import { supabase } from '../../supabase';
 import { supabaseAdmin } from '../../supabase';
 import { AuthResponse } from '@supabase/supabase-js';
 
+const SUPABASE_ANON_PUBLIC = process.env.SUPABASE_ANON_PUBLIC || ''
+const SUPABASE_SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE || ''
 const NODE_ENV = process.env.NODE_ENV || 'development'
 
 export const jwtGuard: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {

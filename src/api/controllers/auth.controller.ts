@@ -118,16 +118,62 @@ export class AuthController {
                 });           
 
                 if (error) {
-                    logger.log('error', 'api-AuthController-changePassword() | ERROR | ' + error.message)
+                    logger.log('error', 'api-AuthController-changePasswordAdmin() | ERROR | ' + error.message)
                     error.status 
                         ? res.status(error.status).send(error.message)
                         : res.status(500).send(error.message)
                 } else {
-                    logger.log('info', 'api-AuthController-changePassword() | SUCCESS')
+                    logger.log('info', 'api-AuthController-changePasswordAdmin() | SUCCESS')
                     res.status(200).send()
                 }
             } else {
                 res.status(404).send({error: 'User not found'});
+            }
+
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                const errorMsg = String(e.message)
+                logger.log('error', 'api-AuthController-changePasswordAdmin() | ERROR | ' + errorMsg)
+                res.status(500).send({error: errorMsg})
+            } else {   
+                const errorMsg = String(e)
+                logger.log('error', 'api-AuthController-changePasswordAdmin() | ERROR | ' + errorMsg)
+                res.status(500).send({error: errorMsg})
+            }
+        }
+    }
+    public static async changePassword(req: Request, res: Response) {
+        try {
+            const { password, confirmPassword } = req.body;
+            const supabaseUser = await AuthService.authenticateUser(req.headers.authorization || '');
+            if (supabaseUser && supabaseUser.email) {
+                const user = await UserService.getUserByEmail(supabaseUser.email);
+                if (user) {
+                    // Invoke an edge function called reset-password
+                    const { data, error } = await supabase.functions.invoke('reset-password', {
+                        body: JSON.stringify({
+                            userId: user.id,
+                            password: password,
+                            confirmPassword: confirmPassword
+                        })
+                    });           
+
+                    if (error) {
+                        logger.log('error', 'api-AuthController-changePassword() | ERROR | ' + error.message)
+                        error.status 
+                            ? res.status(error.status).send(error.message)
+                            : res.status(500).send(error.message)
+                    } else {
+                        logger.log('info', 'api-AuthController-changePassword() | SUCCESS')
+                        res.status(200).send(data)
+                    } 
+                } else {
+                    logger.log('error', 'api-AuthController-changePassword() | ERROR | User not found')
+                    res.status(404).send({error: 'User not found'});
+                }
+            } else {
+                logger.log('error', 'api-AuthController-changePassword() | ERROR | Forbidden')
+                res.status(403).send({error: 'Forbidden'});
             }
 
         } catch (e: unknown) {
@@ -157,13 +203,13 @@ export class AuthController {
                 });           
 
                 if (error) {
-                    logger.log('error', 'api-AuthController-changePassword() | ERROR | ' + error.message)
+                    logger.log('error', 'api-AuthController-deleteUserAdmin() | ERROR | ' + error.message)
                     error.status 
                         ? res.status(error.status).send(error.message)
                         : res.status(500).send(error.message)
                 } else {
-                    logger.log('info', 'api-AuthController-changePassword() | SUCCESS')
-                    res.status(200).send()
+                    logger.log('info', 'api-AuthController-deleteUserAdmin() | SUCCESS')
+                    res.status(200).send(data)
                 }
             } else {
                 res.status(404).send({error: 'User not found'});
@@ -172,11 +218,55 @@ export class AuthController {
         } catch (e: unknown) {
             if (e instanceof Error) {
                 const errorMsg = String(e.message)
-                logger.log('error', 'api-AuthController-changePassword() | ERROR | ' + errorMsg)
+                logger.log('error', 'api-AuthController-deleteUserAdmin() | ERROR | ' + errorMsg)
                 res.status(500).send({error: errorMsg})
             } else {   
                 const errorMsg = String(e)
-                logger.log('error', 'api-AuthController-changePassword() | ERROR | ' + errorMsg)
+                logger.log('error', 'api-AuthController-deleteUserAdmin() | ERROR | ' + errorMsg)
+                res.status(500).send({error: errorMsg})
+            }
+        }
+    }
+    public static async deleteUser(req: Request, res: Response) {
+        try {
+            logger.log('info', 'api-AuthController-deleteUser() | START' + req.headers['Authorization'] || '')
+            const supabaseUser = await AuthService.authenticateUser(req.headers.authorization || '');
+            if (supabaseUser && supabaseUser.email) {
+                const user = await UserService.getUserByEmail(supabaseUser.email);
+                if (user) {
+                    // Invoke an edge function called reset-password
+                    const { data, error } = await supabase.functions.invoke('delete-user', {
+                        body: JSON.stringify({
+                            userId: user.id
+                        })
+                    });
+
+                    if (error) {
+                        logger.log('error', 'api-AuthController-deleteUser() | ERROR | ' + error.message)
+                        error.status 
+                            ? res.status(error.status).send(error.message)
+                            : res.status(500).send(error.message)
+                    } else {
+                        logger.log('info', 'api-AuthController-deleteUser() | SUCCESS')
+                        res.status(200).send()
+                    }      
+                } else {
+                    logger.log('error', 'api-AuthController-deleteUser() | ERROR | User not found')
+                    res.status(404).send({error: 'User not found'});
+                }
+            } else {
+                logger.log('error', 'api-AuthController-deleteUser() | ERROR | Forbidden')
+                res.status(403).send({error: 'Forbidden'});
+            }
+
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                const errorMsg = String(e.message)
+                logger.log('error', 'api-AuthController-deleteUser() | ERROR | ' + errorMsg)
+                res.status(500).send({error: errorMsg})
+            } else {   
+                const errorMsg = String(e)
+                logger.log('error', 'api-AuthController-deleteUser() | ERROR | ' + errorMsg)
                 res.status(500).send({error: errorMsg})
             }
         }
@@ -204,6 +294,41 @@ export class AuthController {
             } else {   
                 const errorMsg = String(e)
                 logger.log('error', 'api-AuthController-logout() | ERROR | ' + errorMsg)
+                res.status(500).send({error: errorMsg})
+            }
+        }
+    }
+
+    public static async authenticateUser(req: Request, res: Response) {
+        try {
+            let auth: string = req.headers.authorization || '';
+            const jwt = auth.split(' ')[1];
+
+            const supabaseUser = await AuthService.authenticateUser(jwt);
+
+            if (supabaseUser?.email) {
+                const user = await UserService.getUserByEmail(supabaseUser.email);
+                if (user) {
+                    logger.log('info', 'api-AuthController-authenticateUser() | SUCCESS')
+                    res.status(200).send({user: user, supabaseUser: supabaseUser})
+                } else {
+                    logger.log('error', 'api-AuthController-authenticateUser() | ERROR | User not found')
+                    res.status(404).send({error: 'User not found'})
+                }
+            } else {
+                logger.log('error', 'api-AuthController-authenticateUser() | ERROR | User not found')
+                res.status(404).send({error: 'User not found'})
+                return;
+            }
+
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                const errorMsg = String(e.message)
+                logger.log('error', 'api-AuthController-authenticateUser() | ERROR | ' + errorMsg)
+                res.status(500).send({error: errorMsg})
+            } else {   
+                const errorMsg = String(e)
+                logger.log('error', 'api-AuthController-authenticateUser() | ERROR | ' + errorMsg)
                 res.status(500).send({error: errorMsg})
             }
         }
