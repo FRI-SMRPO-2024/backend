@@ -23,14 +23,20 @@ export class AuthController {
                     ? res.status(error.status).send(error.message)
                     : res.status(500).send(error.message)
             } else {
-                const userLoginResponse: UserLoginResponse = {
-                    email: data?.user?.email || null,
-                    access_token: data?.session?.access_token || null,
-                    refresh_token: data?.session?.refresh_token || null,
+                const authUser = await UserService.getUserByEmail(email);
+                if (authUser && data?.session?.access_token && data?.session?.refresh_token) {
+                    const userLoginResponse: UserLoginResponse = {
+                        user: authUser,
+                        access_token: data.session.access_token,
+                        refresh_token: data.session.refresh_token,
+                    }
+    
+                    logger.log('info', 'api-AuthController-login() | SUCCESS')
+                    res.status(200).send(userLoginResponse)   
+                } else {
+                    logger.log('error', 'api-AuthController-login() | ERROR | User not found')
+                    res.status(404).send({error: 'User not found'})
                 }
-
-                logger.log('info', 'api-AuthController-login() | SUCCESS')
-                res.status(200).send(userLoginResponse)   
             }
   
         } catch (e: unknown) {
@@ -60,14 +66,20 @@ export class AuthController {
                     ? res.status(error.status).send(error.message)
                     : res.status(500).send(error.message)
             } else {
-                const userSignupResponse: UserSignupResponse = {
-                    email: data?.user?.email || null,
-                    access_token: data?.session?.access_token || null,
-                    refresh_token: data?.session?.refresh_token || null,
+                const authUser = await UserService.getUserByEmail(email);
+                if (authUser && data?.session?.access_token && data?.session?.refresh_token) {
+                    const userSignupResponse: UserSignupResponse = {
+                        user: authUser,
+                        access_token: data.session.access_token,
+                        refresh_token: data.session.refresh_token,
+                    }
+
+                    logger.log('info', 'api-AuthController-signup() | SUCCESS')
+                    res.status(200).send(userSignupResponse)   
+                } else {
+                    logger.log('error', 'api-AuthController-signup() | ERROR | User not found')
+                    res.status(404).send({error: 'User not found'})
                 }
-    
-                logger.log('info', 'api-AuthController-signup() | SUCCESS')
-                res.status(200).send(userSignupResponse)
             }
 
         } catch (e: unknown) {

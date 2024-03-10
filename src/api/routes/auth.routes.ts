@@ -18,15 +18,13 @@ const router = express.Router();
  *     UserLoginResponse:
  *       type: object
  *       properties:
- *         email:
- *           type: string
- *           nullable: true
+ *         user:
+ *           type: object
+ *           $ref: '#/components/schemas/User'
  *         access_token:
  *           type: string
- *           nullable: true
  *         refresh_token:
  *           type: string
- *           nullable: true
  *     UserSignupResponse:
  *       allOf:
  *         - $ref: '#/components/schemas/UserLoginResponse'

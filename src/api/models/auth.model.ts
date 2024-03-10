@@ -1,7 +1,9 @@
+import { UserModel } from "./user.model";
+
 export interface UserLoginResponse {
-    email: string | null;
-    access_token: string | null;
-    refresh_token: string | null;
+    user: UserModel;
+    access_token: string;
+    refresh_token: string;
 }
 
 export interface UserSignupResponse extends UserLoginResponse {}
