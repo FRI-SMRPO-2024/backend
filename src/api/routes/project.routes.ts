@@ -1,5 +1,6 @@
 import express from 'express';
 import { ProjectController } from '../controllers/project.controller';
+import { jwtGuard } from '../guards/jwt-guard';
 
 const router = express.Router();
 
@@ -113,7 +114,7 @@ const router = express.Router();
  *       500:
  *         description: Unauthorized
  */
-router.get("/get-all", ProjectController.getProjects);
+router.get("/get-all", jwtGuard, ProjectController.getProjects);
 
 
 /**
@@ -141,7 +142,7 @@ router.get("/get-all", ProjectController.getProjects);
  *       500:
  *         description: Unauthorized
  */
-router.get("/get/:id", ProjectController.getProject);
+router.get("/get/:id", jwtGuard, ProjectController.getProject);
 
 
 /**
@@ -167,7 +168,7 @@ router.get("/get/:id", ProjectController.getProject);
  *         description: Error creating project
  */
 
-router.post("/create", ProjectController.createProject);
+router.post("/create", jwtGuard, ProjectController.createProject);
 
 
 /**
@@ -201,7 +202,7 @@ router.post("/create", ProjectController.createProject);
  *       400:
  *         description: Error updating project
  */
-router.put("/update/:id", ProjectController.updateProject);
+router.put("/update/:id", jwtGuard, ProjectController.updateProject);
 
 
 /**
@@ -225,7 +226,7 @@ router.put("/update/:id", ProjectController.updateProject);
  *       400:
  *         description: Error deleting project
  */
-router.delete('/delete/:id', ProjectController.deleteProject);
+router.delete('/delete/:id', jwtGuard, ProjectController.deleteProject);
 
 
 export default router;

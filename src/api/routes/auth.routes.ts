@@ -1,5 +1,7 @@
 import express from 'express';
 import { AuthController } from '../controllers/auth.controller';
+import { jwtGuard } from '../guards/jwt-guard';
+import { roleAdminGuard } from '../guards/role-admin-guard';
 const router = express.Router();
 
 /**
@@ -8,6 +10,28 @@ const router = express.Router();
  *   name: Auth
  *   description: Authentication management
  */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UserLoginResponse:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ *           nullable: true
+ *         access_token:
+ *           type: string
+ *           nullable: true
+ *         refresh_token:
+ *           type: string
+ *           nullable: true
+ *     UserSignupResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/UserLoginResponse'
+ */
+
 
 /**
  * @swagger
@@ -39,7 +63,7 @@ const router = express.Router();
  *       400:
  *         description: Invalid credentials
  */
-router.post('/login', AuthController.login);
+router.post('/login', jwtGuard, AuthController.login);
 
 /**
  * @swagger
@@ -71,7 +95,7 @@ router.post('/login', AuthController.login);
  *       400:
  *         description: Error signing up
  */
-router.post('/signup', AuthController.signup);
+router.post('/signup', jwtGuard, AuthController.signup);
 
 /**
  * @swagger
@@ -105,14 +129,14 @@ router.post('/signup', AuthController.signup);
  *       404:
  *         description: User not found
  */
-router.post('/change-password/:id', AuthController.changePassword);
+router.post('/change-password/:id', [jwtGuard, roleAdminGuard], AuthController.changePasswordAdmin);
 
 
 /**
  * @swagger
  * /api/auth/delete-user/{id}:
  *   post:
- *     summary: Delete a user
+ *     summary: Delete a user's account
  *     tags: [Auth]
  *     parameters:
  *       - in: path
@@ -128,7 +152,7 @@ router.post('/change-password/:id', AuthController.changePassword);
  *       500:
  *         description: Internal server error
  */
-router.post('/delete-user/:id', AuthController.deleteUser);
+router.post('/delete-user/:id', [jwtGuard, roleAdminGuard], AuthController.deleteUserAdmin);
 
 /**
  * @swagger
@@ -153,27 +177,6 @@ router.post('/delete-user/:id', AuthController.deleteUser);
  *       400:
  *         description: Error logging out
  */
-router.post('/logout', AuthController.logout);
+router.post('/logout', jwtGuard, AuthController.logout);
 
 export default router;
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     UserLoginResponse:
- *       type: object
- *       properties:
- *         email:
- *           type: string
- *           nullable: true
- *         access_token:
- *           type: string
- *           nullable: true
- *         refresh_token:
- *           type: string
- *           nullable: true
- *     UserSignupResponse:
- *       allOf:
- *         - $ref: '#/components/schemas/UserLoginResponse'
- */

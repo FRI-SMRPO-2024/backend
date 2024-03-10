@@ -82,11 +82,11 @@ export class AuthController {
             }
         }
     }
-    public static async changePassword(req: Request, res: Response) {
+    public static async changePasswordAdmin(req: Request, res: Response) {
         try {
             const { id } = req.params;
             const { password, confirmPassword } = req.body;
-            const user = await UserService.getUser(id);
+            const user = await UserService.getUserById(id);
 
             if (user) {
                 // Invoke an edge function called reset-password
@@ -124,10 +124,10 @@ export class AuthController {
         }
     }
 
-    public static async deleteUser(req: Request, res: Response) {
+    public static async deleteUserAdmin(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const user = await UserService.getUser(id);
+            const user = await UserService.getUserById(id);
 
             if (user) {
                 // Invoke an edge function called reset-password

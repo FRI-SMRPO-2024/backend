@@ -1,5 +1,6 @@
 import express from "express";
 import { UserController } from "../controllers/user.controller";
+import { jwtGuard } from "../guards/jwt-guard";
 
 const router = express.Router();
 
@@ -98,7 +99,7 @@ const router = express.Router();
  *       500:
  *         description: Unauthorized
  */
-router.get("/get-all", UserController.getUsers);
+router.get("/get-all", jwtGuard, UserController.getUsers);
 
 
 /**
@@ -116,7 +117,7 @@ router.get("/get-all", UserController.getUsers);
  *         description: The user ID
  *     responses:
  *       200:
- *         description: The user description by id
+ *         description: The user was found
  *         content:
  *           application/json:
  *             schema:
@@ -126,7 +127,37 @@ router.get("/get-all", UserController.getUsers);
  *       500:
  *         description: Unauthorized
  */
-router.get("/get/:id", UserController.getUser);
+router.get("/get/:id", jwtGuard, UserController.getUserById);
+
+/**
+ * @swagger
+ * /api/user/get:
+ *   post:
+ *     summary: Get a user by Email
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The email of the user
+ *     responses:
+ *       200:
+ *         description: The user was found 
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: The user was not found
+ *       500:
+ *         description: Unauthorized
+ */
+router.post("/get", jwtGuard, UserController.getUserByEmail);
 
 /**
  * @swagger
@@ -159,7 +190,7 @@ router.get("/get/:id", UserController.getUser);
  *       500:
  *         description: Unauthorized
  */
-router.put("/update/:id", UserController.updateUser);
+router.put("/update/:id", jwtGuard, UserController.updateUser);
 
 /**
  * @swagger
@@ -179,7 +210,7 @@ router.put("/update/:id", UserController.updateUser);
  *       404:
  *         description: User not found
  */
-router.delete('/delete/:id', UserController.deleteUser);
+router.delete('/delete/:id', jwtGuard, UserController.deleteUser);
 
 /**
  * @swagger
@@ -202,7 +233,7 @@ router.delete('/delete/:id', UserController.deleteUser);
  *       500:
  *         description: Unauthorized
  */
-router.post("/update-last-login/:id", UserController.updateLastLogin);
+router.post("/update-last-login/:id", jwtGuard, UserController.updateLastLogin);
 
 
 /**
@@ -236,7 +267,7 @@ router.post("/update-last-login/:id", UserController.updateLastLogin);
  *       500:
  *         description: Unauthorized
  */
-router.put("/set-role/:id", UserController.setRole);
+router.put("/set-role/:id", jwtGuard, UserController.setRole);
 
 export default router;
 

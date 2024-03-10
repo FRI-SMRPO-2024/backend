@@ -15,15 +15,27 @@ export class UserController {
             res.status(500).send({error: typedE.message});
         }
     }
-    public static async getUser(req: Request, res: Response) {
+    public static async getUserById(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const response = await UserService.getUser(id);
-            logger.log('info', 'api-UserController-getUser() | SUCCESS')
+            const response = await UserService.getUserById(id);
+            logger.log('info', 'api-UserController-getUserById() | SUCCESS')
             res.status(200).send(response);
         } catch (e: unknown) {
             const typedE = e as Error
-            logger.log('error', 'api-UserController-getUser() | Error | ' + String(typedE.message))
+            logger.log('error', 'api-UserController-getUserById() | Error | ' + String(typedE.message))
+            res.status(500).send({error: typedE.message});
+        }
+    }
+    public static async getUserByEmail(req: Request, res: Response) {
+        try {
+            const { email } = req.body;
+            const response = await UserService.getUserByEmail(email);
+            logger.log('info', 'api-UserController-getUserByEmail() | SUCCESS')
+            res.status(200).send(response);
+        } catch (e: unknown) {
+            const typedE = e as Error
+            logger.log('error', 'api-UserController-getUserByEmail() | Error | ' + String(typedE.message))
             res.status(500).send({error: typedE.message});
         }
     }
@@ -31,7 +43,7 @@ export class UserController {
         try {
             const { id } = req.params;
             const { username, first_name, last_name } = req.body;
-            const user = await UserService.getUser(id);
+            const user = await UserService.getUserById(id);
             if (user) {
                 const response = await UserService.updateUser(id, username, first_name, last_name);
                 logger.log('info', 'api-UserController-updateUser() | SUCCESS')
@@ -66,7 +78,7 @@ export class UserController {
     public static async updateLastLogin(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const user = await UserService.getUser(id);
+            const user = await UserService.getUserById(id);
             if (user) {
                 const response = await UserService.updateLastLogin(id);
                 logger.log('info', 'api-UserController-updateLastLogin() | SUCCESS')
@@ -84,7 +96,7 @@ export class UserController {
         try {
             const { id } = req.params;
             const { is_admin } = req.body;
-            const user = await UserService.getUser(id);
+            const user = await UserService.getUserById(id);
             if (user) {
                 const response = await UserService.setRole(id, is_admin);
                 logger.log('info', 'api-UserController-setRole() | SUCCESS')
