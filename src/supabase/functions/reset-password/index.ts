@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
 const updatePassword = async (supabase, userId, password)=>{
     const { data: user , error  } = await supabase.auth.admin.updateUserById(userId, {
         password: password
@@ -8,25 +9,13 @@ const updatePassword = async (supabase, userId, password)=>{
     return user;
 };
 
-const parseTokenToEmail = async (header:string) => {
-  const token = header.split(" ")[1];
-  const tokenArray = token.split(".");
-  const payload = JSON.parse(atob(tokenArray[1]));
-  const email = payload.email;
-  return email;
-}
-
-const checkPermission = async (email:string, userId:string, supabase:any) => {
-  // Get from auth.users the user with the email and check if email and userId match
-  const { data, error } = await supabase.from("users_data").select("id").eq("email", email);
-  if (error) throw error;
-  if (data.length === 0) {
-    throw new Error("User not found");
-  }
-  if (data[0].id !== userId) {
-    throw new Error("Permission denied");
-  }
-  return true;
+const checkPermission = async (header:string,supabase:any) => {
+    const { data: { user } } = await supabase.auth.getUser(header.split(" ")[1]);
+    if (user) {
+        return user.id;
+    } else {
+        throw new Error("Permission denied");
+    }
 }
 
 serve(async (req)=>{
@@ -38,16 +27,15 @@ serve(async (req)=>{
         }
     });
     try {
+        const authHeader = req.headers.get("Authorization");
         const data = await req.json();
-        const userId = data.userId;
         const password = data.password;
         const confirmPassword = data.confirmPassword;
 
-        const authHeader = req.headers.get("Authorization");
-        const email = await parseTokenToEmail(authHeader);
-        const permission = await checkPermission(email, userId, supabase);
+       
+        const userId = await checkPermission(authHeader,supabase);
 
-        if (permission) {
+        if (userId) {
             // Raise an error if the passwords don't match or if the password is shorter than 8 characters
             if (password !== confirmPassword) {
                 throw new Error("Passwords do not match");
