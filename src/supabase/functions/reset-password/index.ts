@@ -27,13 +27,13 @@ serve(async (req)=>{
         }
     });
     try {
-        const authHeader = req.headers.get("Authorization");
         const data = await req.json();
+        const userId = data.userId;
         const password = data.password;
         const confirmPassword = data.confirmPassword;
 
-       
-        const userId = await checkPermission(authHeader,supabase);
+        // const authHeader = req.headers.get("Authorization");
+        // const userId = await checkPermission(authHeader,supabase);
 
         if (userId) {
             // Raise an error if the passwords don't match or if the password is shorter than 8 characters

@@ -27,8 +27,10 @@ serve(async (req)=>{
         }
     });
     try {
-        const authHeader = req.headers.get("Authorization");
-        const userId = await checkPermission(authHeader,supabase);
+        // const authHeader = req.headers.get("Authorization");
+        // const userId = await checkPermission(authHeader,supabase);
+        const data = await req.json();
+        const userId = data.userId;
 
         if (userId) {
             const user = await deleteUser(supabase, userId);
