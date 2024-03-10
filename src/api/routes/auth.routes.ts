@@ -76,7 +76,7 @@ router.post('/signup', AuthController.signup);
 /**
  * @swagger
  * /api/auth/change-password/{id}:
- *   put:
+ *   post:
  *     summary: Change a user's password
  *     tags: [Auth]
  *     parameters:
@@ -93,16 +93,19 @@ router.post('/signup', AuthController.signup);
  *             type: object
  *             required:
  *               - password
+ *               - confirmPassword
  *             properties:
  *               password:
  *                 type: string
+ *               confirmPassword:
+ *                type: string
  *     responses:
  *       200:
  *         description: Password changed successfully
  *       404:
  *         description: User not found
  */
-router.put('/change-password/:id', AuthController.changePassword);
+router.post('/change-password/:id', AuthController.changePassword);
 
 /**
  * @swagger

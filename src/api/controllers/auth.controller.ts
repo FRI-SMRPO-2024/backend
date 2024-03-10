@@ -85,13 +85,26 @@ export class AuthController {
     public static async changePassword(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const { password } = req.body;
+            const { password, confirmPassword } = req.body;
+
+            // Log the id
+            logger.log('info', 'api-AuthController-changePassword() | id: ' + id)
+
             const user = await UserService.getUser(id);
 
+            // Log the user
+            logger.log('info', 'api-AuthController-changePassword() | user: ' + JSON.stringify(user))
+
             if (user) {
-                const { data, error } = await supabase.auth.updateUser({
-                    password: password,
-                });                
+                // Invoke an edge function called reset-password
+                const { data, error } = await supabase.functions.invoke('reset-password', {
+                    body: JSON.stringify({
+                        userId: id,
+                        password: password,
+                        confirmPassword: confirmPassword
+                    })
+                });           
+
                 if (error) {
                     logger.log('error', 'api-AuthController-changePassword() | ERROR | ' + error.message)
                     error.status 
