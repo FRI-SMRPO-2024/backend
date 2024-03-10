@@ -78,11 +78,27 @@ router.post('/login', jwtGuard, AuthController.login);
  *             required:
  *               - email
  *               - password
+ *               - username
+ *               - first_name
+ *               - last_name
+ *               - is_admin
  *             properties:
  *               email:
  *                 type: string
  *               password:
  *                 type: string
+ *               username:
+ *                 type: string
+ *                 description: The username of the user
+ *               first_name:
+ *                 type: string
+ *                 description: The first name of the user
+ *               last_name:
+ *                 type: string
+ *                 description: The last name of the user
+ *               is_admin:
+ *                 type: boolean
+ *                 description: Is the user an admin
  *     responses:
  *       200:
  *         description: Successful signup

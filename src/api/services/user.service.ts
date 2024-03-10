@@ -34,15 +34,16 @@ export class UserService {
     }
     return data[0];
   }
-  public static async updateUser(id: string, username: string, first_name: string, last_name:string): Promise<null>{
+  public static async updateUser(id: string, username: string, first_name: string, last_name:string): Promise<UserModel | null>{
     const { data, error } = await supabase
       .from("users_data")
       .update({ username, first_name, last_name })
       .eq("id", id)
+      .select();
     if (error) {
       throw new Error(error.message);
     }
-    return data;
+    return data[0];
   }
   public static async deleteUser(id:string): Promise<User>{
     const { data, error } = await supabaseAdmin.auth.admin.deleteUser(id)
@@ -51,24 +52,26 @@ export class UserService {
     }
     return data.user;
   }
-  public static async updateLastLogin(id: string): Promise<null>{
+  public static async updateLastLogin(id: string): Promise<UserModel | null>{
     const { data, error } = await supabase
       .from("users_data")
       .update({ last_login: new Date() })
-      .eq("id", id);
+      .eq("id", id)
+      .select();
     if (error) {
       throw new Error(error.message);
     }
-    return data;
+    return data[0];
   }
-  public static async setRole(id: string, is_admin: boolean): Promise<null>{
+  public static async setRole(id: string, is_admin: boolean): Promise<UserModel | null>{
     const { data, error } = await supabase
       .from("users_data")
       .update({ is_admin: is_admin })
-      .eq("id", id);
+      .eq("id", id)
+      .select();
     if (error) {
       throw new Error(error.message);
     }
-    return data;
+    return data[0];
   }
 }

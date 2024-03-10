@@ -6,6 +6,7 @@ import { supabaseAdmin } from '../../supabase';
 import { AuthResponse } from '@supabase/supabase-js';
 import { UserLoginResponse, UserSignupResponse } from '../models/auth.model';
 import { UserService } from '../services/user.service';
+import { UserModel } from '../models/user.model';
 
 export class AuthController {
     public static async login(req: Request, res: Response) {
@@ -53,7 +54,7 @@ export class AuthController {
     }
     public static async signup(req: Request, res: Response) {
         try {
-            const { email, password } = req.body;
+            const { email, password, username, first_name, last_name, is_admin } = req.body;
 
             const { data, error } = await supabase.auth.signUp({
                 email: email,
@@ -68,12 +69,18 @@ export class AuthController {
             } else {
                 const authUser = await UserService.getUserByEmail(email);
                 if (authUser && data?.session?.access_token && data?.session?.refresh_token) {
+                    const updatedUser = await UserService.updateUser(authUser.id, username, first_name, last_name);
+                    const updatedUserWithRole = await UserService.setRole(authUser.id, is_admin);
+                    if (!updatedUser || !updatedUserWithRole) {
+                        logger.log('error', 'api-AuthController-signup() | ERROR | User not updated')
+                        res.status(500).send({error: 'User not updated'})
+                        return;
+                    }
                     const userSignupResponse: UserSignupResponse = {
-                        user: authUser,
+                        user: updatedUserWithRole,
                         access_token: data.session.access_token,
                         refresh_token: data.session.refresh_token,
                     }
-
                     logger.log('info', 'api-AuthController-signup() | SUCCESS')
                     res.status(200).send(userSignupResponse)   
                 } else {
