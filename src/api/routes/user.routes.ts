@@ -184,7 +184,7 @@ router.delete('/delete/:id', UserController.deleteUser);
 /**
  * @swagger
  * /api/user/update-last-login/{id}:
- *   put:
+ *   post:
  *     summary: Update a user's last login
  *     tags: [User]
  *     parameters:
@@ -202,7 +202,7 @@ router.delete('/delete/:id', UserController.deleteUser);
  *       500:
  *         description: Unauthorized
  */
-router.put("/update-last-login/:id", UserController.updateLastLogin);
+router.post("/update-last-login/:id", UserController.updateLastLogin);
 
 
 /**

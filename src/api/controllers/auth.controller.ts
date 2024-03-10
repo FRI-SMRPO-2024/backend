@@ -86,14 +86,8 @@ export class AuthController {
         try {
             const { id } = req.params;
             const { password, confirmPassword } = req.body;
-
-            // Log the id
-            logger.log('info', 'api-AuthController-changePassword() | id: ' + id)
-
+            
             const user = await UserService.getUser(id);
-
-            // Log the user
-            logger.log('info', 'api-AuthController-changePassword() | user: ' + JSON.stringify(user))
 
             if (user) {
                 // Invoke an edge function called reset-password
