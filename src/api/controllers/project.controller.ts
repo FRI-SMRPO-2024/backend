@@ -18,7 +18,7 @@ export class ProjectController {
     }
     public static async getProject(req: Request, res: Response) {
         try {
-            const { id } = req.params;
+            const id = parseInt(req.params.id);
             const response = await ProjectService.getProjectById(id);
             logger.log('info', 'api-ProjectController-getProject() | SUCCESS')
             res.status(200).send(response);
@@ -48,11 +48,11 @@ export class ProjectController {
     }
     public static async updateProject(req: Request, res: Response) {
         try {
-            const { id } = req.params;
+            const id = parseInt(req.params.id);
             const { name, description, documentation } = req.body;
             const project = await ProjectService.getProjectById(id);
             if (project) {
-                const response = await ProjectService.updateProject(id, name, description, documentation);
+                const response = await ProjectService.updateProject(project.id, name, description, documentation);
                 logger.log('info', 'api-ProjectController-updateProject() | SUCCESS')
                 res.status(200).send(response);
             } else {
@@ -66,7 +66,7 @@ export class ProjectController {
     }
     public static async deleteProject(req: Request, res: Response) {
         try {
-            const { id } = req.params;
+            const id = parseInt(req.params.id);
             const project = await ProjectService.getProjectById(id);
             if (project) {
                 const response = await ProjectService.deleteProject(id);

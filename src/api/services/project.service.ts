@@ -36,7 +36,7 @@ export class ProjectService {
         return data[0];
     }
     public static async getProjectById(
-        projectId: string
+        projectId: number
     ): Promise<ProjectModel | null> {
         const { data, error } = await supabase
             .from("projects")
@@ -48,7 +48,7 @@ export class ProjectService {
         return data[0];
     }
     public static async updateProject(
-        projectId: string,
+        projectId: number,
         projectName: string,
         projectDescription: string,
         projectDocumentation: string,
@@ -68,7 +68,7 @@ export class ProjectService {
         return data[0];
     }
     public static async deleteProject(
-        projectId: string
+        projectId: number
     ): Promise<ProjectModel | null> {
         const { data, error } = await supabase
             .from("projects")
