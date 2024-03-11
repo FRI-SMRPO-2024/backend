@@ -56,6 +56,15 @@ export class AuthController {
         try {
             const { email, password, username, first_name, last_name, is_admin } = req.body;
 
+            const allUsers = await UserService.getUsers();
+            const userExists = allUsers?.find((user: UserModel) => user.email === email || user.username === username);
+
+            if (userExists) {
+                logger.log('error', 'api-AuthController-signup() | ERROR | User already exists')
+                res.status(400).send({error: 'User already exists'})
+                return;
+            }
+
             const { data, error } = await supabase.auth.signUp({
                 email: email,
                 password: password,
@@ -124,7 +133,7 @@ export class AuthController {
                         : res.status(500).send(error.message)
                 } else {
                     logger.log('info', 'api-AuthController-changePasswordAdmin() | SUCCESS')
-                    res.status(200).send()
+                    res.status(200).send(data)
                 }
             } else {
                 res.status(404).send({error: 'User not found'});
@@ -248,7 +257,7 @@ export class AuthController {
                             : res.status(500).send(error.message)
                     } else {
                         logger.log('info', 'api-AuthController-deleteUser() | SUCCESS')
-                        res.status(200).send()
+                        res.status(200).send(data)
                     }      
                 } else {
                     logger.log('error', 'api-AuthController-deleteUser() | ERROR | User not found')
