@@ -115,6 +115,38 @@ router.post('/login', jwtGuard, AuthController.login);
  */
 router.post('/signup', jwtGuard, AuthController.signup);
 
+
+/**
+ * @swagger
+ * /api/auth/refresh-token:
+ *   post:
+ *     security:
+ *       - Authorization: []
+ *     summary: Refresh a user's access token
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - refresh_token
+ *             properties:
+ *               refresh_token:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Token refreshed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserLoginResponse'
+ *       400:
+ *         description: Error refreshing token
+ */
+router.post('/refresh-token', AuthController.refreshToken);
+
 /**
  * @swagger
  * /api/auth/change-password/{id}:

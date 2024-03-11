@@ -110,6 +110,48 @@ export class AuthController {
             }
         }
     }
+    public static async refreshToken(req: Request, res: Response) {
+        try {
+            const { refresh_token } = req.body;
+            const { data, error } = await supabase.auth.refreshSession({ refresh_token })
+            const { session, user } = data
+
+            if (error) {
+                logger.log('error', 'api-AuthController-refreshToken() | ERROR | ' + error.message)
+                error.status 
+                    ? res.status(error.status).send(error.message)
+                    : res.status(500).send(error.message)
+            } else if (user?.email) {
+                const authUser = await UserService.getUserByEmail(user?.email);
+                if (authUser && session?.access_token && session?.refresh_token) {
+                    const userSignupResponse: UserSignupResponse = {
+                        user: authUser,
+                        access_token: session.access_token,
+                        refresh_token: session.refresh_token,
+                    }
+                    logger.log('info', 'api-AuthController-refreshToken() | SUCCESS')
+                    res.status(200).send(userSignupResponse)   
+                } else {
+                    logger.log('error', 'api-AuthController-refreshToken() | ERROR | User not found')
+                    res.status(404).send({error: 'User not found'})
+                }
+            } else {
+                logger.log('error', 'api-AuthController-refreshToken() | ERROR | User not found')
+                res.status(404).send({error: 'User not found'})
+            }
+
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                const errorMsg = String(e.message)
+                logger.log('error', 'api-AuthController-refreshToken() | ERROR | ' + errorMsg)
+                res.status(500).send({error: errorMsg})
+            } else {   
+                const errorMsg = String(e)
+                logger.log('error', 'api-AuthController-refreshToken() | ERROR | ' + errorMsg)
+                res.status(500).send({error: errorMsg})
+            }
+        }
+    }
     public static async changePasswordAdmin(req: Request, res: Response) {
         try {
             const { id } = req.params;
