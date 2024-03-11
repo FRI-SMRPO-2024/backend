@@ -79,4 +79,16 @@ export class UserProjectService {
         }
         return data[0];
     }
+    public static async setUserRoleInProject(user_id: string, project_id: number, role: ProjectRole): Promise<UserProjectModel | null>{
+        const { data, error } = await supabase
+            .from("user_projects")
+            .update({ role })
+            .eq("user_id", user_id)
+            .eq("project_id", project_id)
+            .select();
+        if (error) {
+            throw new Error(error.message);
+        }
+        return data[0];
+    }
 }

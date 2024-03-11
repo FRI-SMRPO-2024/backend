@@ -98,4 +98,23 @@ export class UserProjectController {
             res.status(500).send({error: typedE.message});
         }
     }
+    static async setUserRoleInProject(req: Request, res: Response) {
+        try {
+            const { user_id, project_id, role } = req.body;
+            const validUser = await UserService.getUserById(user_id);
+            const validProject = await ProjectService.getProjectById(project_id);
+            if (validProject && validUser) {
+                const response = await UserProjectService.setUserRoleInProject(validUser.id, validProject.id, role);
+                logger.log('info', 'api-UserProjectController-setUserRoleInProject() | SUCCESS')
+                res.status(200).send(response);
+            } else {
+                logger.log('error', 'api-UserProjectController-setUserRoleInProject() | Error | Invalid user or project')
+                res.status(400).send({error: 'Invalid user or project'});
+            }
+        } catch (e: unknown) {
+            const typedE = e as Error
+            logger.log('error', 'api-UserProjectController-setUserRoleInProject() | Error | ' + String(typedE.message))
+            res.status(500).send({error: typedE.message});
+        }
+    }
 }

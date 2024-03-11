@@ -300,4 +300,40 @@ router.post('/add', jwtGuard, UserProjectController.addUserToProject);
 router.delete('/remove', jwtGuard, UserProjectController.removeUserFromProject);
 
 
+/**
+ * @swagger
+ * /api/user-project/set-role:
+ *   patch:
+ *     security:
+ *       - Authorization: []
+ *     summary: Set the role of a user in a project
+ *     tags: [User - Project]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user_id:
+ *                 type: string
+ *                 description: Identifier of the user
+ *               project_id:
+ *                 type: integer
+ *                 format: int64
+ *                 description: Identifier of the project
+ *               role:
+ *                 $ref: '#/components/schemas/ProjectRole'
+ *                 description: Role of the user in the project
+ *     responses:
+ *       200:
+ *         description: User role in project updated successfully
+ *       400:
+ *         description: Invalid user or project
+ *       500:
+ *         description: Internal server error
+ */
+router.patch('/set-role', jwtGuard, UserProjectController.setUserRoleInProject);
+
+
 export default router;
