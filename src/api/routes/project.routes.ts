@@ -112,7 +112,7 @@ const router = express.Router();
  *               items:
  *                 $ref: '#/components/schemas/Project'
  *       404:
- *         description: No projects found
+ *         description: Projects not found
  *       500:
  *         description: Unauthorized
  */
@@ -142,9 +142,9 @@ router.get("/get-all", jwtGuard, ProjectController.getProjects);
  *             schema:
  *               $ref: '#/components/schemas/Project'
  *       404:
- *         description: The project was not found
+ *         description: Project not found
  *       500:
- *         description: Unauthorized
+ *         description: Error getting project
  */
 router.get("/get/:id", jwtGuard, ProjectController.getProject);
 
@@ -170,7 +170,9 @@ router.get("/get/:id", jwtGuard, ProjectController.getProject);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Project'
- *       400:
+ *       404:
+ *         description: User not found
+ *       500:
  *         description: Error creating project
  */
 
@@ -207,7 +209,7 @@ router.post("/create", jwtGuard, ProjectController.createProject);
  *               $ref: '#/components/schemas/Project'
  *       404:
  *         description: Project not found
- *       400:
+ *       500:
  *         description: Error updating project
  */
 router.put("/update/:id", jwtGuard, ProjectController.updateProject);
@@ -233,7 +235,7 @@ router.put("/update/:id", jwtGuard, ProjectController.updateProject);
  *         description: Project deleted successfully
  *       404:
  *         description: Project not found
- *       400:
+ *       500:
  *         description: Error deleting project
  */
 router.delete('/delete/:id', jwtGuard, ProjectController.deleteProject);

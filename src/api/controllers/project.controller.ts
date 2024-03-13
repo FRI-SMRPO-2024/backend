@@ -8,8 +8,12 @@ export class ProjectController {
     public static async getProjects(req: Request, res: Response) {
         try {
             const response = await ProjectService.getProjects();
-            logger.log('info', 'api-ProjectController-getProjects() | SUCCESS')
-            res.status(200).send(response);
+            if (response) {
+                logger.log('info', 'api-ProjectController-getProjects() | SUCCESS')
+                res.status(200).send(response);
+            } else {
+                throw new Error('Error getting projects');
+            }
         } catch (e: unknown) {
             const typedE = e as Error
             logger.log('error', 'api-ProjectController-getProjects() | Error | ' + String(typedE.message))
@@ -20,8 +24,12 @@ export class ProjectController {
         try {
             const id = parseInt(req.params.id);
             const response = await ProjectService.getProjectById(id);
-            logger.log('info', 'api-ProjectController-getProject() | SUCCESS')
-            res.status(200).send(response);
+            if (response) {
+                logger.log('info', 'api-ProjectController-getProject() | SUCCESS')
+                res.status(200).send(response);
+            } else {
+                throw new Error('Error getting project');
+            }
         } catch (e: unknown) {
             const typedE = e as Error
             logger.log('error', 'api-ProjectController-getProject() | Error | ' + String(typedE.message))
@@ -34,10 +42,14 @@ export class ProjectController {
             const owner = await UserService.getUserById(owner_id);
             if (owner && owner.id === owner_id) {
                 const response = await ProjectService.createProject(name, description, owner_id);
-                logger.log('info', 'api-ProjectController-createProject() | SUCCESS')
-                res.status(200).send(response);
+                if (response) {
+                    logger.log('info', 'api-ProjectController-createProject() | SUCCESS')
+                    res.status(200).send(response);
+                } else {
+                    throw new Error('Error creating a project');
+                }
             } else {
-                res.status(404).send({error: 'User by owner_id not found'});
+                res.status(404).send({error: 'User not found'});
                 return;
             }
         } catch (e: unknown) {
@@ -53,8 +65,12 @@ export class ProjectController {
             const project = await ProjectService.getProjectById(id);
             if (project) {
                 const response = await ProjectService.updateProject(project.id, name, description, documentation);
-                logger.log('info', 'api-ProjectController-updateProject() | SUCCESS')
-                res.status(200).send(response);
+                if (response) {
+                    logger.log('info', 'api-ProjectController-updateProject() | SUCCESS')
+                    res.status(200).send(response);
+                } else {
+                    throw new Error('Error updating project');
+                }
             } else {
                 res.status(404).send({error: 'Project not found'});
             }
@@ -70,8 +86,12 @@ export class ProjectController {
             const project = await ProjectService.getProjectById(id);
             if (project) {
                 const response = await ProjectService.deleteProject(id);
-                logger.log('info', 'api-ProjectController-deleteProject() | SUCCESS')
-                res.status(200).send(response);
+                if (response) {
+                    logger.log('info', 'api-ProjectController-deleteProject() | SUCCESS')
+                    res.status(200).send(response);
+                } else {
+                    throw new Error('Error deleting project');
+                }
             } else {
                 res.status(404).send({error: 'Project not found'});
             }
