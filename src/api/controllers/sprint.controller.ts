@@ -4,6 +4,7 @@ import { SprintService } from '../services/sprint.service';
 import { SprintModel } from '../models/sprint.model';
 import { ProjectService } from '../services/project.service';
 
+
 export class SprintController {
     public static async getCurrentSprint(req: Request, res: Response) {
         try {

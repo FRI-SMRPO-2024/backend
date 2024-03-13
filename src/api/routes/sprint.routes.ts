@@ -109,9 +109,7 @@ router.get('/current/:projectId', jwtGuard, SprintController.getCurrentSprint);
  *               items:
  *                 $ref: '#/components/schemas/Sprint'
  *       404:
- *         description: Sprints not found
- *       404:
- *         description: Project not found
+ *         description: Sprints or projects not found
  *       500:
  *         description: Internal server error
  */
