@@ -74,6 +74,8 @@ const router = express.Router();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Sprint'
+ *       404:
+ *         description: Sprint not found
  *       500:
  *         description: Internal server error
  */
@@ -106,6 +108,10 @@ router.get('/current/:projectId', jwtGuard, SprintController.getCurrentSprint);
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Sprint'
+ *       404:
+ *         description: Sprints not found
+ *       404:
+ *         description: Project not found
  *       500:
  *         description: Internal server error
  */
@@ -136,6 +142,8 @@ router.get('/get-by-project-id/:projectId', jwtGuard, SprintController.getSprint
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Sprint'
+ *       404:
+ *         description: Sprint not found
  *       500:
  *         description: Internal server error
  */
@@ -174,7 +182,7 @@ router.get('/get-by-sprint-id/:id', jwtGuard, SprintController.getSprint);
  *                 format: date-time
  *                 description: The date and time when the sprint ends
  *     responses:
- *       200:
+ *       201:
  *         description: The created sprint
  *         content:
  *           application/json:
@@ -222,12 +230,14 @@ router.post('/create', jwtGuard, SprintController.createSprint);
  *                 format: date-time
  *                 description: The date and time when the sprint ends
  *     responses:
- *       200:
+ *       201:
  *         description: The updated sprint
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Sprint'
+ *       404:
+ *         description: Sprint not found
  *       500:
  *         description: Internal server error
  */
@@ -258,6 +268,8 @@ router.put('/update/:id', jwtGuard, SprintController.updateSprint);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Sprint'
+ *       404:
+ *         description: Sprint not found
  *       500:
  *         description: Internal server error
  */

@@ -2,6 +2,7 @@ import logger from '../../utils/winston-logger';
 import { Request, Response } from 'express'
 import { SprintService } from '../services/sprint.service';
 import { SprintModel } from '../models/sprint.model';
+import { ProjectService } from '../services/project.service';
 
 export class SprintController {
     public static async getCurrentSprint(req: Request, res: Response) {
@@ -13,7 +14,7 @@ export class SprintController {
                 res.status(200).send(response);
             } else {
                 logger.log('info', 'api-SprintController-getCurrentSprint() | SUCCESS | No active sprint')
-                res.status(404).send({message: 'No active sprint'});
+                res.status(404).send({error: 'No active sprint'});
             }
         } catch (e: unknown) {
             const typedE = e as Error
@@ -24,13 +25,18 @@ export class SprintController {
     public static async getSprints(req: Request, res: Response) {
         try {
             const projectId = parseInt(req.params.projectId);
+            const project = await ProjectService.getProjectById(projectId);
+            if (!project) {
+                logger.log('error', 'api-SprintController-getSprints() | Error | Project not found')
+                res.status(404).send({error: 'Project not found'});
+            }
             const response = await SprintService.getSprints(projectId);
             if (response) {
                 logger.log('info', 'api-SprintController-getSprints() | SUCCESS')
                 res.status(200).send(response);
             } else {
                 logger.log('info', 'api-SprintController-getSprints() | SUCCESS | No sprints found')
-                res.status(404).send({message: 'No sprints found'});
+                res.status(404).send({error: 'Sprint not found'});
             }
         } catch (e: unknown) {
             const typedE = e as Error
@@ -47,7 +53,7 @@ export class SprintController {
                 res.status(200).send(response);
             } else {
                 logger.log('info', 'api-SprintController-getSprint() | SUCCESS | Sprint not found')
-                res.status(404).send({message: 'Sprint not found'});
+                res.status(404).send({error: 'Sprint not found'});
             }
         } catch (e: unknown) {
             const typedE = e as Error
@@ -64,7 +70,7 @@ export class SprintController {
                 res.status(201).send(response);
             } else {
                 logger.log('info', 'api-SprintController-createSprint() | SUCCESS | No sprints found')
-                res.status(404).send({message: 'No sprints found'});
+                res.status(404).send({error: 'Sprint not found'});
             }
         } catch (e: unknown) {
             const typedE = e as Error
@@ -90,7 +96,7 @@ export class SprintController {
                 res.status(201).send(response);
             } else {
                 logger.log('info', 'api-SprintController-updateSprint() | SUCCESS | No sprints found')
-                res.status(404).send({message: 'No sprints found'});
+                res.status(404).send({error: 'Sprint not found'});
             }
         } catch (e: unknown) {
             const typedE = e as Error
@@ -115,7 +121,7 @@ export class SprintController {
                 res.status(200).send(response);
             } else {
                 logger.log('info', 'api-SprintController-deleteSprint() | SUCCESS | No sprints found')
-                res.status(404).send({message: 'No sprints found'});
+                res.status(404).send({error: 'Sprint not found'});
             }
         } catch (e: unknown) {
             const typedE = e as Error
