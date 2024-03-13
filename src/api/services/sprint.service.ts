@@ -6,11 +6,12 @@ import { SprintModel } from "../models/sprint.model";
 
 export class SprintService {
     public static async getCurrentSprint(projectId: number): Promise<SprintModel | null> {
+        // Get the sprint with the most recent start_date
         const { data, error } = await supabase
             .from("sprints")
             .select("*")
             .eq("project_id", projectId)
-            .eq("status", "active");
+            .order("start_date", { ascending: false });
         if (error) {
             throw new Error(error.message);
         }
@@ -20,7 +21,8 @@ export class SprintService {
         const { data, error } = await supabase
             .from("sprints")
             .select("*")
-            .eq("project_id", projectId);
+            .eq("project_id", projectId)
+            .order("start_date", { ascending: false });
         if (error) {
             throw new Error(error.message);
         }

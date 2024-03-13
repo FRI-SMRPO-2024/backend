@@ -54,7 +54,7 @@ const router = express.Router();
 // Swagger documentation for the getCurrentSprint route
 /**
  * @swagger
- * /sprint/current/{projectId}:
+ * /api/sprint/current/{projectId}:
  *   get:
  *     summary: Get the current sprint
  *     tags: [Sprint]
@@ -84,7 +84,7 @@ router.get('/current/:projectId', jwtGuard, SprintController.getCurrentSprint);
 // Swagger documentation for the getSprints route
 /**
  * @swagger
- * /sprint/get-by-project-id/{projectId}:
+ * /api/sprint/get-by-project-id/{projectId}:
  *   get:
  *     summary: Get sprints by project ID
  *     tags: [Sprint]
@@ -116,7 +116,7 @@ router.get('/get-by-project-id/:projectId', jwtGuard, SprintController.getSprint
 // Swagger documentation for the getSprint route
 /**
  * @swagger
- * /sprint/get-by-sprint-id/{id}:
+ * /api/sprint/get-by-sprint-id/{id}:
  *   get:
  *     summary: Get a sprint by ID
  *     tags: [Sprint]
@@ -146,7 +146,7 @@ router.get('/get-by-sprint-id/:id', jwtGuard, SprintController.getSprint);
 // Swagger documentation for the createSprint route
 /**
  * @swagger
- * /sprint/create:
+ * /api/sprint/create:
  *   post:
  *     summary: Create a sprint
  *     tags: [Sprint]
@@ -190,7 +190,7 @@ router.post('/create', jwtGuard, SprintController.createSprint);
 // Swagger documentation for the updateSprint route
 /**
  * @swagger
- * /sprint/update/{id}:
+ * /api/sprint/update/{id}:
  *   put:
  *     summary: Update a sprint
  *     tags: [Sprint]
@@ -238,7 +238,7 @@ router.put('/update/:id', jwtGuard, SprintController.updateSprint);
 // Swagger documentation for the deleteSprint route
 /**
  * @swagger
- * /sprint/delete/{id}:
+ * /api/sprint/delete/{id}:
  *   delete:
  *     summary: Delete a sprint
  *     tags: [Sprint]
