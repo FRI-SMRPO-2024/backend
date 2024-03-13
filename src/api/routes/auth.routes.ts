@@ -62,6 +62,8 @@ const router = express.Router();
  *               $ref: '#/components/schemas/UserLoginResponse'
  *       400:
  *         description: Invalid credentials
+ *       500:
+ *         description: Internal server error
  */
 router.post('/login', jwtGuard, AuthController.login);
 
@@ -112,6 +114,8 @@ router.post('/login', jwtGuard, AuthController.login);
  *               $ref: '#/components/schemas/UserSignupResponse'
  *       400:
  *         description: Error signing up
+ *       500:
+ *         description: Internal server error
  */
 router.post('/signup', jwtGuard, AuthController.signup);
 
@@ -144,6 +148,9 @@ router.post('/signup', jwtGuard, AuthController.signup);
  *               $ref: '#/components/schemas/UserLoginResponse'
  *       400:
  *         description: Error refreshing token
+ *       500:
+ *         description: Internal server error
+ * 
  */
 router.post('/refresh-token', AuthController.refreshToken);
 
@@ -180,6 +187,8 @@ router.post('/refresh-token', AuthController.refreshToken);
  *         description: Password changed successfully
  *       404:
  *         description: User not found
+ *       500:
+ *         description: Internal server error
  */
 router.post('/change-password/:id', [jwtGuard, roleAdminGuard], AuthController.changePasswordAdmin);
 
@@ -214,6 +223,8 @@ router.post('/change-password/:id', [jwtGuard, roleAdminGuard], AuthController.c
  *               $ref: '#/components/schemas/User'
  *       404:
  *         description: User not found
+ *       500:
+ *         description: Internal server error
  */
 router.post('/change-password', jwtGuard, AuthController.changePassword);
 
@@ -288,6 +299,8 @@ router.delete('/delete-user', jwtGuard, AuthController.deleteUser);
  *         description: Successful logout
  *       400:
  *         description: Error logging out
+ *       500:
+ *         description: Internal server error
  */
 router.post('/logout', jwtGuard, AuthController.logout);
 

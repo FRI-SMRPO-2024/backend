@@ -99,7 +99,7 @@ const router = express.Router();
  *       404:
  *         description: No users found
  *       500:
- *         description: Unauthorized
+ *         description: Internal server error
  */
 router.get("/get-all", jwtGuard, UserController.getUsers);
 
@@ -129,7 +129,7 @@ router.get("/get-all", jwtGuard, UserController.getUsers);
  *       404:
  *         description: The user was not found
  *       500:
- *         description: Unauthorized
+ *         description: Internal server error
  */
 router.get("/get/:id", jwtGuard, UserController.getUserById);
 
@@ -161,7 +161,7 @@ router.get("/get/:id", jwtGuard, UserController.getUserById);
  *       404:
  *         description: The user was not found
  *       500:
- *         description: Unauthorized
+ *         description: Internal server error
  */
 router.post("/get", jwtGuard, UserController.getUserByEmail);
 
@@ -196,7 +196,7 @@ router.post("/get", jwtGuard, UserController.getUserByEmail);
  *       404:
  *         description: The user was not found
  *       500:
- *         description: Unauthorized
+ *         description: Internal server error
  */
 router.put("/update/:id", jwtGuard, UserController.updateUser);
 
@@ -216,9 +216,15 @@ router.put("/update/:id", jwtGuard, UserController.updateUser);
  *           type: string
  *     responses:
  *       200:
- *         description: User account deleted successfully
+ *         description: The user was deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       404:
  *         description: User not found
+ *       500:
+ *         description: Internal server error
  */
 router.delete('/delete/:id', jwtGuard, UserController.deleteUser);
 
@@ -239,11 +245,15 @@ router.delete('/delete/:id', jwtGuard, UserController.deleteUser);
  *         description: The user ID
  *     responses:
  *       200:
- *         description: The user's last login was updated successfully
+ *         description: The user was updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       404:
  *         description: The user was not found
  *       500:
- *         description: Unauthorized
+ *         description: Internal server error
  */
 router.post("/update-last-login/:id", jwtGuard, UserController.updateLastLogin);
 
@@ -275,11 +285,15 @@ router.post("/update-last-login/:id", jwtGuard, UserController.updateLastLogin);
  *                 description: The role of the user
  *     responses:
  *       200:
- *         description: The user's role was updated successfully
+ *         description: The user was updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       404:
  *         description: The user was not found
  *       500:
- *         description: Unauthorized
+ *         description: Internal server error
  */
 router.put("/set-role/:id", jwtGuard, UserController.setRole);
 

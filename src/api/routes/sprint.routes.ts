@@ -182,7 +182,7 @@ router.get('/get-by-sprint-id/:id', jwtGuard, SprintController.getSprint);
  *                 format: date-time
  *                 description: The date and time when the sprint ends
  *     responses:
- *       201:
+ *       200:
  *         description: The created sprint
  *         content:
  *           application/json:
@@ -230,7 +230,7 @@ router.post('/create', jwtGuard, SprintController.createSprint);
  *                 format: date-time
  *                 description: The date and time when the sprint ends
  *     responses:
- *       201:
+ *       200:
  *         description: The updated sprint
  *         content:
  *           application/json:

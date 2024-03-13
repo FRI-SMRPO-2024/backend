@@ -67,7 +67,7 @@ export class SprintController {
             const response = await SprintService.createSprint(velocity, project_id, start_date, end_date);
             if (response) {
                 logger.log('info', 'api-SprintController-createSprint() | SUCCESS')
-                res.status(201).send(response);
+                res.status(200).send(response);
             } else {
                 logger.log('info', 'api-SprintController-createSprint() | SUCCESS | No sprints found')
                 res.status(404).send({error: 'Sprint not found'});
@@ -93,7 +93,7 @@ export class SprintController {
             const response = await SprintService.updateSprint(id, velocity, start_date, end_date);
             if (response) {
                 logger.log('info', 'api-SprintController-updateSprint() | SUCCESS')
-                res.status(201).send(response);
+                res.status(200).send(response);
             } else {
                 logger.log('info', 'api-SprintController-updateSprint() | SUCCESS | No sprints found')
                 res.status(404).send({error: 'Sprint not found'});

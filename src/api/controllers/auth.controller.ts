@@ -41,15 +41,9 @@ export class AuthController {
             }
   
         } catch (e: unknown) {
-            if (e instanceof Error) {
-                const errorMsg = String(e.message)
-                logger.log('error', 'api-AuthController-login() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            } else {   
-                const errorMsg = String(e)
-                logger.log('error', 'api-AuthController-login() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            }
+            const typedE = e as Error
+            logger.log('error', 'api-AuthController-login() | Error | ' + String(typedE.message))
+            res.status(500).send({error: typedE.message});
         }
     }
     public static async signup(req: Request, res: Response) {
@@ -99,15 +93,9 @@ export class AuthController {
             }
 
         } catch (e: unknown) {
-            if (e instanceof Error) {
-                const errorMsg = String(e.message)
-                logger.log('error', 'api-AuthController-signup() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            } else {   
-                const errorMsg = String(e)
-                logger.log('error', 'api-AuthController-signup() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            }
+            const typedE = e as Error
+            logger.log('error', 'api-AuthController-signup() | Error | ' + String(typedE.message))
+            res.status(500).send({error: typedE.message});
         }
     }
     public static async refreshToken(req: Request, res: Response) {
@@ -141,15 +129,9 @@ export class AuthController {
             }
 
         } catch (e: unknown) {
-            if (e instanceof Error) {
-                const errorMsg = String(e.message)
-                logger.log('error', 'api-AuthController-refreshToken() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            } else {   
-                const errorMsg = String(e)
-                logger.log('error', 'api-AuthController-refreshToken() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            }
+            const typedE = e as Error
+            logger.log('error', 'api-AuthController-refreshToken() | Error | ' + String(typedE.message))
+            res.status(500).send({error: typedE.message});
         }
     }
     public static async changePasswordAdmin(req: Request, res: Response) {
@@ -182,15 +164,9 @@ export class AuthController {
             }
 
         } catch (e: unknown) {
-            if (e instanceof Error) {
-                const errorMsg = String(e.message)
-                logger.log('error', 'api-AuthController-changePasswordAdmin() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            } else {   
-                const errorMsg = String(e)
-                logger.log('error', 'api-AuthController-changePasswordAdmin() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            }
+            const typedE = e as Error
+            logger.log('error', 'api-AuthController-changePasswordAdmin() | Error | ' + String(typedE.message))
+            res.status(500).send({error: typedE.message});
         }
     }
     public static async changePassword(req: Request, res: Response) {
@@ -228,15 +204,9 @@ export class AuthController {
             }
 
         } catch (e: unknown) {
-            if (e instanceof Error) {
-                const errorMsg = String(e.message)
-                logger.log('error', 'api-AuthController-changePassword() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            } else {   
-                const errorMsg = String(e)
-                logger.log('error', 'api-AuthController-changePassword() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            }
+            const typedE = e as Error
+            logger.log('error', 'api-AuthController-changePassword() | Error | ' + String(typedE.message))
+            res.status(500).send({error: typedE.message});
         }
     }
 
@@ -267,15 +237,9 @@ export class AuthController {
             }
 
         } catch (e: unknown) {
-            if (e instanceof Error) {
-                const errorMsg = String(e.message)
-                logger.log('error', 'api-AuthController-deleteUserAdmin() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            } else {   
-                const errorMsg = String(e)
-                logger.log('error', 'api-AuthController-deleteUserAdmin() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            }
+            const typedE = e as Error
+            logger.log('error', 'api-AuthController-deleteUserAdmin() | Error | ' + String(typedE.message))
+            res.status(500).send({error: typedE.message});
         }
     }
     public static async deleteUser(req: Request, res: Response) {
@@ -311,15 +275,9 @@ export class AuthController {
             }
 
         } catch (e: unknown) {
-            if (e instanceof Error) {
-                const errorMsg = String(e.message)
-                logger.log('error', 'api-AuthController-deleteUser() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            } else {   
-                const errorMsg = String(e)
-                logger.log('error', 'api-AuthController-deleteUser() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            }
+            const typedE = e as Error
+            logger.log('error', 'api-AuthController-deleteUser() | Error | ' + String(typedE.message))
+            res.status(500).send({error: typedE.message});
         }
     }
 
@@ -338,15 +296,9 @@ export class AuthController {
             }
 
         } catch (e: unknown) {
-            if (e instanceof Error) {
-                const errorMsg = String(e.message)
-                logger.log('error', 'api-AuthController-logout() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            } else {   
-                const errorMsg = String(e)
-                logger.log('error', 'api-AuthController-logout() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            }
+            const typedE = e as Error
+            logger.log('error', 'api-AuthController-logout() | Error | ' + String(typedE.message))
+            res.status(500).send({error: typedE.message});
         }
     }
 
@@ -373,15 +325,9 @@ export class AuthController {
             }
 
         } catch (e: unknown) {
-            if (e instanceof Error) {
-                const errorMsg = String(e.message)
-                logger.log('error', 'api-AuthController-authenticateUser() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            } else {   
-                const errorMsg = String(e)
-                logger.log('error', 'api-AuthController-authenticateUser() | ERROR | ' + errorMsg)
-                res.status(500).send({error: errorMsg})
-            }
+            const typedE = e as Error
+            logger.log('error', 'api-AuthController-authenticateUser() | Error | ' + String(typedE.message))
+            res.status(500).send({error: typedE.message});
         }
     }
 }
