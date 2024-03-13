@@ -69,8 +69,7 @@ export class SprintController {
                 logger.log('info', 'api-SprintController-createSprint() | SUCCESS')
                 res.status(200).send(response);
             } else {
-                logger.log('info', 'api-SprintController-createSprint() | SUCCESS | No sprints found')
-                res.status(404).send({error: 'Sprint not found'});
+                throw new Error('Error creating sprint');
             }
         } catch (e: unknown) {
             const typedE = e as Error
@@ -95,8 +94,7 @@ export class SprintController {
                 logger.log('info', 'api-SprintController-updateSprint() | SUCCESS')
                 res.status(200).send(response);
             } else {
-                logger.log('info', 'api-SprintController-updateSprint() | SUCCESS | No sprints found')
-                res.status(404).send({error: 'Sprint not found'});
+                throw new Error('Error updating sprint');
             }
         } catch (e: unknown) {
             const typedE = e as Error
@@ -120,8 +118,7 @@ export class SprintController {
                 logger.log('info', 'api-SprintController-deleteSprint() | SUCCESS')
                 res.status(200).send(response);
             } else {
-                logger.log('info', 'api-SprintController-deleteSprint() | SUCCESS | No sprints found')
-                res.status(404).send({error: 'Sprint not found'});
+                throw new Error('Error deleting sprint');
             }
         } catch (e: unknown) {
             const typedE = e as Error
