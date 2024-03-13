@@ -55,6 +55,14 @@ export class SprintController {
     public static async updateSprint(req: Request, res: Response) {
         try {
             const id = parseInt(req.params.id);
+
+            // First get sprint by id
+            const sprint = await SprintService.getSprintById(id);
+            if (!sprint) {
+                logger.log('error', 'api-SprintController-updateSprint() | Error | Sprint not found')
+                res.status(404).send({error: 'Sprint not found'});
+            }
+
             const { velocity, start_date, end_date } = req.body;
             const response = await SprintService.updateSprint(id, velocity, start_date, end_date);
             logger.log('info', 'api-SprintController-updateSprint() | SUCCESS')
@@ -68,6 +76,14 @@ export class SprintController {
     public static async deleteSprint(req: Request, res: Response) {
         try {
             const id = parseInt(req.params.id);
+
+            // First get sprint by id
+            const sprint = await SprintService.getSprintById(id);
+            if (!sprint) {
+                logger.log('error', 'api-SprintController-deleteSprint() | Error | Sprint not found')
+                res.status(404).send({error: 'Sprint not found'});
+            }
+
             const response = await SprintService.deleteSprint(id);
             logger.log('info', 'api-SprintController-deleteSprint() | SUCCESS')
             res.status(200).send(response);
