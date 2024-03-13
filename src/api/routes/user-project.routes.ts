@@ -161,7 +161,7 @@ const router = express.Router();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/UserProject'
- *       400:
+ *       404:
  *         description: Invalid user or project
  *       500:
  *         description: Internal server error
@@ -193,7 +193,7 @@ router.post('/get-user-project', jwtGuard, UserProjectController.getUserProject)
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/User'
- *       400:
+ *       404:
  *         description: Invalid project
  *       500:
  *         description: Internal server error
@@ -224,7 +224,7 @@ router.get('/get-project-users/:id', jwtGuard, UserProjectController.getUsersByP
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Project'
- *       400:
+ *       404:
  *         description: Invalid user
  *       500:
  *         description: Internal server error
@@ -259,7 +259,7 @@ router.get('/get-user-projects/:id', jwtGuard, UserProjectController.getProjects
  *     responses:
  *       200:
  *         description: User added to project successfully
- *       400:
+ *       404:
  *         description: Invalid user or project
  *       500:
  *         description: Internal server error
@@ -292,7 +292,7 @@ router.post('/add', jwtGuard, UserProjectController.addUserToProject);
  *     responses:
  *       200:
  *         description: User removed from project successfully
- *       400:
+ *       404:
  *         description: Invalid user or project
  *       500:
  *         description: Internal server error
@@ -328,7 +328,7 @@ router.delete('/remove', jwtGuard, UserProjectController.removeUserFromProject);
  *     responses:
  *       200:
  *         description: User role in project updated successfully
- *       400:
+ *       404:
  *         description: Invalid user or project
  *       500:
  *         description: Internal server error
