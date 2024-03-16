@@ -85,19 +85,32 @@ export class StoryController {
     public static async createStory(req: Request, res: Response) {
         try {
             const params: StoryCreateRequest = req.body;
-            const validSprint = await SprintService.getSprintById(params.sprint_id);
             const validProject = await ProjectService.getProjectById(params.project_id);
-            if (validProject && validSprint) {
-                const response = await StoryService.createStory(params);
-                if (response) {
-                    logger.log('info', 'api-StoryController-createStory() | SUCCESS')
-                    res.status(200).send(response);
-                } else {
-                    throw new Error('Error creating a story');
-                }
-            } else {
-                res.status(404).send({error: 'Invalid project or sprint'});
+            if (!validProject) {
+                throw new Error('Error getting project');
             }
+            const sprintsOnProject = await SprintService.getSprints(params.project_id);
+            if (!sprintsOnProject) {
+                throw new Error('Error getting sprints');
+            }
+            if (sprintsOnProject) {
+                const validSprint = sprintsOnProject.find(sprint => sprint.id === params.sprint_id);
+                if (!validSprint) {
+                    res.status(404).send({error: 'Invalid sprint for project'});
+                }
+                if (validProject && validSprint) {
+                    const response = await StoryService.createStory(params);
+                    if (response) {
+                        logger.log('info', 'api-StoryController-createStory() | SUCCESS')
+                        res.status(200).send(response);
+                    } else {
+                        throw new Error('Error creating a story');
+                    }
+                } else {
+                    res.status(404).send({error: 'Invalid project or sprint'});
+                }
+            }
+
         } catch (e: unknown) {
             const typedE = e as Error
             logger.log('error', 'api-StoryController-createStory() | Error | ' + String(typedE.message))
