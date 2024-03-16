@@ -8,7 +8,7 @@ import {
 
 export class StoryService {
   public static async getStories(): Promise<StoryModel[] | null> {
-    const { data, error } = await supabase.from("stories").select("*");
+    const { data, error } = await supabase.from("story").select("*");
     if (error) {
       throw new Error(error.message);
     }
@@ -18,7 +18,7 @@ export class StoryService {
     projectId: number
   ): Promise<StoryModel[] | null> {
     const { data, error } = await supabase
-      .from("stories")
+      .from("story")
       .select("*")
       .eq("project_id", projectId);
     if (error) {
@@ -30,7 +30,7 @@ export class StoryService {
     sprintId: number
   ): Promise<StoryModel[] | null> {
     const { data, error } = await supabase
-      .from("stories")
+      .from("story")
       .select("*")
       .eq("sprint_id", sprintId);
     if (error) {
@@ -42,7 +42,7 @@ export class StoryService {
     storyId: number
   ): Promise<StoryModel | null> {
     const { data, error } = await supabase
-      .from("stories")
+      .from("story")
       .select("*")
       .eq("id", storyId);
     if (error) {
@@ -55,7 +55,7 @@ export class StoryService {
   ): Promise<StoryModel | null> {
     const { project_id, sprint_id, name, description } = params;
     const { data, error } = await supabase
-      .from("stories")
+      .from("story")
       .insert([
         {
             project_id,
@@ -85,7 +85,7 @@ export class StoryService {
       rejected_comment,
     } = params;
     const { data, error } = await supabase
-      .from("stories")
+      .from("story")
       .update({
         name,
         description,
@@ -107,7 +107,7 @@ export class StoryService {
         id: number
     ): Promise<StoryModel | null> {
         const { data, error } = await supabase
-        .from("stories")
+        .from("story")
         .delete()
         .eq("id", id)
         .select();
