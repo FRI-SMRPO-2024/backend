@@ -38,7 +38,7 @@ export class ProjectController {
     }
     public static async createProject(req: Request, res: Response) {
         try {
-            const { name, description, owner_id } = req.body;
+            const { name, description, owner_id, scrum_master, developers} = req.body;
             const owner = await UserService.getUserById(owner_id);
             if (owner && owner.id === owner_id) {
                 const response = await ProjectService.createProject(name, description, owner_id);

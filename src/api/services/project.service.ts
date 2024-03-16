@@ -17,7 +17,7 @@ export class ProjectService {
     public static async createProject(
         projectName: string,
         projectDescription: string,
-        projectOwnerId: string
+        projectOwnerId: string,
     ): Promise<ProjectModel | null> {
         const { data, error } = await supabase
             .from("projects")

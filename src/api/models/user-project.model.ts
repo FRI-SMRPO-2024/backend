@@ -1,3 +1,6 @@
+import { ProjectModel } from "./project.model";
+import { UserModel } from "./user.model";
+
 export interface UserProjectModel{
     id: number;
     project_id: number;
@@ -11,4 +14,14 @@ export enum ProjectRole {
     DEVELOPER = 'DEVELOPER',
     SCRUM_MASTER = 'SCRUM_MASTER',
     PRODUCT_OWNER = 'PRODUCT_OWNER'
+}
+
+export interface UsersOnProjectReturn {
+    user: UserModel, 
+    role: ProjectRole
+}
+
+export interface ProjectsByUserReturn {
+    project: ProjectModel, 
+    role: ProjectRole
 }

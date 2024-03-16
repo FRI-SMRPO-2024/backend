@@ -57,6 +57,8 @@ const router = express.Router();
  *         - name
  *         - description
  *         - owner_id
+ *         - scrum_master
+ *         - developers
  *       properties:
  *         name:
  *           type: string
@@ -67,6 +69,15 @@ const router = express.Router();
  *         owner_id:
  *           type: string
  *           description: The user ID of the project owner
+ *         scrum_master:
+ *           type: string
+ *           description: The user ID of the scrum master
+ *         developers:
+ *           type: array
+ *           items:
+ *             type: string
+ *             description: The user IDs of the developers
+ * 
  * 
  */
 

@@ -5,7 +5,7 @@ import { User } from "@supabase/supabase-js";
 import { UserModel } from "../models/user.model";
 import { ProjectService } from "./project.service";
 import { ProjectModel } from "../models/project.model";
-import { ProjectRole, UserProjectModel } from "../models/user-project.model";
+import { ProjectRole, ProjectsByUserReturn, UserProjectModel, UsersOnProjectReturn } from "../models/user-project.model";
 import { UserService } from "./user.service";
 
 export class UserProjectService {
@@ -20,7 +20,7 @@ export class UserProjectService {
         }
         return data[0];
     }
-    public static async getUsersByProject(project_id: number): Promise<UserModel[] | null>{
+    public static async getUsersByProject(project_id: number): Promise<UsersOnProjectReturn[] | null>{
         const { data, error } = await supabase
             .from("user_projects")
             .select("*")
@@ -28,16 +28,16 @@ export class UserProjectService {
         if (error) {
             throw new Error(error.message);
         }
-        const users: UserModel[] = [];
+        const users: UsersOnProjectReturn[] = [];
         for (let i = 0; i < data.length; i++) {
             const user = await UserService.getUserById(data[i].user_id);
             if (user) {
-                users.push(user);
+                users.push({user: user, role: data[i].role});
             }
         }
         return users;
     }
-    public static async getProjectsByUser(user_id: string): Promise<ProjectModel[] | null>{
+    public static async getProjectsByUser(user_id: string): Promise<ProjectsByUserReturn[] | null>{
         const { data, error } = await supabase
             .from("user_projects")
             .select("*")
@@ -45,11 +45,11 @@ export class UserProjectService {
         if (error) {
             throw new Error(error.message);
         }
-        const projects: ProjectModel[] = [];
+        const projects: ProjectsByUserReturn[] = [];
         for (let i = 0; i < data.length; i++) {
             const project = await ProjectService.getProjectById(data[i].project_id);
             if (project) {
-                projects.push(project);
+                projects.push({project: project, role: data[i].role});
             }
         }
         return projects;

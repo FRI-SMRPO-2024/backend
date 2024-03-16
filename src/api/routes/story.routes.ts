@@ -351,7 +351,7 @@ router.put('/update/:id', jwtGuard, StoryController.updateStory);
  *       500:
  *         description: Error deleting the story
  */
-router.delete('/delet/:id', jwtGuard, StoryController.deleteStory);
+router.delete('/delete/:id', jwtGuard, StoryController.deleteStory);
 
 
 

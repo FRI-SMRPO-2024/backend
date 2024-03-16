@@ -132,6 +132,35 @@ const router = express.Router();
  *           description: The date and time when the user-project relation was created
  */
 
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UsersOnProjectReturn:
+ *       type: object
+ *       properties:
+ *         user:
+ *           $ref: '#/components/schemas/UserModel'
+ *           description: User involved in the project
+ *         role:
+ *           $ref: '#/components/schemas/ProjectRole'
+ *           description: Role of the user in the project
+ *       description: Object representing a user and their role on a specific project
+ * 
+ *     ProjectsByUserReturn:
+ *       type: object
+ *       properties:
+ *         project:
+ *           $ref: '#/components/schemas/ProjectModel'
+ *           description: Project associated with the user
+ *         role:
+ *           $ref: '#/components/schemas/ProjectRole'
+ *           description: Role of the user in the project
+ *       description: Object representing a project and the user's role within it
+ */
+
+
 /**
  * @swagger
  * /api/user-project/get-user-project:
@@ -192,7 +221,7 @@ router.post('/get-user-project', jwtGuard, UserProjectController.getUserProject)
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/User'
+ *                 $ref: '#/components/schemas/UsersOnProjectReturn'
  *       404:
  *         description: Invalid project
  *       500:
@@ -223,7 +252,7 @@ router.get('/get-project-users/:id', jwtGuard, UserProjectController.getUsersByP
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Project'
+ *                 $ref: '#/components/schemas/ProjectsByUserReturn'
  *       404:
  *         description: Invalid user
  *       500:
