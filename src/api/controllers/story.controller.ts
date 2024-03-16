@@ -87,28 +87,30 @@ export class StoryController {
             const params: StoryCreateRequest = req.body;
             const validProject = await ProjectService.getProjectById(params.project_id);
             if (!validProject) {
-                throw new Error('Error getting project');
+                res.status(404).send({error: 'Project not found'});
+                return
             }
             const sprintsOnProject = await SprintService.getSprints(params.project_id);
             if (!sprintsOnProject) {
-                throw new Error('Error getting sprints');
+                res.status(404).send({error: 'No sprints found for project'});
+                return
             }
-            if (sprintsOnProject) {
-                const validSprint = sprintsOnProject.find(sprint => sprint.id === params.sprint_id);
-                if (!validSprint) {
-                    res.status(404).send({error: 'Invalid sprint for project'});
-                }
-                if (validProject && validSprint) {
-                    const response = await StoryService.createStory(params);
-                    if (response) {
-                        logger.log('info', 'api-StoryController-createStory() | SUCCESS')
-                        res.status(200).send(response);
-                    } else {
-                        throw new Error('Error creating a story');
-                    }
+            const validSprint = sprintsOnProject.find(sprint => sprint.id === params.sprint_id);
+            if (!validSprint) {
+                res.status(404).send({error: 'Invalid sprint for project'});
+                return
+            }
+            if (validProject && validSprint) {
+                const response = await StoryService.createStory(params);
+                if (response) {
+                    logger.log('info', 'api-StoryController-createStory() | SUCCESS')
+                    res.status(200).send(response);
                 } else {
-                    res.status(404).send({error: 'Invalid project or sprint'});
+                    throw new Error('Error creating a story');
                 }
+            } else {
+                res.status(404).send({error: 'Invalid project or sprint'});
+                return
             }
 
         } catch (e: unknown) {
