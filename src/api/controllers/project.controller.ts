@@ -3,6 +3,8 @@ import { Request, Response } from 'express'
 import { ProjectService } from '../services/project.service';
 import { ProjectModel } from '../models/project.model';
 import { UserService } from '../services/user.service';
+import { UserProjectService } from '../services/user-project.service';
+import { ProjectRole } from '../models/user-project.model';
 
 export class ProjectController {
     public static async getProjects(req: Request, res: Response) {
@@ -44,6 +46,22 @@ export class ProjectController {
                 const response = await ProjectService.createProject(name, description, owner_id);
                 if (response) {
                     logger.log('info', 'api-ProjectController-createProject() | SUCCESS')
+                    const userProject = await UserProjectService.addUserToProject(owner_id, response.id, ProjectRole.OWNER);
+                    if (userProject) {
+                        for (let i = 0; i < developers.length; i++) {
+                            const dev = await UserService.getUserById(developers[i]);
+                            if (dev) {
+                                const userProject = await UserProjectService.addUserToProject(dev.id, response.id, ProjectRole.DEVELOPER);
+                                if (!userProject) {
+                                    throw new Error('Error adding developer to project');
+                                }
+                            } else {
+                                throw new Error('Error adding developer to project');
+                            }
+                        }
+                    } else {
+                        throw new Error('Error adding owner to project');
+                    }
                     res.status(200).send(response);
                 } else {
                     throw new Error('Error creating a project');
