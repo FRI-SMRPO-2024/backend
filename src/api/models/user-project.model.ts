@@ -11,6 +11,7 @@ export interface UserProjectModel{
 
 export enum ProjectRole {
     NULL = 'NULL',
+    OWNER = 'OWNER',
     DEVELOPER = 'DEVELOPER',
     SCRUM_MASTER = 'SCRUM_MASTER',
     PRODUCT_OWNER = 'PRODUCT_OWNER'

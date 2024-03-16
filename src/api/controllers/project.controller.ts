@@ -59,6 +59,10 @@ export class ProjectController {
                                 throw new Error('Error adding developer to project');
                             }
                         }
+                        const userProject = await UserProjectService.addUserToProject(scrum_master, response.id, ProjectRole.SCRUM_MASTER);
+                        if (!userProject) {
+                            throw new Error('Error adding scrum master to project');
+                        }
                     } else {
                         throw new Error('Error adding owner to project');
                     }

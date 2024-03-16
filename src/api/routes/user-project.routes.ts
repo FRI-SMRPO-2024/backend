@@ -99,6 +99,7 @@ const router = express.Router();
  *       type: string
  *       enum:
  *         - NULL
+ *         - OWNER
  *         - DEVELOPER
  *         - SCRUM_MASTER
  *         - PRODUCT_OWNER
