@@ -21,8 +21,8 @@ export class AuthController {
             if (error) {
                 logger.log('error', 'api-AuthController-login() | ERROR | ' + error.message)
                 error.status 
-                    ? res.status(error.status).send(error.message)
-                    : res.status(500).send(error.message)
+                    ? res.status(error.status).send(error)
+                    : res.status(500).send(error)
             } else {
                 const authUser = await UserService.getUserByEmail(email);
                 if (authUser && data?.session?.access_token && data?.session?.refresh_token) {
@@ -67,8 +67,8 @@ export class AuthController {
             if (error) {
                 logger.log('error', 'api-AuthController-signup() | ERROR | ' + error.message)
                 error.status 
-                    ? res.status(error.status).send(error.message)
-                    : res.status(500).send(error.message)
+                    ? res.status(error.status).send(error)
+                    : res.status(500).send(error)
             } else {
                 const authUser = await UserService.getUserByEmail(email);
                 if (authUser && data?.session?.access_token && data?.session?.refresh_token) {
@@ -107,8 +107,8 @@ export class AuthController {
             if (error) {
                 logger.log('error', 'api-AuthController-refreshToken() | ERROR | ' + error.message)
                 error.status 
-                    ? res.status(error.status).send(error.message)
-                    : res.status(500).send(error.message)
+                    ? res.status(error.status).send(error)
+                    : res.status(500).send(error)
             } else if (user?.email) {
                 const authUser = await UserService.getUserByEmail(user?.email);
                 if (authUser && session?.access_token && session?.refresh_token) {
@@ -153,8 +153,8 @@ export class AuthController {
                 if (error) {
                     logger.log('error', 'api-AuthController-changePasswordAdmin() | ERROR | ' + error.message)
                     error.status 
-                        ? res.status(error.status).send(error.message)
-                        : res.status(500).send(error.message)
+                        ? res.status(error.status).send(error)
+                        : res.status(500).send(error)
                 } else {
                     logger.log('info', 'api-AuthController-changePasswordAdmin() | SUCCESS')
                     res.status(200).send(data)
@@ -188,8 +188,8 @@ export class AuthController {
                     if (error) {
                         logger.log('error', 'api-AuthController-changePassword() | ERROR | ' + error.message)
                         error.status 
-                            ? res.status(error.status).send(error.message)
-                            : res.status(500).send(error.message)
+                            ? res.status(error.status).send(error)
+                            : res.status(500).send(error)
                     } else {
                         logger.log('info', 'api-AuthController-changePassword() | SUCCESS')
                         res.status(200).send(data)
@@ -226,8 +226,8 @@ export class AuthController {
                 if (error) {
                     logger.log('error', 'api-AuthController-deleteUserAdmin() | ERROR | ' + error.message)
                     error.status 
-                        ? res.status(error.status).send(error.message)
-                        : res.status(500).send(error.message)
+                        ? res.status(error.status).send(error)
+                        : res.status(500).send(error)
                 } else {
                     logger.log('info', 'api-AuthController-deleteUserAdmin() | SUCCESS')
                     res.status(200).send(data)
@@ -259,8 +259,8 @@ export class AuthController {
                     if (error) {
                         logger.log('error', 'api-AuthController-deleteUser() | ERROR | ' + error.message)
                         error.status 
-                            ? res.status(error.status).send(error.message)
-                            : res.status(500).send(error.message)
+                            ? res.status(error.status).send(error)
+                            : res.status(500).send(error)
                     } else {
                         logger.log('info', 'api-AuthController-deleteUser() | SUCCESS')
                         res.status(200).send(data)
@@ -288,8 +288,8 @@ export class AuthController {
             if (error) {
                 logger.log('error', 'api-AuthController-logout() | ERROR | ' + error.message)
                 error.status 
-                    ? res.status(error.status).send(error.message)
-                    : res.status(500).send(error.message)
+                    ? res.status(error.status).send(error)
+                    : res.status(500).send(error)
             } else {
                 logger.log('info', 'api-AuthController-logout() | SUCCESS')
                 res.status(200).send()

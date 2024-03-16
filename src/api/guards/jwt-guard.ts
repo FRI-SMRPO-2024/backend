@@ -23,8 +23,8 @@ export const jwtGuard: RequestHandler = async (req: Request, res: Response, next
             if (error) {
                 logger.log('error', 'dashboardApi-jwtGuard() | ERROR | ' + error.message)
                 error.status 
-                    ? res.status(error.status).send(error.message)
-                    : res.status(500).send(error.message)
+                    ? res.status(error.status).send(error)
+                    : res.status(500).send(error)
             } else {
                 logger.log('info', 'dashboardApi-jwtGuard() | SUCCESS')
                 req.body.user = user

@@ -24,8 +24,8 @@ export const roleAdminGuard: RequestHandler = async (req: Request, res: Response
             if (error) {
                 logger.log('error', 'api-roleAdminGuard() | ERROR | ' + error.message)
                 error.status 
-                    ? res.status(error.status).send(error.message)
-                    : res.status(500).send(error.message)
+                    ? res.status(error.status).send(error)
+                    : res.status(500).send(error)
             } else if (user?.user.email) {
                 const authUser = await UserService.getUserByEmail(user?.user.email)
                 if (authUser?.is_admin === true) {
