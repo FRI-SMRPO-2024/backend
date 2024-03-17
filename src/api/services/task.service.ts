@@ -75,6 +75,7 @@ export class TaskService {
     timeEstimation: number,
     description: string,
     assigneeId: string,
+    status: TaskStatus
   ): Promise<TaskModel | null> {
     const { data, error } = await supabase
       .from("tasks")
@@ -84,6 +85,7 @@ export class TaskService {
           time_estimation: timeEstimation,
           description: description,
           assignee_id: assigneeId,
+          status: status,
         },
       ])
       .select();

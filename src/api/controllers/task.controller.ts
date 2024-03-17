@@ -127,13 +127,18 @@ export class TaskController {
                 res.status(404).send({error: 'Story not found'});
                 return;
             }
-            // const assignee = await UserService.getUserById(assignee_id);
-            // if (!assignee) {
-            //     logger.log('error', 'api-TaskController-createTask() | Error | Assignee not found')
-            //     res.status(404).send({error: 'Assignee not found'});
-            //     return;
-            // }
-            const response = await TaskService.createTask(story_id, time_estimation, description, assignee_id);
+            let response: TaskModel | null;
+            if (!assignee_id) {
+                response = await TaskService.createTask(story_id, time_estimation, description, null, TaskStatus.NULL);
+            } else {
+                const assignee = await UserService.getUserById(assignee_id);
+                if (!assignee) {
+                    logger.log('error', 'api-TaskController-createTask() | Error | Assignee not found')
+                    res.status(404).send({error: 'Assignee not found'});
+                    return;
+                }
+                response = await TaskService.createTask(story_id, time_estimation, description, assignee_id, TaskStatus.PENDING);
+            }
             if (response) {
                 logger.log('info', 'api-TaskController-createTask() | SUCCESS')
                 res.status(201).send(response);
