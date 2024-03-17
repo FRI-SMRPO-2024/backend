@@ -90,17 +90,7 @@ export class StoryController {
                 res.status(404).send({error: 'Project not found'});
                 return
             }
-            const sprintsOnProject = await SprintService.getSprints(params.project_id);
-            if (!sprintsOnProject) {
-                res.status(404).send({error: 'No sprints found for project'});
-                return
-            }
-            const validSprint = sprintsOnProject.find(sprint => sprint.id === params.sprint_id);
-            if (!validSprint) {
-                res.status(404).send({error: 'Invalid sprint for project'});
-                return
-            }
-            if (validProject && validSprint) {
+            if (validProject) {
                 const response = await StoryService.createStory(params);
                 if (response) {
                     logger.log('info', 'api-StoryController-createStory() | SUCCESS')

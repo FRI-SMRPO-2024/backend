@@ -53,15 +53,18 @@ export class StoryService {
   public static async createStory(
     params: StoryCreateRequest
   ): Promise<StoryModel | null> {
-    const { project_id, sprint_id, name, description } = params;
+    const { project_id, name, description, priority, business_value, point_estimation, acceptance_criteria } = params;
     const { data, error } = await supabase
       .from("story")
       .insert([
         {
             project_id,
-            sprint_id,
             name,
-            description
+            description,
+            priority,
+            business_value,
+            point_estimation,
+            acceptance_criteria,
         },
       ])
       .select();
@@ -74,19 +77,11 @@ export class StoryService {
     id: number,
     params: StoryUpdateRequest
   ): Promise<StoryModel | null> {
-    const {
-      name,
-      description,
-      priority,
-      business_value,
-      point_estimation,
-      status,
-      acceptance_criteria,
-      rejected_comment,
-    } = params;
+    const { sprint_id, name, description, priority, business_value, point_estimation, status, acceptance_criteria, rejected_comment } = params;
     const { data, error } = await supabase
       .from("story")
       .update({
+        sprint_id,
         name,
         description,
         priority,
@@ -94,7 +89,7 @@ export class StoryService {
         point_estimation,
         status,
         acceptance_criteria,
-        rejected_comment,
+        rejected_comment
       })
       .eq("id", id)
       .select();

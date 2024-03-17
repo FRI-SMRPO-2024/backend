@@ -100,28 +100,41 @@ const router = express.Router();
  *       type: object
  *       required:
  *         - project_id
- *         - sprint_id
  *         - name
  *         - description
+ *         - priority
+ *         - business_value
+ *         - point_estimation
+ *         - acceptance_criteria
  *       properties:
  *         project_id:
  *           type: integer
  *           format: int64
  *           description: Identifier of the project to which the story belongs
- *         sprint_id:
- *           type: integer
- *           format: int64
- *           description: Identifier of the sprint to which the story is assigned
  *         name:
  *           type: string
  *           description: Name of the story
  *         description:
  *           type: string
  *           description: Detailed description of the story
+ *         priority:
+ *           $ref: '#/components/schemas/StoryPriority'
+ *         business_value:
+ *           type: integer
+ *           format: int32
+ *           description: Business value of the story
+ *         point_estimation:
+ *           type: integer
+ *           format: int32
+ *           description: Estimation of effort required to complete the story, in points
+ *         acceptance_criteria:
+ *           type: string
+ *           description: Criteria that must be met for the story to be considered complete
  * 
  *     StoryUpdateRequest:
  *       type: object
  *       required:
+ *         - sprint_id
  *         - name
  *         - description
  *         - priority
@@ -131,6 +144,10 @@ const router = express.Router();
  *         - acceptance_criteria
  *         - rejected_comment
  *       properties:
+ *         sprint_id:
+ *           type: integer
+ *           format: int64
+ *           description: Identifier of the sprint to which the story is assigned
  *         name:
  *           type: string
  *           description: Name of the story
