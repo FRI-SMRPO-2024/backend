@@ -138,8 +138,10 @@ const router = express.Router();
  *         user:
  *           $ref: '#/components/schemas/UserModel'
  *           description: User involved in the project
- *         role:
- *           $ref: '#/components/schemas/ProjectRole'
+ *         roles:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/ProjectRole'
  *           description: Role of the user in the project
  *       description: Object representing a user and their role on a specific project
  * 

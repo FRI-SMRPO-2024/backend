@@ -19,7 +19,7 @@ export enum ProjectRole {
 
 export interface UsersOnProjectReturn {
     user: UserModel, 
-    role: ProjectRole
+    roles: ProjectRole[]
 }
 
 export interface ProjectsByUserReturn {

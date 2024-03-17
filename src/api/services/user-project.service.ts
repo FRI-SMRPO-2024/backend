@@ -32,7 +32,18 @@ export class UserProjectService {
         for (let i = 0; i < data.length; i++) {
             const user = await UserService.getUserById(data[i].user_id);
             if (user) {
-                users.push({user: user, role: data[i].role});
+                let userOnReturn = users.find(u => u.user.id === user.id)
+                if (!userOnReturn) {
+                    users.push({user: user, roles: [data[i].role]});
+                } else {
+                    console.log(userOnReturn)
+                    userOnReturn = {...userOnReturn, roles: userOnReturn.roles.concat(data[i].role)}
+                    const userPair = users.find(u => u.user.id === user.id)
+                    if (userPair) {
+                        userPair.roles = userOnReturn.roles
+                    }
+                }
+                
             }
         }
         return users;

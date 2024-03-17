@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { ProjectService } from '../services/project.service';
 import { UserService } from '../services/user.service';
 import { UserProjectService } from '../services/user-project.service';
+import { UsersOnProjectReturn } from '../models/user-project.model';
 
 export class UserProjectController {
     static async getUserProject(req: Request, res: Response) {
