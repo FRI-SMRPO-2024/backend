@@ -30,7 +30,7 @@ const router = express.Router();
  *       required:
  *         - id
  *         - story_id
- *         - asignee_id
+ *         - assignee_id
  *         - status
  *         - description
  *         - time_estimation
@@ -45,7 +45,7 @@ const router = express.Router();
  *           type: integer
  *           format: int64
  *           description: Identifier of the story this task is associated with
- *         asignee_id:
+ *         assignee_id:
  *           type: string
  *           description: Identifier of the user this task is assigned to
  *         status:
@@ -114,6 +114,57 @@ const router = express.Router();
  *         assignee_id:
  *           type: string
  *           description: Identifier of the user this task is assigned to
+ * 
+ *     User:
+ *       type: object
+ *       required:
+ *         - id
+ *         - email
+ *         - username
+ *         - first_name
+ *         - last_name
+ *         - is_admin
+ *         - created_at
+ *         - updated_at
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The auto-generated id of the user
+ *         email:
+ *           type: string
+ *           description: The email of the user
+ *         username:
+ *           type: string
+ *           description: The username of the user
+ *         first_name:
+ *           type: string
+ *           description: The first name of the user
+ *         last_name:
+ *           type: string
+ *           description: The last name of the user
+ *         is_admin:
+ *           type: boolean
+ *           description: Is the user an admin
+ *         created_at:
+ *           type: string
+ *           format: date-time
+ *           description: The date the user was created
+ *         last_login:
+ *           type: string
+ *           format: date-time
+ *           description: The date the user was last logged in
+ * 
+ *     TaskWithAssigneeInfo:
+ *       type: object
+ *       properties:
+ *         task:
+ *           $ref: '#/components/schemas/TaskModel'
+ *           description: Task details
+ *         assignee:
+ *           $ref: '#/components/schemas/User'
+ *           description: Assignee user details
+ *       description: A task model with detailed assignee information
+ * 
  */
 
 
@@ -140,7 +191,7 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/TaskModel'
+ *                 $ref: '#/components/schemas/TaskWithAssigneeInfo'
  *       404:
  *         description: No tasks found
  *       500:

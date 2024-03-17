@@ -11,6 +11,8 @@ const router = express.Router();
  *   description: Project management
  */
 
+
+
 /**
  * @swagger
  * components:
@@ -45,12 +47,7 @@ const router = express.Router();
  *           type: string
  *           format: date-time
  *           description: The date and time when the project was created
- */
-
-/**
- * @swagger
- * components:
- *   schemas:
+ * 
  *     ProjectCreateRequest:
  *       type: object
  *       required:
@@ -78,13 +75,6 @@ const router = express.Router();
  *             type: string
  *             description: The user IDs of the developers
  * 
- * 
- */
-
-/**
- * @swagger
- * components:
- *   schemas:
  *     ProjectUpdateRequest:
  *       type: object
  *       required:
@@ -103,7 +93,9 @@ const router = express.Router();
  *           type: string
  *           documentation: Documentation of the project
  * 
+ * 
  */
+
 
 /**
  * @swagger

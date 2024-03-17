@@ -1,7 +1,9 @@
+import { UserModel } from "./user.model";
+
 export interface TaskModel {
     id: number;
     story_id: number;
-    asignee_id: string;
+    assignee_id: string;
     status: TaskStatus;
     description: string;
     time_estimation: number;
@@ -22,6 +24,11 @@ export interface TaskUpdateModel {
     description: string;
     status: TaskStatus;
     assignee_id: string;
+}
+
+export interface TaskWithAssigneeInfo {
+    task: TaskModel;
+    assignee: UserModel | null;
 }
 
 export enum TaskStatus {

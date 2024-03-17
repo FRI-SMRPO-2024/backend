@@ -9,7 +9,7 @@ export class TaskService {
     storyId: number
   ): Promise<TaskModel[] | null> {
     const { data, error } = await supabase
-      .from("tasks_with_assignee_info")
+      .from("tasks")
       .select("*")
       .eq("story_id", storyId);
     if (error) {

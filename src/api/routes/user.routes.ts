@@ -54,12 +54,7 @@ const router = express.Router();
  *           type: string
  *           format: date-time
  *           description: The date the user was last logged in
- */
-
-/**
- * @swagger
- * components:
- *   schemas:
+ * 
  *     UserUpdateRequest:
  *       type: object
  *       required:
@@ -76,8 +71,8 @@ const router = express.Router();
  *         last_name:
  *           type: string
  *           description: The last name of the user
- * 
  */
+
 
 /**
  * @swagger

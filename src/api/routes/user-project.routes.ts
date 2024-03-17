@@ -131,13 +131,7 @@ const router = express.Router();
  *           type: string
  *           format: date-time
  *           description: The date and time when the user-project relation was created
- */
-
-
-/**
- * @swagger
- * components:
- *   schemas:
+ * 
  *     UsersOnProjectReturn:
  *       type: object
  *       properties:

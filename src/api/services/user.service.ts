@@ -15,14 +15,18 @@ export class UserService {
     return data;
   }
   public static async getUserById(id: string): Promise<UserModel | null>{
-    const { data, error } = await supabase
-      .from("users_data")
-      .select("*")
-      .eq("id", id);
-    if (error) {
-      throw new Error(error.message);
+    try {
+      const { data, error } = await supabase
+        .from("users_data")
+        .select("*")
+        .eq("id", id);
+      if (error) {
+        throw new Error(error.message);
+      }
+      return data[0];
+    } catch (error) {
+      throw error;
     }
-    return data[0];
   }
   public static async getUserByEmail(email: string): Promise<UserModel | null>{
     const { data, error } = await supabase

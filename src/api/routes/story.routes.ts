@@ -90,12 +90,7 @@ const router = express.Router();
  *           type: string
  *           format: date-time
  *           description: The date and time when the story was created
- */
-
-/**
- * @swagger
- * components:
- *   schemas:
+ * 
  *     StoryCreateRequest:
  *       type: object
  *       required:
@@ -173,6 +168,9 @@ const router = express.Router();
  *           type: string
  *           description: Reason for the story's rejection, if applicable
  */
+
+
+
 
 /**
  * @swagger

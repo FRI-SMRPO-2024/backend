@@ -5,9 +5,10 @@ import { SprintModel } from '../models/sprint.model';
 import { ProjectService } from '../services/project.service';
 import { StoryCreateRequest, StoryModel, StoryUpdateRequest } from '../models/story.model';
 import { StoryService } from '../services/story.service';
-import { TaskModel, TaskStatus } from '../models/task.model';
+import { TaskModel, TaskStatus, TaskWithAssigneeInfo } from '../models/task.model';
 import { TaskService } from '../services/task.service';
 import { UserService } from '../services/user.service';
+import { UserModel } from '../models/user.model';
 
 export class TaskController {
     public static async getTasksByStory(req: Request, res: Response) {
@@ -21,8 +22,29 @@ export class TaskController {
             }
             const response = await TaskService.getTasksByStory(storyId);
             if (response) {
+                let tasksWithAssigneeInfo: TaskWithAssigneeInfo[] = [];
+                for (let i = 0; i < response.length; i++) {
+                    const task = response[i];
+                    if (!task.assignee_id) {
+                        tasksWithAssigneeInfo.push({
+                            task: task,
+                            assignee: null
+                        });
+                    } else {
+                        const assignee = await UserService.getUserById(task.assignee_id);
+                        if (!assignee) {
+                            logger.log('error', 'api-TaskController-getTasksByStory() | Error | Assignee not found')
+                            res.status(404).send({error: 'Assignee not found'});
+                            return;
+                        }
+                        tasksWithAssigneeInfo.push({
+                            task: task,
+                            assignee: assignee
+                        });
+                    }
+                }
                 logger.log('info', 'api-TaskController-getTasksByStory() | SUCCESS')
-                res.status(200).send(response);
+                res.status(200).send(tasksWithAssigneeInfo);
             } else {
                 logger.log('info', 'api-TaskController-getTasksByStory() | SUCCESS | No tasks found')
                 res.status(404).send({error: 'No tasks found'});
