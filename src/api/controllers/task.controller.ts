@@ -162,10 +162,17 @@ export class TaskController {
                 res.status(404).send({error: 'Task not found'});
                 return;
             }
-            const assignee = await UserService.getUserById(assignee_id);
-            if (!assignee) {
-                logger.log('error', 'api-TaskController-updateTask() | Error | Assignee not found')
-                res.status(404).send({error: 'Assignee not found'});
+            if (assignee_id) {
+                const assignee = await UserService.getUserById(assignee_id);
+                if (!assignee) {
+                    logger.log('error', 'api-TaskController-updateTask() | Error | Assignee not found')
+                    res.status(404).send({error: 'Assignee not found'});
+                    return;
+                }
+            }
+            if (status === TaskStatus.PENDING && !assignee_id) {
+                logger.log('error', 'api-TaskController-updateTask() | Error | Assignee required for pending task')
+                res.status(400).send({error: 'Assignee required for pending task'});
                 return;
             }
             const response = await TaskService.updateTask(id, time_estimation, time_needed, description, status, assignee_id);

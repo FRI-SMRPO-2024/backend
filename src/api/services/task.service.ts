@@ -100,7 +100,7 @@ export class TaskService {
     timeNeeded: number,
     description: string,
     status: TaskStatus | null,
-    assigneeId: string
+    assigneeId: string | null
   ): Promise<TaskModel | null> {
     const { data, error } = await supabase
       .from("tasks")
