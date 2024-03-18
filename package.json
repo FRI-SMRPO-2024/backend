@@ -2,11 +2,11 @@
   "name": "smrpo-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "nodemon app.ts",
-    "start:watch": "nodemon --exec \"node --require ts-node/register\" app.ts",
-    "start:debug": "nodemon --exec \"node --require ts-node/register --inspect app.ts\"",
+    "start": "nodemon src/index.ts",
+    "start:watch": "nodemon --exec \"node --require ts-node/register\" src/index.ts",
+    "start:debug": "nodemon --exec \"node --require ts-node/register --inspect src/index.ts\"",
     "build": "tsc && tsc-alias"
   },
   "keywords": [],
