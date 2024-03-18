@@ -34,7 +34,7 @@ export class TaskController {
                         const assignee = await UserService.getUserById(task.assignee_id);
                         if (!assignee) {
                             logger.log('error', 'api-TaskController-getTasksByStory() | Error | Assignee not found')
-                            res.status(404).send({error: 'Assignee not found'});
+                            res.status(404).send({error: `Assignee not found for task ${task.id}`});
                             return;
                         }
                         tasksWithAssigneeInfo.push({

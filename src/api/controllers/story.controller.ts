@@ -88,7 +88,7 @@ export class StoryController {
             const validProject = await ProjectService.getProjectById(params.project_id);
             if (!validProject) {
                 res.status(404).send({error: 'Project not found'});
-                return
+                return;
             }
             if (validProject) {
                 const response = await StoryService.createStory(params);
