@@ -41,7 +41,6 @@ export enum StoryStatus {
 }
 
 export enum StoryPriority {
-    NULL = 'NULL',
     COULD_HAVE = 'COULD_HAVE',
     SHOULD_HAVE = 'SHOULD_HAVE',
     MUST_HAVE = 'MUST_HAVE',

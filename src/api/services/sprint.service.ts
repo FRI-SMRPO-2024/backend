@@ -5,13 +5,14 @@ import { ProjectModel } from "../models/project.model";
 import { SprintModel } from "../models/sprint.model";
 
 export class SprintService {
-    public static async getCurrentSprint(projectId: number): Promise<SprintModel | null> {
-        // Get the sprint with the most recent start_date
+    public static async getCurrentSprint(projectId: number, date: Date): Promise<SprintModel | null> {
+        const formattedDate = date.toISOString().split('T')[0];        
         const { data, error } = await supabase
             .from("sprints")
             .select("*")
             .eq("project_id", projectId)
-            .order("start_date", { ascending: false });
+            .lte("start_date", formattedDate)
+            .gte("end_date", formattedDate);
         if (error) {
             throw new Error(error.message);
         }

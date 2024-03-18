@@ -32,10 +32,8 @@ export interface TaskWithAssigneeInfo {
 }
 
 export enum TaskStatus {
-    NULL = 'NULL',
     ACCEPTED = 'ACCEPTED',
     COMPLETED = 'COMPLETED',
     CREATED = 'CREATED',
     PENDING = 'PENDING'
 }
-

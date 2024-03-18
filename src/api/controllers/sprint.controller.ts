@@ -9,7 +9,8 @@ export class SprintController {
     public static async getCurrentSprint(req: Request, res: Response) {
         try {
             const projectId = parseInt(req.params.projectId);
-            const response = await SprintService.getCurrentSprint(projectId);
+            const date = new Date();
+            const response = await SprintService.getCurrentSprint(projectId, date);
             if (response) {
                 logger.log('info', 'api-SprintController-getCurrentSprint() | SUCCESS')
                 res.status(200).send(response);
