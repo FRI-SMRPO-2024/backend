@@ -1,10 +1,10 @@
 import express from 'express';
 import http from 'http';
-import logger from './src/utils/winston-logger'
+import logger from './utils/winston-logger'
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerDefinition from './swagger';
-import router from './src/api/routes';
+import router from './api/routes';
 
 const cors = require('cors');
 const schedule = require('node-schedule');
