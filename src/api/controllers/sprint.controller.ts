@@ -10,6 +10,11 @@ export class SprintController {
         try {
             const projectId = parseInt(req.params.projectId);
             const date = new Date();
+            const project = await ProjectService.getProjectById(projectId);
+            if (!project) {
+                logger.log('error', 'api-SprintController-getCurrentSprint() | Error | Project not found')
+                res.status(404).send({error: 'Project not found'});
+            }
             const response = await SprintService.getCurrentSprint(projectId, date);
             if (response) {
                 logger.log('info', 'api-SprintController-getCurrentSprint() | SUCCESS')
