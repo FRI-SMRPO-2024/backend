@@ -21,8 +21,10 @@ export class SprintController {
                 logger.log('info', 'api-SprintController-getCurrentSprint() | SUCCESS')
                 res.status(200).send(response);
             } else {
-                logger.log('info', 'api-SprintController-getCurrentSprint() | SUCCESS | No active sprint')
-                res.status(404).send({error: 'No active sprint'});
+                // Return a response 200 with a empty object
+                res.status(200).send({});
+                // logger.log('info', 'api-SprintController-getCurrentSprint() | SUCCESS | No active sprint')
+                // res.status(404).send({error: 'No active sprint'});
             }
         } catch (e: unknown) {
             const typedE = e as Error
