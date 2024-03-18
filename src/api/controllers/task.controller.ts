@@ -129,7 +129,7 @@ export class TaskController {
             }
             let response: TaskModel | null;
             if (!assignee_id) {
-                response = await TaskService.createTask(story_id, time_estimation, description, null, TaskStatus.NULL);
+                response = await TaskService.createTask(story_id, time_estimation, description, null, null);
             } else {
                 const assignee = await UserService.getUserById(assignee_id);
                 if (!assignee) {
