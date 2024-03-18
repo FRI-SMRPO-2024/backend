@@ -7,7 +7,7 @@
     "start": "ts-node app.ts",
     "start:watch": "nodemon --exec \"node --require ts-node/register\" app.ts",
     "start:debug": "nodemon --exec \"node --require ts-node/register --inspect app.ts\"",
-    "build": "tsc && tsc-alias"
+    "build": "ts-node app.ts"
   },
   "keywords": [],
   "author": "",

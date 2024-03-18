@@ -1,6 +1,7 @@
 .DS_store
 /node_modules
 package-lock.json
+public
 
 # Logs
 logs
@@ -132,3 +133,4 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+.vercel
