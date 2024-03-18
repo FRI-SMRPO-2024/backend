@@ -29,7 +29,7 @@
     "supabase": "^1.148.6",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "tsc-alias": "^1.7.0",
+    "tsc-alias": "^1.8.8",
     "winston": "^3.8.2",
     "winston-daily-rotate-file": "^4.7.1"
   },

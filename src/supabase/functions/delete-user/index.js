@@ -9,7 +9,7 @@ const deleteUser = async (supabase, userId)=>{
     return data;
 };
 
-const checkPermission = async (header:string,supabase:any) => {
+const checkPermission = async (header, supabase) => {
     const { data: { user } } = await supabase.auth.getUser(header.split(" ")[1]);
     if (user) {
         return user.id;
