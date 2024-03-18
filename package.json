@@ -4,17 +4,18 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon src/index.ts",
-    "build": "rimraf dist && tsc",
-    "ts.check": "tsc --project tsconfig.json",
+    "start": "nodemon app.ts",
+    "start:watch": "nodemon --exec \"node --require ts-node/register\" app.ts",
+    "start:debug": "nodemon --exec \"node --require ts-node/register --inspect app.ts\"",
+    "build": "tsc && tsc-alias",
     "add-build": "git add dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "ts.check": "tsc --project tsconfig.json"
   },
   "pre-commit": [
     "ts.check",
     "build",
     "add-build"
-  ],
+],
   "keywords": [],
   "author": "",
   "license": "ISC",
