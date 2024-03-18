@@ -32,3 +32,5 @@ http.createServer(app).listen(APP_HTTP_PORT, function() {
 }).on('error', function(error: Error) {
     console.log(`Error in http server startup: ${error.message}`);
 });
+
+module.exports = app;
