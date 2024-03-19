@@ -9,16 +9,36 @@ import { ProjectRole, ProjectsByUserReturn, UserProjectModel, UsersOnProjectRetu
 import { UserService } from "./user.service";
 
 export class UserProjectService {
-    public static async getUserProject(user_id: string, project_id: number): Promise<UserProjectModel | null>{
+    public static async getUserProject(user_id: string, project_id: number): Promise<UsersOnProjectReturn | null>{
         const { data, error } = await supabase
             .from("user_projects")
             .select("*")
             .eq("user_id", user_id)
             .eq("project_id", project_id)
+        const users: UsersOnProjectReturn[] = [];
+        if (data) {
+            for (let i = 0; i < data.length; i++) {
+                const user = await UserService.getUserById(data[i].user_id);
+                if (user) {
+                    let userOnReturn = users.find(u => u.user.id === user.id)
+                    if (!userOnReturn) {
+                        users.push({user: user, roles: [data[i].role]});
+                    } else {
+                        userOnReturn = {...userOnReturn, roles: userOnReturn.roles.concat(data[i].role)}
+                        const userPair = users.find(u => u.user.id === user.id)
+                        if (userPair) {
+                            userPair.roles = userOnReturn.roles
+                        }
+                    }
+                    
+                }
+            }
+        }
+
         if (error) {
             throw new Error(error.message);
         }
-        return data[0];
+        return users[0];
     }
     public static async getUsersByProject(project_id: number): Promise<UsersOnProjectReturn[] | null>{
         const { data, error } = await supabase
@@ -36,7 +56,6 @@ export class UserProjectService {
                 if (!userOnReturn) {
                     users.push({user: user, roles: [data[i].role]});
                 } else {
-                    console.log(userOnReturn)
                     userOnReturn = {...userOnReturn, roles: userOnReturn.roles.concat(data[i].role)}
                     const userPair = users.find(u => u.user.id === user.id)
                     if (userPair) {
