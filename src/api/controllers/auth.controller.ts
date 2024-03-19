@@ -12,7 +12,6 @@ export class AuthController {
     public static async login(req: Request, res: Response) {
         try {
             const { email, password } = req.body;
-
             const { data, error } = await supabase.auth.signInWithPassword({
                 email: email,
                 password: password,
@@ -31,7 +30,12 @@ export class AuthController {
                         access_token: data.session.access_token,
                         refresh_token: data.session.refresh_token,
                     }
-    
+                    const updatedUser = await UserService.updateLastLogin(authUser.id);
+                    if (!updatedUser) {
+                        logger.log('error', 'api-AuthController-login() | ERROR | User not updated')
+                        res.status(500).send({error: 'User not updated'})
+                        return;
+                    }
                     logger.log('info', 'api-AuthController-login() | SUCCESS')
                     res.status(200).send(userLoginResponse)   
                 } else {
