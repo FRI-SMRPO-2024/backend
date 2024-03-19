@@ -25,17 +25,18 @@ export class AuthController {
             } else {
                 const authUser = await UserService.getUserByEmail(email);
                 if (authUser && data?.session?.access_token && data?.session?.refresh_token) {
-                    const userLoginResponse: UserLoginResponse = {
-                        user: authUser,
-                        access_token: data.session.access_token,
-                        refresh_token: data.session.refresh_token,
-                    }
                     const updatedUser = await UserService.updateLastLogin(authUser.id);
                     if (!updatedUser) {
                         logger.log('error', 'api-AuthController-login() | ERROR | User not updated')
                         res.status(500).send({error: 'User not updated'})
                         return;
                     }
+                    const userLoginResponse: UserLoginResponse = {
+                        user: updatedUser,
+                        access_token: data.session.access_token,
+                        refresh_token: data.session.refresh_token,
+                    }
+
                     logger.log('info', 'api-AuthController-login() | SUCCESS')
                     res.status(200).send(userLoginResponse)   
                 } else {
