@@ -188,7 +188,7 @@ const router = express.Router();
  *             schema:
  *               $ref: '#/components/schemas/UsersOnProjectReturn'
  *       404:
- *         description: Invalid user or project
+ *         description: Invalid user or project / User not assigned to project
  *       500:
  *         description: Internal server error
  */

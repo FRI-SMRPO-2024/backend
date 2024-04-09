@@ -98,17 +98,17 @@ export class StoryService {
     }
     return data[0];
   }
-    public static async deleteStory(
-        id: number
-    ): Promise<StoryModel | null> {
-        const { data, error } = await supabase
-        .from("story")
-        .delete()
-        .eq("id", id)
-        .select();
-        if (error) {
-        throw new Error(error.message);
-        }
-        return data[0];
+  public static async deleteStory(
+      id: number
+  ): Promise<StoryModel | null> {
+    const { data, error } = await supabase
+    .from("story")
+    .delete()
+    .eq("id", id)
+    .select();
+    if (error) {
+      throw new Error(error.message);
     }
+    return data[0];
+  }
 }

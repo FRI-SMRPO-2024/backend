@@ -18,7 +18,7 @@ const swaggerUiOptions = {
 require('dotenv').config()
 
 const APP_HTTP_PORT = process.env.APP_HTTP_PORT || '3000';
-const FRONTEND_CORS_URL = process.env.FRONTEND_CORS_URL || 'http://localhost:3000';
+const FRONTEND_CORS_URL = process.env.FRONTEND_CORS_URL || 'http://127.0.0.1:8080';
 
 app.use(errorHandler({ dumpExceptions: true, showStack: true })); 
 app.use(cors({origin: FRONTEND_CORS_URL, credentials: true}))

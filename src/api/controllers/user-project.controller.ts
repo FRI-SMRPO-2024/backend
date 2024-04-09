@@ -12,12 +12,13 @@ export class UserProjectController {
             const validUser = await UserService.getUserById(user_id);
             const validProject = await ProjectService.getProjectById(project_id);
             if (validProject && validUser) {
-                const response = await UserProjectService.getUserProject(user_id, project_id);
-                if (response) {
+                const response = await UserProjectService.getUserProject(validUser.id, validProject.id);
+                if (response !== null) {
                     logger.log('info', 'api-UserProjectController-getUserProject() | SUCCESS')
                     res.status(200).send(response);
                 } else {
-                    throw new Error('Error getting user project');
+                    logger.log('info', 'api-UserProjectController-getUserProject() | ERROR | User not assigned to project')
+                    res.status(404).send({error: 'User not assigned to project'});
                 }
             } else {
                 logger.log('error', 'api-UserProjectController-getUserProject() | Error | Invalid user or project')
@@ -35,7 +36,7 @@ export class UserProjectController {
             const validProject = await ProjectService.getProjectById(project_id);
             if (validProject) {
                 const response = await UserProjectService.getUsersByProject(validProject.id);
-                if (response) {
+                if (response !== null) {
                     logger.log('info', 'api-UserProjectController-getUsersByProject() | SUCCESS')
                     res.status(200).send(response);
                 } else {
@@ -57,7 +58,7 @@ export class UserProjectController {
             const validUser = await UserService.getUserById(user_id);
             if (validUser) {
                 const response = await UserProjectService.getProjectsByUser(validUser.id);
-                if (response) {
+                if (response !== null) {
                     logger.log('info', 'api-UserProjectController-getProjectsByUser() | SUCCESS')
                     res.status(200).send(response);
                 } else {
@@ -80,7 +81,7 @@ export class UserProjectController {
             const validProject = await ProjectService.getProjectById(project_id);
             if (validProject && validUser) {
                 const response = await UserProjectService.addUserToProject(validUser.id, validProject.id, role);
-                if (response) {
+                if (response !== null) {
                     logger.log('info', 'api-UserProjectController-addUserToProject() | SUCCESS')
                     res.status(200).send(response);
                 } else {
@@ -103,7 +104,7 @@ export class UserProjectController {
             const validProject = await ProjectService.getProjectById(project_id);
             if (validProject && validUser) {
                 const response = await UserProjectService.removeUserFromProject(validUser.id, validProject.id);
-                if (response) {
+                if (response !== null) {
                     logger.log('info', 'api-UserProjectController-removeUserFromProject() | SUCCESS')
                     res.status(200).send(response);
                 } else {
@@ -126,7 +127,7 @@ export class UserProjectController {
             const validProject = await ProjectService.getProjectById(project_id);
             if (validProject && validUser) {
                 const response = await UserProjectService.setUserRoleInProject(validUser.id, validProject.id, role);
-                if (response) {
+                if (response !== null) {
                     logger.log('info', 'api-UserProjectController-setUserRoleInProject() | SUCCESS')
                     res.status(200).send(response);
                 } else {

@@ -15,30 +15,30 @@ export class UserProjectService {
             .select("*")
             .eq("user_id", user_id)
             .eq("project_id", project_id)
-        const users: UsersOnProjectReturn[] = [];
-        if (data) {
-            for (let i = 0; i < data.length; i++) {
-                const user = await UserService.getUserById(data[i].user_id);
-                if (user) {
-                    let userOnReturn = users.find(u => u.user.id === user.id)
-                    if (!userOnReturn) {
-                        users.push({user: user, roles: [data[i].role]});
-                    } else {
-                        userOnReturn = {...userOnReturn, roles: userOnReturn.roles.concat(data[i].role)}
-                        const userPair = users.find(u => u.user.id === user.id)
-                        if (userPair) {
-                            userPair.roles = userOnReturn.roles
-                        }
-                    }
-                    
-                }
-            }
-        }
 
         if (error) {
             throw new Error(error.message);
         }
-        return users[0];
+        const users: UsersOnProjectReturn[] = []
+        if (data && data.length === 1) {
+            const user = await UserService.getUserById(data[0].user_id);
+            if (user) {
+                let userOnReturn = users.find(u => u.user.id === user.id)
+                if (!userOnReturn) {
+                    users.push({user: user, roles: [data[0].role]});
+                } else {
+                    userOnReturn = {...userOnReturn, roles: userOnReturn.roles.concat(data[0].role)}
+                    const userPair = users.find(u => u.user.id === user.id)
+                    if (userPair) {
+                        userPair.roles = userOnReturn.roles
+                    }
+                }
+                
+            }
+            return users[0];
+        } else {
+            return null;
+        }
     }
     public static async getUsersByProject(project_id: number): Promise<UsersOnProjectReturn[] | null>{
         const { data, error } = await supabase
