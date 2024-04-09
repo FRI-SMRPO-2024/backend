@@ -6,6 +6,7 @@ import userProjectRouter from './user-project.routes'
 import sprintRouter from './sprint.routes';
 import storyRouter from './story.routes';
 import taskRouter from './task.routes';
+import timeLogRouter from './time-log.routes';
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use('/user-project', userProjectRouter);
 router.use('/sprint', sprintRouter);
 router.use('/story', storyRouter);
 router.use('/task', taskRouter);
+router.use('/time-log', timeLogRouter);
 
 export default router;

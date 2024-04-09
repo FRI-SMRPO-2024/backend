@@ -14,6 +14,7 @@ export interface TimeLogModel {
   time_from: Date;
   time_to: Date;
   created_at: Date;
+  description: string;
 }
 
 export class TimeLogService {
@@ -78,12 +79,19 @@ export class TimeLogService {
     }
     return data[0];
   }
-  public static async createTimeLog(
-    timeLog: TimeLogModel
-  ): Promise<TimeLogModel | null> {
+  public static async createTimeLog(task_id: number, user_id: string, date: Date, time_from: string, time_to: string, description: string): Promise<TimeLogModel | null> {
     const { data, error } = await supabase
       .from("time_log")
-      .insert([timeLog])
+      .insert([
+        {
+          task_id,
+          user_id,
+          date,
+          time_from,
+          time_to,
+          description,
+        },
+      ])
       .select();
     if (error) {
       throw new Error(error.message);
@@ -91,12 +99,19 @@ export class TimeLogService {
     return data ? data[0] : null;
   }
   public static async updateTimeLog(
-    timeLog: TimeLogModel
+    id: number, task_id: number, user_id: string, date: Date, time_from: string, time_to: string, description: string
   ): Promise<TimeLogModel | null> {
     const { data, error } = await supabase
       .from("time_log")
-      .update(timeLog)
-      .eq("id", timeLog.id)
+      .update({
+        task_id,
+        user_id,
+        date,
+        time_from,
+        time_to,
+        description,
+      })
+      .eq("id", id)
       .select();
     if (error) {
       throw new Error(error.message);
@@ -104,12 +119,12 @@ export class TimeLogService {
     return data ? data[0] : null;
   }
   public static async deleteTimeLog(
-    timeLogId: number
+    id: number
   ): Promise<TimeLogModel | null> {
     const { data, error } = await supabase
       .from("time_log")
       .delete()
-      .eq("id", timeLogId)
+      .eq("id", id)
       .select();
     if (error) {
       throw new Error(error.message);

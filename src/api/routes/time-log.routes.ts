@@ -53,10 +53,84 @@ const router = express.Router();
  *           description: The date and time the log was created
  */
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     TimeLogCreateRequest:
+ *       type: object
+ *       required:
+ *         - task_id
+ *         - user_id
+ *         - date
+ *         - time_from
+ *         - time_to
+ *         - description
+ *       properties:
+ *         task_id:
+ *           type: integer
+ *           description: ID of the task associated with this time log
+ *         user_id:
+ *           type: string
+ *           description: ID of the user who is creating this time log
+ *         date:
+ *           type: string
+ *           format: date
+ *           description: The date of the time log
+ *         time_from:
+ *           type: string
+ *           format: date-time
+ *           description: Start time of the log
+ *         time_to:
+ *           type: string
+ *           format: date-time
+ *           description: End time of the log
+ *         description:
+ *           type: string
+ *           description: Description of the time log
+ */
+
 
 /**
  * @swagger
- * /get-all:
+ * components:
+ *   schemas:
+ *     TimeLogUpdateRequest:
+ *       type: object
+ *       required:
+ *         - task_id
+ *         - user_id
+ *         - date
+ *         - time_from
+ *         - time_to
+ *         - description
+ *       properties:
+ *         task_id:
+ *           type: integer
+ *           description: ID of the task associated with this time log
+ *         user_id:
+ *           type: string
+ *           description: ID of the user who is updating this time log
+ *         date:
+ *           type: string
+ *           format: date
+ *           description: The date of the time log
+ *         time_from:
+ *           type: string
+ *           format: date-time
+ *           description: Start time of the log
+ *         time_to:
+ *           type: string
+ *           format: date-time
+ *           description: End time of the log
+ *         description:
+ *           type: string
+ *           description: Description of the time log
+ */
+
+/**
+ * @swagger
+ * /api/time-log/get-all:
  *   get:
  *     summary: Retrieve a list of all time logs
  *     tags: [Time Log]
@@ -80,7 +154,7 @@ router.get('/get-all', jwtGuard, TimeLogController.getTimeLogs);
 
 /**
  * @swagger
- * /get-by-story/{story_id}:
+ * /api/time-log/get-by-story/{story_id}:
  *   get:
  *     summary: Retrieve time logs by story ID
  *     tags: [Time Log]
@@ -111,7 +185,7 @@ router.get('/get-by-story/:story_id', jwtGuard, TimeLogController.getTimeLogsByS
 
 /**
  * @swagger
- * /get-by-task/{task_id}:
+ * /api/time-log/get-by-task/{task_id}:
  *   get:
  *     summary: Retrieve time logs by task ID
  *     tags: [Time Log]
@@ -143,7 +217,7 @@ router.get('/get-by-task/:task_id', jwtGuard, TimeLogController.getTimeLogsByTas
 
 /**
  * @swagger
- * /get-by-user/{user_id}:
+ * /api/time-log/get-by-user/{user_id}:
  *   get:
  *     summary: Retrieve time logs by user ID
  *     tags: [Time Log]
@@ -175,7 +249,7 @@ router.get('/get-by-user/:user_id', jwtGuard, TimeLogController.getTimeLogsByUse
 
 /**
  * @swagger
- * /get-by-id/{id}:
+ * /api/time-log/get-by-id/{id}:
  *   get:
  *     summary: Retrieve a single time log by ID
  *     tags: [Time Log]
@@ -205,7 +279,7 @@ router.get('/get-by-id/:id', jwtGuard, TimeLogController.getTimeLogById);
 
 /**
  * @swagger
- * /create:
+ * /api/time-log/create:
  *   post:
  *     summary: Create a new time log
  *     tags: [Time Log]
@@ -214,7 +288,7 @@ router.get('/get-by-id/:id', jwtGuard, TimeLogController.getTimeLogById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/TimeLog'
+ *             $ref: '#/components/schemas/TimeLogCreateRequest'
  *     security:
  *       - jwt: []
  *     responses:
@@ -232,7 +306,7 @@ router.post('/create', jwtGuard, TimeLogController.createTimeLog);
 
 /**
  * @swagger
- * /update/{id}:
+ * /api/time-log/update/{id}:
  *   put:
  *     summary: Update an existing time log
  *     tags: [Time Log]
@@ -248,7 +322,7 @@ router.post('/create', jwtGuard, TimeLogController.createTimeLog);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/TimeLog'
+ *             $ref: '#/components/schemas/TimeLogUpdateRequest'
  *     security:
  *       - jwt: []
  *     responses:
@@ -266,7 +340,7 @@ router.put('/update/:id', jwtGuard, TimeLogController.updateTimeLog);
 
 /**
  * @swagger
- * /delete/{id}:
+ * /api/time-log/delete/{id}:
  *   delete:
  *     summary: Delete a time log
  *     tags: [Time Log]
