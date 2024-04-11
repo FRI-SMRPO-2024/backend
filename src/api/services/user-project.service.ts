@@ -20,20 +20,21 @@ export class UserProjectService {
             throw new Error(error.message);
         }
         const users: UsersOnProjectReturn[] = []
-        if (data && data.length === 1) {
+        if (data && data.length > 0) {
             const user = await UserService.getUserById(data[0].user_id);
             if (user) {
-                let userOnReturn = users.find(u => u.user.id === user.id)
-                if (!userOnReturn) {
-                    users.push({user: user, roles: [data[0].role]});
-                } else {
-                    userOnReturn = {...userOnReturn, roles: userOnReturn.roles.concat(data[0].role)}
-                    const userPair = users.find(u => u.user.id === user.id)
-                    if (userPair) {
-                        userPair.roles = userOnReturn.roles
+                data.forEach(d => {
+                    let userOnReturn = users.find(u => u.user.id === user.id)
+                    if (!userOnReturn) {
+                        users.push({user: user, roles: [d.role]});
+                    } else {
+                        userOnReturn = {...userOnReturn, roles: userOnReturn.roles.concat(d.role)}
+                        const userPair = users.find(u => u.user.id === user.id)
+                        if (userPair) {
+                            userPair.roles = userOnReturn.roles
+                        }
                     }
-                }
-                
+                })
             }
             return users[0];
         } else {
