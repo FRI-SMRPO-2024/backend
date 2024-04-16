@@ -53,7 +53,7 @@ export class DocumentationController {
                 return;
             }
             const documentationForProject = await DocumentationService.getDocumentationByProject(project_id)
-            if (documentationForProject !== null) {
+            if (documentationForProject !== null && documentationForProject.length > 0) {
                 res.status(409).send({error: `Documentation for project ${project_id} already exists.`});
                 return;
             }

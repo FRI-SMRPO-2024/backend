@@ -193,7 +193,7 @@ const router = express.Router();
  *               items:
  *                 $ref: '#/components/schemas/TaskWithAssigneeInfo'
  *       404:
- *         description: No tasks found
+ *         description: No tasks found / Assignee not found for task
  *       500:
  *         description: Internal server error
  */
@@ -224,9 +224,9 @@ router.get('/get-by-story/:story_id', jwtGuard, TaskController.getTasksByStory);
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/TaskModel'
+ *                 $ref: '#/components/schemas/TaskWithAssigneeInfo'
  *       404:
- *         description: No tasks found
+ *         description: No tasks found / Assignee not found for task
  *       500:
  *         description: Internal server error
  */
@@ -257,9 +257,9 @@ router.get('/get-by-assignee/:assignee_id', jwtGuard, TaskController.getTasksByA
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/TaskModel'
+ *                 $ref: '#/components/schemas/TaskWithAssigneeInfo'
  *       404:
- *         description: No tasks found
+ *         description: No tasks found / Assignee not found for task
  *       500:
  *         description: Internal server error
  */

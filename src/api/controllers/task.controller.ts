@@ -66,8 +66,29 @@ export class TaskController {
             }
             const response = await TaskService.getTasksByAssignee(assigneeId);
             if (response) {
+                let tasksWithAssigneeInfo: TaskWithAssigneeInfo[] = [];
+                for (let i = 0; i < response.length; i++) {
+                    const task = response[i];
+                    if (!task.assignee_id) {
+                        tasksWithAssigneeInfo.push({
+                            task: task,
+                            assignee: null
+                        });
+                    } else {
+                        const assignee = await UserService.getUserById(task.assignee_id);
+                        if (!assignee) {
+                            logger.log('error', 'api-TaskController-getTasksByAssignee() | Error | Assignee not found')
+                            res.status(404).send({error: `Assignee not found for task ${task.id}`});
+                            return;
+                        }
+                        tasksWithAssigneeInfo.push({
+                            task: task,
+                            assignee: assignee
+                        });
+                    }
+                }
                 logger.log('info', 'api-TaskController-getTasksByAssignee() | SUCCESS')
-                res.status(200).send(response);
+                res.status(200).send(tasksWithAssigneeInfo);
             } else {
                 logger.log('info', 'api-TaskController-getTasksByAssignee() | SUCCESS | No tasks found')
                 res.status(404).send({error: 'No tasks found'});
@@ -89,8 +110,29 @@ export class TaskController {
             }
             const response = await TaskService.getTaskBySprint(sprintId);
             if (response) {
+                let tasksWithAssigneeInfo: TaskWithAssigneeInfo[] = [];
+                for (let i = 0; i < response.length; i++) {
+                    const task = response[i];
+                    if (!task.assignee_id) {
+                        tasksWithAssigneeInfo.push({
+                            task: task,
+                            assignee: null
+                        });
+                    } else {
+                        const assignee = await UserService.getUserById(task.assignee_id);
+                        if (!assignee) {
+                            logger.log('error', 'api-TaskController-getTaskBySprint() | Error | Assignee not found')
+                            res.status(404).send({error: `Assignee not found for task ${task.id}`});
+                            return;
+                        }
+                        tasksWithAssigneeInfo.push({
+                            task: task,
+                            assignee: assignee
+                        });
+                    }
+                }
                 logger.log('info', 'api-TaskController-getTaskBySprint() | SUCCESS')
-                res.status(200).send(response);
+                res.status(200).send(tasksWithAssigneeInfo);
             } else {
                 logger.log('info', 'api-TaskController-getTaskBySprint() | SUCCESS | No tasks found')
                 res.status(404).send({error: 'No tasks found'});
