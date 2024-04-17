@@ -98,6 +98,17 @@ export class UserProjectService {
         }
         return data[0];
     }
+    public static async removeUsersFromProject(project_id: number): Promise<UserProjectModel[] | null>{
+        const { data, error } = await supabase
+            .from("user_projects")
+            .delete()
+            .eq("project_id", project_id)
+            .select();
+        if (error) {
+            throw new Error(error.message);
+        }
+        return data;
+    }
     public static async removeUserFromProject(user_id: string, project_id: number): Promise<UserProjectModel | null>{
         const { data, error } = await supabase
             .from("user_projects")

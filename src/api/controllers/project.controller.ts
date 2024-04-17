@@ -83,18 +83,43 @@ export class ProjectController {
     public static async updateProject(req: Request, res: Response) {
         try {
             const id = parseInt(req.params.id);
-            const { name, description, documentation } = req.body;
-            const project = await ProjectService.getProjectById(id);
-            if (project) {
-                const response = await ProjectService.updateProject(project.id, name, description, documentation);
+            const { name, description, owner_id, scrum_master, developers} = req.body;
+            const owner = await UserService.getUserById(owner_id);
+            const scrumMaster = await UserService.getUserById(scrum_master);
+            if (owner && scrumMaster && owner.id === owner_id) {
+                const response = await ProjectService.updateProject(id, name, description, '');
                 if (response) {
                     logger.log('info', 'api-ProjectController-updateProject() | SUCCESS')
+                    const removeUsersFromProject = await UserProjectService.removeUsersFromProject(id);
+                    if (removeUsersFromProject == null) {
+                        throw new Error('Error removing users from project');
+                    }
+                    const userOwner = await UserProjectService.addUserToProject(owner_id, response.id, ProjectRole.OWNER);
+                    if (userOwner == null) {
+                        throw new Error('Error adding owner to project');
+                    }
+                    const userScrumMaster = await UserProjectService.addUserToProject(scrum_master, response.id, ProjectRole.SCRUM_MASTER);
+                    if (userScrumMaster == null) {
+                        throw new Error('Error adding scrum master to project');
+                    }
+                    for (let i = 0; i < developers.length; i++) {
+                        const dev = await UserService.getUserById(developers[i]);
+                        if (dev) {
+                            const userProject = await UserProjectService.addUserToProject(dev.id, response.id, ProjectRole.DEVELOPER);
+                            if (!userProject) {
+                                throw new Error('Error adding developer to project');
+                            }
+                        } else {
+                            throw new Error('Error adding developer to project');
+                        }
+                    }
                     res.status(200).send(response);
                 } else {
-                    throw new Error('Error updating project');
+                    throw new Error('Error updating a project');
                 }
             } else {
-                res.status(404).send({error: 'Project not found'});
+                res.status(404).send({error: 'User not found'});
+                return;
             }
         } catch (e: unknown) {
             const typedE = e as Error
