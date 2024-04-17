@@ -5,7 +5,7 @@ import { ProjectWallModel } from "../models/project-wall.model";
 export class ProjectWallService {
     public static async getProjectWall(projectId: number): Promise<ProjectWallModel[] | null> {
         const { data, error } = await supabase
-            .from("project_wall")
+            .from("project_wall_extended")
             .select("*")
             .eq("project_id", projectId)
             .order('created_at', { ascending: false });
@@ -16,7 +16,7 @@ export class ProjectWallService {
     }
     public static async getProjectWallById(projectWallId: number): Promise<ProjectWallModel | null> {
         const { data, error } = await supabase
-            .from("project_wall")
+            .from("project_wall_extended")
             .select("*")
             .eq("id", projectWallId);
         if (error) {
