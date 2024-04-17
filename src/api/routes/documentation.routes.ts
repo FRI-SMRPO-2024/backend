@@ -70,10 +70,10 @@ const router = express.Router();
  *       properties:
  *         id:
  *           type: integer
- *           description: Unique identifier for the documentation entry to be updated
+ *           description: ID of the project currently associated with this documentation
  *         project_id:
  *           type: integer
- *           description: ID of the project associated with this documentation
+ *           description: ID of the new project to associate the documentation with
  *         text:
  *           type: string
  *           description: The text content of the documentation

@@ -75,14 +75,16 @@ export class DocumentationController {
         try {
             const id = parseInt(req.params.id);
             const { project_id, text, date }: DocumentationModel = req.body;
-            const validProject = await ProjectService.getProjectById(project_id);
+            const validProject = await ProjectService.getProjectById(id);
             if (!validProject) {
                 res.status(404).send({error: 'Project not found'});
                 return;
             }
+            console.log(text, date)
             const response: DocumentationModel | null = await DocumentationService.updateDocumentation(id, project_id, text, date);
             if (response !== null) {
                 logger.log('info', 'api-DocumentationController-updateDocumentation() | SUCCESS')
+                console.log(JSON.stringify(response))
                 res.status(200).json(response);
             } else {
                 logger.log('error', 'api-DocumentationController-updateDocumentation() | Error | Error updating documentation')

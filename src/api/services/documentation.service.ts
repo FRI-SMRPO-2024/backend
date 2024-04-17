@@ -55,7 +55,7 @@ export class DocumentationService {
     return data ? data[0] : null;
   }
   public static async updateDocumentation(
-    documentationId: number,
+    id: number,
     project_id: number,
     text: string,
     date: Date
@@ -63,11 +63,12 @@ export class DocumentationService {
     const { data, error } = await supabase
       .from("documentation")
       .update({ project_id, text, date })
-      .eq("id", documentationId)
+      .eq("project_id", id)
       .select();
     if (error) {
       throw new Error(error.message);
     }
+    console.log(data)
     return data ? data[0] : null;
   }
   public static async deleteDocumentation(

@@ -79,7 +79,8 @@ export class UserProjectController {
             const { user_id, project_id, role } = req.body;
             const validUser = await UserService.getUserById(user_id);
             const validProject = await ProjectService.getProjectById(project_id);
-            if (validProject && validUser) {
+            const validRole = ['DEVELOPER', 'SCRUM_MASTER', 'OWNER', 'PRODUCT_OWNER'].includes(role);
+            if (validProject && validUser && validRole) {
                 const response = await UserProjectService.addUserToProject(validUser.id, validProject.id, role);
                 if (response !== null) {
                     logger.log('info', 'api-UserProjectController-addUserToProject() | SUCCESS')
@@ -88,8 +89,8 @@ export class UserProjectController {
                     throw new Error('Error adding user to project');
                 }
             } else {
-                logger.log('error', 'api-UserProjectController-addUserToProject() | Error | Invalid user or project')
-                res.status(404).send({error: 'Invalid user or project'});
+                logger.log('error', 'api-UserProjectController-addUserToProject() | Error | Invalid user, project or role')
+                res.status(404).send({error: 'Invalid user, project or role'});
             }
         } catch (e: unknown) {
             const typedE = e as Error
