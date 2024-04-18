@@ -117,9 +117,18 @@ const router = express.Router();
  *       example:
  *         id: 1
  *         project_id: 1
- *         user_id: "0effc4c8-f7fd-4beb-8f5e-52d9fe8b7a98"
+ *         user: 
+ *           id: "0effc4c8-f7fd-4beb-8f5e-52d9fe8b7a98"
+ *           email: ""
+ *           username: "user1"
+ *           first_name: "User"
+ *           last_name: "One"
+ *           is_admin: false
+ *           created_at: "2021-09-01T12:00:00Z"
+ *           last_login: "2021-09-01T12:00:00Z"
  *         content: "This is a project wall content"
  *         created_at: "2021-09-01T12:00:00Z"
+ *         
  */
 
 
