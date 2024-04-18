@@ -48,6 +48,78 @@ const router = express.Router();
  *         user_id: "0effc4c8-f7fd-4beb-8f5e-52d9fe8b7a98"
  *         content: "This is a project wall content"
  *         created_at: "2021-09-01T12:00:00Z"
+ * 
+ *     User:
+ *       type: object
+ *       required:
+ *         - id
+ *         - email
+ *         - username
+ *         - first_name
+ *         - last_name
+ *         - is_admin
+ *         - created_at
+ *         - updated_at
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The auto-generated id of the user
+ *         email:
+ *           type: string
+ *           description: The email of the user
+ *         username:
+ *           type: string
+ *           description: The username of the user
+ *         first_name:
+ *           type: string
+ *           description: The first name of the user
+ *         last_name:
+ *           type: string
+ *           description: The last name of the user
+ *         is_admin:
+ *           type: boolean
+ *           description: Is the user an admin
+ *         created_at:
+ *           type: string
+ *           format: date-time
+ *           description: The date the user was created
+ *         last_login:
+ *           type: string
+ *           format: date-time
+ *           description: The date the user was last logged in
+ * 
+ *     ProjectWallReturnModel:
+ *       type: object
+ *       required:
+ *         - id
+ *         - project_id
+ *         - user
+ *         - content
+ *         - created_at
+ *       properties:
+ *         id:
+ *           type: integer
+ *           format: int64
+ *           description: The unique identifier of the project wall
+ *         project_id:
+ *           type: integer
+ *           format: int64
+ *           description: The unique identifier of the project
+ *         user:
+ *           $ref: '#/components/schemas/User'
+ *         content:
+ *           type: string
+ *           description: The content of the project wall
+ *         created_at:
+ *           type: string
+ *           format: date-time
+ *           description: The date and time the project wall was created
+ *       example:
+ *         id: 1
+ *         project_id: 1
+ *         user_id: "0effc4c8-f7fd-4beb-8f5e-52d9fe8b7a98"
+ *         content: "This is a project wall content"
+ *         created_at: "2021-09-01T12:00:00Z"
  */
 
 
@@ -74,7 +146,7 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/ProjectWallModel'
+ *                 $ref: '#/components/schemas/ProjectWallReturnModel'
  *       404:
  *         description: Project wall not found
  *       500:
@@ -104,7 +176,7 @@ router.get('/get-by-project/:projectId', jwtGuard, ProjectWallController.getProj
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ProjectWallModel'
+ *               $ref: '#/components/schemas/ProjectWallReturnModel'
  *       404:
  *         description: Project wall not found
  *       500:

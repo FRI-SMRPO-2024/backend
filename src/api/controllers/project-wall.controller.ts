@@ -3,6 +3,8 @@ import {Request, Response} from "express";
 import {ProjectWallService} from "../services/project-wall.service";
 import { TimeLogService } from '../services/time-log.service';
 import { ProjectService } from '../services/project.service';
+import { UserService } from "../services/user.service";
+import { ProjectWallReturnModel } from "../models/project-wall.model";
 
 
 export class ProjectWallController {
@@ -15,7 +17,17 @@ export class ProjectWallController {
                 res.status(404).json({ message: "Project wall not found" });
                 return
             }
-            res.status(200).json(projectWall);
+            const projectWallReturn: ProjectWallReturnModel[] = [];
+            for (const wall of projectWall) {
+                const user = await UserService.getUserById(wall.user_id);
+                if (!user) {
+                    logger.info(`User not found for user id: ${wall.user_id}`);
+                    res.status(404).json({ message: "User not found" });
+                    return
+                }
+                projectWallReturn.push({id: wall.id, project_id: wall.project_id, content: wall.content, created_at: wall.created_at, user: user});
+            }
+            res.status(200).json(projectWallReturn);
         } catch (error) {
             logger.error(`Error getting project wall: ${error}`);
             res.status(500).json({ message: "Error getting project wall" });
@@ -30,7 +42,14 @@ export class ProjectWallController {
                 res.status(404).json({ message: "Project wall not found" });
                 return
             }
-            res.status(200).json(projectWall);
+            const user = await UserService.getUserById(projectWall.user_id);
+            if (!user) {
+                logger.info(`User not found for user id: ${projectWall.user_id}`);
+                res.status(404).json({ message: "User not found" });
+                return
+            }
+            const projectWallReturn = {id: projectWall.id, project_id: projectWall.project_id, content: projectWall.content, created_at: projectWall.created_at, user: user}
+            res.status(200).json(projectWallReturn);        
         } catch (error) {
             logger.error(`Error getting project wall: ${error}`);
             res.status(500).json({ message: "Error getting project wall" });
