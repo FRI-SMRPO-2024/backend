@@ -3,6 +3,7 @@ import { supabase } from "../../supabase";
 import { TaskModel, TaskStatus } from "../models/task.model";
 import { SprintModel } from "../models/sprint.model";
 import { StoryModel } from "../models/story.model";
+import { TimeLogModel } from "./time-log.service";
 
 export class TaskService {
   public static async getTasksByStory(
@@ -128,5 +129,15 @@ export class TaskService {
       throw new Error(error.message);
     }
     return data[0];
+  }
+  public static async getTimeLogsForTask(taskId: number): Promise<TimeLogModel[] | null> {
+    const { data, error } = await supabase
+      .from("time_log")
+      .select("*")
+      .eq("task_id", taskId);
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data;
   }
 }

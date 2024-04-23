@@ -177,7 +177,7 @@ export class AuthController {
     public static async changePassword(req: Request, res: Response) {
         try {
             const { password, confirmPassword } = req.body;
-            const supabaseUser = await AuthService.authenticateUser(req.headers.authorization || '');
+            const supabaseUser = await AuthService.authenticateUser(req.headers.authorization?.split(' ')[1] || '');
             if (supabaseUser && supabaseUser.email) {
                 const user = await UserService.getUserByEmail(supabaseUser.email);
                 if (user) {
@@ -294,7 +294,7 @@ export class AuthController {
     public static async deleteUser(req: Request, res: Response) {
         try {
             logger.log('info', 'api-AuthController-deleteUser() | START' + req.headers['Authorization'] || '')
-            const supabaseUser = await AuthService.authenticateUser(req.headers.authorization || '');
+            const supabaseUser = await AuthService.authenticateUser(req.headers.authorization?.split(' ')[1] || '');
             if (supabaseUser && supabaseUser.email) {
                 const user = await UserService.getUserByEmail(supabaseUser.email);
                 if (user) {

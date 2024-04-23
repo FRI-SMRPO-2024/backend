@@ -5,7 +5,7 @@ import { SprintModel } from '../models/sprint.model';
 import { ProjectService } from '../services/project.service';
 import { StoryCreateRequest, StoryModel, StoryUpdateRequest } from '../models/story.model';
 import { StoryService } from '../services/story.service';
-import { TaskModel, TaskStatus, TaskWithAssigneeInfo } from '../models/task.model';
+import { TaskModel, TaskStatus, TaskWithAssigneeInfo, TaskWithAssigneeTimeLogInfo } from '../models/task.model';
 import { TaskService } from '../services/task.service';
 import { UserService } from '../services/user.service';
 import { UserModel } from '../models/user.model';
@@ -22,12 +22,13 @@ export class TaskController {
             }
             const response = await TaskService.getTasksByStory(storyId);
             if (response) {
-                let tasksWithAssigneeInfo: TaskWithAssigneeInfo[] = [];
+                let tasksWithAssigneeTimeLogInfo: TaskWithAssigneeTimeLogInfo[] = [];
                 for (let i = 0; i < response.length; i++) {
                     const task = response[i];
                     if (!task.assignee_id) {
-                        tasksWithAssigneeInfo.push({
+                        tasksWithAssigneeTimeLogInfo.push({
                             task: task,
+                            time_logs: [],
                             assignee: null
                         });
                     } else {
@@ -37,14 +38,20 @@ export class TaskController {
                             res.status(404).send({error: `Assignee not found for task ${task.id}`});
                             return;
                         }
-                        tasksWithAssigneeInfo.push({
+                        tasksWithAssigneeTimeLogInfo.push({
                             task: task,
+                            time_logs: [],
                             assignee: assignee
                         });
                     }
+                    // Get time logs for task
+                    const timeLogs = await TaskService.getTimeLogsForTask(task.id);
+                    if (timeLogs) {
+                        tasksWithAssigneeTimeLogInfo[i].time_logs = timeLogs;
+                    }
                 }
                 logger.log('info', 'api-TaskController-getTasksByStory() | SUCCESS')
-                res.status(200).send(tasksWithAssigneeInfo);
+                res.status(200).send(tasksWithAssigneeTimeLogInfo);
             } else {
                 logger.log('info', 'api-TaskController-getTasksByStory() | SUCCESS | No tasks found')
                 res.status(404).send({error: 'No tasks found'});
@@ -66,12 +73,13 @@ export class TaskController {
             }
             const response = await TaskService.getTasksByAssignee(assigneeId);
             if (response) {
-                let tasksWithAssigneeInfo: TaskWithAssigneeInfo[] = [];
+                let tasksWithAssigneeTimeLogInfo: TaskWithAssigneeTimeLogInfo[] = [];
                 for (let i = 0; i < response.length; i++) {
                     const task = response[i];
                     if (!task.assignee_id) {
-                        tasksWithAssigneeInfo.push({
+                        tasksWithAssigneeTimeLogInfo.push({
                             task: task,
+                            time_logs: [],
                             assignee: null
                         });
                     } else {
@@ -81,14 +89,20 @@ export class TaskController {
                             res.status(404).send({error: `Assignee not found for task ${task.id}`});
                             return;
                         }
-                        tasksWithAssigneeInfo.push({
+                        tasksWithAssigneeTimeLogInfo.push({
                             task: task,
+                            time_logs: [],
                             assignee: assignee
                         });
                     }
+                    // Get time logs for task
+                    const timeLogs = await TaskService.getTimeLogsForTask(task.id);
+                    if (timeLogs) {
+                        tasksWithAssigneeTimeLogInfo[i].time_logs = timeLogs;
+                    }
                 }
                 logger.log('info', 'api-TaskController-getTasksByAssignee() | SUCCESS')
-                res.status(200).send(tasksWithAssigneeInfo);
+                res.status(200).send(tasksWithAssigneeTimeLogInfo);
             } else {
                 logger.log('info', 'api-TaskController-getTasksByAssignee() | SUCCESS | No tasks found')
                 res.status(404).send({error: 'No tasks found'});
@@ -110,12 +124,13 @@ export class TaskController {
             }
             const response = await TaskService.getTaskBySprint(sprintId);
             if (response) {
-                let tasksWithAssigneeInfo: TaskWithAssigneeInfo[] = [];
+                let tasksWithAssigneeTimeLogInfo: TaskWithAssigneeTimeLogInfo[] = [];
                 for (let i = 0; i < response.length; i++) {
                     const task = response[i];
                     if (!task.assignee_id) {
-                        tasksWithAssigneeInfo.push({
+                        tasksWithAssigneeTimeLogInfo.push({
                             task: task,
+                            time_logs: [],
                             assignee: null
                         });
                     } else {
@@ -125,14 +140,20 @@ export class TaskController {
                             res.status(404).send({error: `Assignee not found for task ${task.id}`});
                             return;
                         }
-                        tasksWithAssigneeInfo.push({
+                        tasksWithAssigneeTimeLogInfo.push({
                             task: task,
+                            time_logs: [],
                             assignee: assignee
                         });
                     }
+                    // Get time logs for task
+                    const timeLogs = await TaskService.getTimeLogsForTask(task.id);
+                    if (timeLogs) {
+                        tasksWithAssigneeTimeLogInfo[i].time_logs = timeLogs;
+                    }
                 }
                 logger.log('info', 'api-TaskController-getTaskBySprint() | SUCCESS')
-                res.status(200).send(tasksWithAssigneeInfo);
+                res.status(200).send(tasksWithAssigneeTimeLogInfo);
             } else {
                 logger.log('info', 'api-TaskController-getTaskBySprint() | SUCCESS | No tasks found')
                 res.status(404).send({error: 'No tasks found'});

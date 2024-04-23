@@ -42,6 +42,7 @@ export class AuthService {
       }
   }
   public static async authenticateUser(jwt: string): Promise<User | null>{
+    console.log(jwt);
     const { data, error } = await supabase.auth.getUser(jwt);
     if (error) {
       throw new Error(error.message);
