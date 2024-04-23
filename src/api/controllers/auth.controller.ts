@@ -215,6 +215,50 @@ export class AuthController {
         }
     }
 
+    public static async changeEmail(req: Request, res: Response) {
+        try {
+            const { newEmail } = req.body;
+            console.log('email', newEmail)
+            console.log('auth', req.headers.authorization || '')
+            const supabaseUser = await AuthService.authenticateUser(req.headers.authorization || '');
+
+            if (supabaseUser && supabaseUser.email) {
+                const user = await UserService.getUserByEmail(supabaseUser.email);
+                if (user) {
+
+                    // Invoke an edge function called change-email
+                    const { data, error } = await supabase.functions.invoke('change-email', {
+                        body: JSON.stringify({
+                            userId: user.id,
+                            newEmail: newEmail
+                        })
+                    });
+
+                    if (error) {
+                        logger.log('error', 'api-AuthController-changeEmail() | ERROR | ' + error.message)
+                        error.status 
+                            ? res.status(error.status).send(error)
+                            : res.status(500).send(error)
+                    } else {
+                        logger.log('info', 'api-AuthController-changeEmail() | SUCCESS')
+                        res.status(200).send(data)
+                    } 
+                } else {
+                    logger.log('error', 'api-AuthController-changeEmail() | ERROR | User not found')
+                    res.status(404).send({error: 'User not found'});
+                }
+            } else {
+                logger.log('error', 'api-AuthController-changeEmail() | ERROR | Forbidden')
+                res.status(403).send({error: 'Forbidden'});
+            }
+
+        } catch (e: unknown) {
+            const typedE = e as Error
+            logger.log('error', 'api-AuthController-changeEmail() | Error | ' + String(typedE.message))
+            res.status(500).send({error: typedE.message});
+        }
+    }
+
     public static async deleteUserAdmin(req: Request, res: Response) {
         try {
             const { id } = req.params;

@@ -11,6 +11,18 @@ const updateUserEmail = async (userId: string, newEmail: string, supabase:any) =
   console.log(user)
 }
 
+const updateUsersData = async (userId: string, newEmail: string, supabase:any) => {
+  const { data: user, error } = await supabase
+    .from('users_data')
+    .update({
+        email: newEmail
+        })
+    .match({ id: userId })
+    if (error) throw error
+    return user;
+}
+
+
 serve(async (req)=>{
     const supabase = createClient(Deno.env.get("SUPABASE_URL") ?? "", Deno.env.get("SUPABASE_ANON_KEY") ?? "", {
         global: {
@@ -27,10 +39,13 @@ serve(async (req)=>{
 
         if (userId) {
 
+            const userData = await updateUsersData(userId, newEmail, supabase);
+
             const user = await updateUserEmail(userId, newEmail, supabase);            
             return new Response(JSON.stringify({
                 "message": "Email changed successfully! Please logout and login again.",
-                "user": user
+                "user": user,
+                "userData": userData
             }), {
                 headers: {
                     "Content-Type": "application/json"
