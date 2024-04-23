@@ -220,7 +220,7 @@ export class AuthController {
             const { newEmail } = req.body;
             console.log('email', newEmail)
             console.log('auth', req.headers.authorization || '')
-            const supabaseUser = await AuthService.authenticateUser(req.headers.authorization || '');
+            const supabaseUser = await AuthService.authenticateUser(req.headers.authorization?.split(' ')[1] || '');
 
             if (supabaseUser && supabaseUser.email) {
                 const user = await UserService.getUserByEmail(supabaseUser.email);
