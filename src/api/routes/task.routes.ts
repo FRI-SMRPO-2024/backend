@@ -154,12 +154,65 @@ const router = express.Router();
  *           format: date-time
  *           description: The date the user was last logged in
  * 
+ *     TimeLog:
+ *       type: object
+ *       required:
+ *         - id
+ *         - task_id
+ *         - user_id
+ *         - date
+ *         - time_from
+ *         - time_to
+ *         - created_at
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Unique identifier for the TimeLog
+ *         task_id:
+ *           type: integer
+ *           description: ID of the task associated with this time log
+ *         user_id:
+ *           type: string
+ *           description: ID of the user who created this time log
+ *         date:
+ *           type: string
+ *           format: date
+ *           description: The date of the time log
+ *         time_from:
+ *           type: string
+ *           format: date-time
+ *           description: Start time of the log
+ *         time_to:
+ *           type: string
+ *           format: date-time
+ *           description: End time of the log
+ *         created_at:
+ *           type: string
+ *           format: date-time
+ *           description: The date and time the log was created
+ * 
  *     TaskWithAssigneeInfo:
  *       type: object
  *       properties:
  *         task:
  *           $ref: '#/components/schemas/TaskModel'
  *           description: Task details
+ *         assignee:
+ *           $ref: '#/components/schemas/User'
+ *           description: Assignee user details
+ *       description: A task model with detailed assignee information
+ * 
+ *     TaskWithAssigneeTimeLogInfo:
+ *       type: object
+ *       properties:
+ *         task:
+ *           $ref: '#/components/schemas/TaskModel'
+ *           description: Task details
+ *         time_logs:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/TimeLog'
+ *           description: Time logs for the task
  *         assignee:
  *           $ref: '#/components/schemas/User'
  *           description: Assignee user details
@@ -191,7 +244,7 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/TaskWithAssigneeInfo'
+ *                 $ref: '#/components/schemas/TaskWithAssigneeTimeLogInfo'
  *       404:
  *         description: No tasks found / Assignee not found for task
  *       500:
@@ -224,7 +277,7 @@ router.get('/get-by-story/:story_id', jwtGuard, TaskController.getTasksByStory);
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/TaskWithAssigneeInfo'
+ *                 $ref: '#/components/schemas/TaskWithAssigneeTimeLogInfo'
  *       404:
  *         description: No tasks found / Assignee not found for task
  *       500:
@@ -257,7 +310,7 @@ router.get('/get-by-assignee/:assignee_id', jwtGuard, TaskController.getTasksByA
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/TaskWithAssigneeInfo'
+ *                 $ref: '#/components/schemas/TaskWithAssigneeTimeLogInfo'
  *       404:
  *         description: No tasks found / Assignee not found for task
  *       500:
@@ -265,6 +318,7 @@ router.get('/get-by-assignee/:assignee_id', jwtGuard, TaskController.getTasksByA
  */
 // Get all tasks for a specific sprint
 router.get('/get-by-sprint/:sprint_id', jwtGuard, TaskController.getTaskBySprint);
+
 
 
 /**

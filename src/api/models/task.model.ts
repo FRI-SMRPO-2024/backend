@@ -1,3 +1,4 @@
+import { TimeLogModel } from "./time-log.model";
 import { UserModel } from "./user.model";
 
 export interface TaskModel {
@@ -24,6 +25,12 @@ export interface TaskUpdateModel {
     description: string;
     status: TaskStatus;
     assignee_id: string;
+}
+
+export interface TaskWithAssigneeTimeLogInfo {
+    task: TaskModel;
+    time_logs: TimeLogModel[];
+    assignee: UserModel | null;
 }
 
 export interface TaskWithAssigneeInfo {
