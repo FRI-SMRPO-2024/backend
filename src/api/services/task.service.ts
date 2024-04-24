@@ -3,7 +3,7 @@ import { supabase } from "../../supabase";
 import { TaskModel, TaskStatus } from "../models/task.model";
 import { SprintModel } from "../models/sprint.model";
 import { StoryModel } from "../models/story.model";
-import { TimeLogModel } from "./time-log.service";
+import { TimeLogModel } from "../models/time-log.model";
 
 export class TaskService {
   public static async getTasksByStory(

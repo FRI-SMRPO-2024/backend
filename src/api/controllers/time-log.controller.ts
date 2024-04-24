@@ -113,13 +113,9 @@ export class TimeLogController {
     }
     public static async createTimeLog(req: Request, res: Response): Promise<void> {
         try {
-            const { task_id, user_id, date, time_from, time_to, description }: TimeLogCreateRequestModel = req.body;
-            const time_from_date = new Date(time_from)
-            const time_from_time = time_from_date.toTimeString().split(' ')[0];
-            const time_to_date = new Date(time_to)
-            const time_to_time = time_to_date.toTimeString().split(' ')[0];
+            const { task_id, user_id, date, time_from, time_to, estimated_time_left, description }: TimeLogCreateRequestModel = req.body;
 
-            const response: TimeLogModel | null = await TimeLogService.createTimeLog(task_id, user_id, new Date(date), time_from_time, time_to_time, description);
+            const response: TimeLogModel | null = await TimeLogService.createTimeLog(task_id, user_id, new Date(date), time_from, time_to, estimated_time_left, description);
             if (response !== null) {
                 logger.log('info', 'api-TimeLogController-createTimeLog() | SUCCESS')
                 res.status(201).json(response);
@@ -136,13 +132,10 @@ export class TimeLogController {
     public static async updateTimeLog(req: Request, res: Response): Promise<void> {
         try {
             const id = parseInt(req.params.id);
-            const { task_id, user_id, date, time_from, time_to, description }: TimeLogUpdateRequestModel = req.body;
-            const time_from_date = new Date(time_from)
-            const time_from_time = time_from_date.toTimeString().split(' ')[0];
-            const time_to_date = new Date(time_to)
-            const time_to_time = time_to_date.toTimeString().split(' ')[0];
+            const { task_id, user_id, date, time_from, time_to, estimated_time_left, description }: TimeLogUpdateRequestModel = req.body;
 
-            const response: TimeLogModel | null = await TimeLogService.updateTimeLog(id, task_id, user_id, new Date(date), time_from_time, time_to_time, description);
+            const response: TimeLogModel | null = await TimeLogService.updateTimeLog(id, task_id, user_id, new Date(date), time_from, time_to, Number(estimated_time_left), description);
+            console.log(response)
             if (response !== null) {
                 logger.log('info', 'api-TimeLogController-updateTimeLog() | SUCCESS')
                 res.status(200).json(response);
