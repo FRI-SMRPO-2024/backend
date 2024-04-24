@@ -27,7 +27,7 @@ export class TimeLogController {
     }
     public static async getTimeLogsByStory(req: Request, res: Response): Promise<void> {
         try {
-            const storyId = parseInt(req.params.id);
+            const storyId = parseInt(req.params.story_id);
             const story = await StoryService.getStoryById(storyId);
             if (!story) {
                 logger.log('error', 'api-TaskController-getTasksByStory() | Error | Story not found')
@@ -50,7 +50,7 @@ export class TimeLogController {
     }
     public static async getTimeLogsByTask(req: Request, res: Response): Promise<void> {
         try {
-            const taskId = parseInt(req.params.id);
+            const taskId = parseInt(req.params.task_id);
             const task = await TaskService.getTaskById(taskId);
             if (!task) {
                 logger.log('error', 'api-TimeLogController-getTimeLogsByTask() | Error | Task not found')
@@ -73,7 +73,7 @@ export class TimeLogController {
     }
     public static async getTimeLogsByUser(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.params.id;
+            const userId = req.params.user_id;
             const user = await UserService.getUserById(userId)
             if (!user) {
                 logger.log('error', 'api-TimeLogController-getTimeLogsByUser() | Error | User not found')
