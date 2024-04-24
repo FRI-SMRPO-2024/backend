@@ -228,6 +228,38 @@ router.post('/change-password/:id', [jwtGuard, roleAdminGuard], AuthController.c
  */
 router.post('/change-password', jwtGuard, AuthController.changePassword);
 
+/**
+ * @swagger
+ * /api/auth/change-email/:
+ *   post:
+ *     security:
+ *       - Authorization: []
+ *     summary: Change user's email
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - newEmail
+ *               - userId
+ *             properties:
+ *               newEmail:
+ *                 type: string
+ *               userId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Email changed successfully
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/change-email', jwtGuard, AuthController.changeEmail);
+
 
 /**
  * @swagger
