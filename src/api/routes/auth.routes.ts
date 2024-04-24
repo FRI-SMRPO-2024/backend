@@ -243,7 +243,7 @@ router.post('/change-password', jwtGuard, AuthController.changePassword);
  *           schema:
  *             type: object
  *             required:
- *               - newEmail
+ *               - new_email
  *               - userId
  *             properties:
  *               newEmail:

@@ -217,8 +217,9 @@ export class AuthController {
 
     public static async changeEmail(req: Request, res: Response) {
         try {
-            const { newEmail } = req.body;
-            console.log('email', newEmail)
+            const { new_email,id } = req.body;
+
+            console.log('email', new_email)
             console.log('auth', req.headers.authorization || '')
             const supabaseUser = await AuthService.authenticateUser(req.headers.authorization?.split(' ')[1] || '');
 
@@ -229,8 +230,8 @@ export class AuthController {
                     // Invoke an edge function called change-email
                     const { data, error } = await supabase.functions.invoke('change-email', {
                         body: JSON.stringify({
-                            userId: user.id,
-                            newEmail: newEmail
+                            userId: id,
+                            newEmail: new_email
                         })
                     });
 
