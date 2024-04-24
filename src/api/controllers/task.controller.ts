@@ -123,7 +123,7 @@ export class TaskController {
                 return;
             }
             const response = await TaskService.getTaskBySprint(sprintId);
-            if (response) {
+            if (response !== null) {
                 let tasksWithAssigneeTimeLogInfo: TaskWithAssigneeTimeLogInfo[] = [];
                 for (let i = 0; i < response.length; i++) {
                     const task = response[i];
@@ -167,10 +167,31 @@ export class TaskController {
     public static async getTask(req: Request, res: Response) {
         try {
             const id = parseInt(req.params.id);
-            const response = await TaskService.getTaskById(id);
-            if (response) {
+            const task = await TaskService.getTaskById(id);
+            if (task) {
+                let taskWithAssigneeTimeLogInfo: TaskWithAssigneeTimeLogInfo | null = null;
+
+                if (!task.assignee_id) {
+                    taskWithAssigneeTimeLogInfo = {
+                        task: task,
+                        time_logs: [],
+                        assignee: null
+                    };
+                } else {
+                    const assignee = await UserService.getUserById(task.assignee_id);
+                    if (!assignee) {
+                        logger.log('error', 'api-TaskController-getTaskBySprint() | Error | Assignee not found')
+                        res.status(404).send({error: `Assignee not found for task ${task.id}`});
+                        return;
+                    }
+                    taskWithAssigneeTimeLogInfo = {
+                        task: task,
+                        time_logs: [],
+                        assignee: assignee
+                    };
+                }
                 logger.log('info', 'api-TaskController-getTask() | SUCCESS')
-                res.status(200).send(response);
+                res.status(200).send(taskWithAssigneeTimeLogInfo);
             } else {
                 logger.log('info', 'api-TaskController-getTask() | SUCCESS | Task not found')
                 res.status(404).send({error: 'Task not found'});

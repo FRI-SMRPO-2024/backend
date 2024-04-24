@@ -338,11 +338,13 @@ router.get('/get-by-sprint/:sprint_id', jwtGuard, TaskController.getTaskBySprint
  *         description: The ID of the task
  *     responses:
  *       200:
- *         description: Task details
+ *         description: A task for the specified id
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/TaskModel'
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/TaskWithAssigneeTimeLogInfo'
  *       404:
  *         description: Task not found
  *       500:

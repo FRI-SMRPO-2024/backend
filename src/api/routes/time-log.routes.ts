@@ -47,6 +47,9 @@ const router = express.Router();
  *           type: string
  *           format: date-time
  *           description: End time of the log
+ *         estimated_time_left:
+ *           type: number
+ *           description: The estimated time left for the task
  *         created_at:
  *           type: string
  *           format: date-time
@@ -85,6 +88,9 @@ const router = express.Router();
  *           type: string
  *           format: date-time
  *           description: End time of the log
+ *         estimated_time_left:
+ *           type: number
+ *           description: The estimated time left for the task
  *         description:
  *           type: string
  *           description: Description of the time log
@@ -123,6 +129,9 @@ const router = express.Router();
  *           type: string
  *           format: date-time
  *           description: End time of the log
+ *         estimated_time_left:
+ *           type: number
+ *           description: The estimated time left for the task
  *         description:
  *           type: string
  *           description: Description of the time log

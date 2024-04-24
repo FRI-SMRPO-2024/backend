@@ -4,18 +4,8 @@ import { supabaseAdmin } from "../../supabase";
 import { Session, User } from "@supabase/supabase-js";
 import { StoryService } from "./story.service";
 import { TaskService } from "./task.service";
-// import { TimeLogModel } from "../models/time-log.model";
+import { TimeLogModel } from "../models/time-log.model";
 
-export interface TimeLogModel {
-  id: number;
-  task_id: number;
-  user_id: string;
-  date: Date;
-  time_from: Date;
-  time_to: Date;
-  created_at: Date;
-  description: string;
-}
 
 export class TimeLogService {
   public static async getTimeLogs(): Promise<TimeLogModel[] | null> {
@@ -79,7 +69,7 @@ export class TimeLogService {
     }
     return data[0];
   }
-  public static async createTimeLog(task_id: number, user_id: string, date: Date, time_from: string, time_to: string, description: string): Promise<TimeLogModel | null> {
+  public static async createTimeLog(task_id: number, user_id: string, date: Date, time_from: string, time_to: string, estimated_time_left: number, description: string): Promise<TimeLogModel | null> {
     const { data, error } = await supabase
       .from("time_log")
       .insert([
@@ -89,6 +79,7 @@ export class TimeLogService {
           date,
           time_from,
           time_to,
+          estimated_time_left,
           description,
         },
       ])
@@ -99,7 +90,7 @@ export class TimeLogService {
     return data ? data[0] : null;
   }
   public static async updateTimeLog(
-    id: number, task_id: number, user_id: string, date: Date, time_from: string, time_to: string, description: string
+    id: number, task_id: number, user_id: string, date: Date, time_from: string, time_to: string, estimated_time_left: number, description: string
   ): Promise<TimeLogModel | null> {
     const { data, error } = await supabase
       .from("time_log")
@@ -109,6 +100,7 @@ export class TimeLogService {
         date,
         time_from,
         time_to,
+        estimated_time_left,
         description,
       })
       .eq("id", id)
