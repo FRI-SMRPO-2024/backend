@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const updateUserEmail = async (userId: string, newEmail: string, supabase:any) => {
+const updateUserEmail = async (userId, newEmail, supabase) => {
   const { data: user, error } = await supabase.auth.admin.updateUserById(
     userId,
     { email: newEmail }
@@ -11,7 +11,7 @@ const updateUserEmail = async (userId: string, newEmail: string, supabase:any) =
   console.log(user)
 }
 
-const updateUsersData = async (userId: string, newEmail: string, supabase:any) => {
+const updateUsersData = async (userId, newEmail, supabase) => {
   const { data: user, error } = await supabase
     .from('users_data')
     .update({
