@@ -244,11 +244,11 @@ router.post('/change-password', jwtGuard, AuthController.changePassword);
  *             type: object
  *             required:
  *               - new_email
- *               - userId
+ *               - id
  *             properties:
- *               newEmail:
+ *               new_email:
  *                 type: string
- *               userId:
+ *               id:
  *                 type: string
  *     responses:
  *       200:
