@@ -56,10 +56,11 @@ export class UserService {
     }
     return data.user;
   }
-  public static async updateLastLogin(id: string): Promise<UserModel | null>{
+  public static async updateLastLogin(id: string,lastLogins:any): Promise<UserModel | null>{
+    console.log(lastLogins)
     const { data, error } = await supabase
       .from("users_data")
-      .update({ last_login: new Date() })
+      .update({ last_login: new Date(), last_login_array:lastLogins },)
       .eq("id", id)
       .select();
     if (error) {

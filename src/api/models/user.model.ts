@@ -7,4 +7,5 @@ export interface UserModel {
   is_admin: boolean;
   created_at: Date;
   last_login: Date;
+  last_login_array: Date[]; 
 }

@@ -101,8 +101,14 @@ export class UserController {
         try {
             const { id } = req.params;
             const user = await UserService.getUserById(id);
+
+            // Array of users last logins
+            let lastLogins = user?.last_login_array; 
+            // Push now date to the array
+            lastLogins?.push(new Date());   
+
             if (user) {
-                const response = await UserService.updateLastLogin(id);
+                const response = await UserService.updateLastLogin(id, lastLogins);
                 if (response) {
                     logger.log('info', 'api-UserController-updateLastLogin() | SUCCESS')
                     res.status(200).send(response);

@@ -24,8 +24,11 @@ export class AuthController {
                     : res.status(500).send(error)
             } else {
                 const authUser = await UserService.getUserByEmail(email);
+                let lastLogins = authUser?.last_login_array;
+                // Push now dare to the lastLogins array
+                lastLogins?.push(new Date());
                 if (authUser && data?.session?.access_token && data?.session?.refresh_token) {
-                    const updatedUser = await UserService.updateLastLogin(authUser.id);
+                    const updatedUser = await UserService.updateLastLogin(authUser.id,lastLogins);
                     if (!updatedUser) {
                         logger.log('error', 'api-AuthController-login() | ERROR | User not updated')
                         res.status(500).send({error: 'User not updated'})
